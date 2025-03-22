@@ -105,4 +105,18 @@ export const tr = {
   terms_of_service: "Hizmet Şartları",
   contact_us: "Bize Ulaşın",
   all_rights_reserved: "Tüm hakları saklıdır",
+
+  // Historical Events
+  historical_event_pill: "Tarihî Arşivler",
+  historical_event_title: "Geçmişimizi Koruyarak Geleceğimizi Zenginleştirmek",
+  historical_event_description: "Kuzey Kıbrıs’ın zengin tarihî dokusunu, kültürel kimliğimizi şekillendiren etkinlikler, dönüm noktaları ve kişisel anlatımlardan oluşan seçkimizle keşfedin.",
+  history_icon_one: "Önemli Olaylar",
+  history_icon_two: "Kişisel Anlatılar",
+  history_icon_three: "Zaman Çizelgesi",
+  history_sectionone_pill: "Tarihi Keşfedin",
+  history_sectionone_title: "Önemli Tarihî Olaylar",
+  history_sectionone_description: "Antik çağlardan günümüze uzanan, Kuzey Kıbrıs’ın tarihini şekillendiren önemli anları topluluk üyelerimiz tarafından özenle derlenmiş şekilde keşfedin.",
+  history_sectiontwo_pill: "Öne Çıkan Makale",
+  history_sectiontwo_button: "Tam Makaleyi Oku",
+
 };

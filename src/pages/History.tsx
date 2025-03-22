@@ -4,8 +4,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import CollectionCard from "@/components/CollectionCard";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const History = () => {
+  const { t } = useLanguage();
   const historicalEvents = [
     {
       title: "The 1974 Turkish Intervention",
@@ -75,15 +77,13 @@ const History = () => {
             <div className="flex flex-col md:flex-row md:items-center gap-8">
               <div className="md:w-1/2">
                 <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                  Historical Archives
+                  {t("historical_event_pill")}
                 </div>
                 <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-4 text-capsule-text">
-                  Preserving Our Past, Enriching Our Future
+                  {t("historical_event_title")}
                 </h1>
                 <p className="text-capsule-text/80 leading-relaxed mb-6">
-                  Explore the rich historical tapestry of North Cyprus through
-                  our curated collection of events, milestones, and personal
-                  accounts that have shaped our cultural identity.
+                  {t("historical_event_description")}
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
@@ -91,7 +91,7 @@ const History = () => {
                       <Landmark size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Key Events
+                      {t("history_icon_one")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -99,7 +99,7 @@ const History = () => {
                       <BookOpen size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Personal Accounts
+                      {t("history_icon_two")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -107,7 +107,7 @@ const History = () => {
                       <Clock size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Timeline
+                      {t("history_icon_three")}
                     </span>
                   </div>
                 </div>
@@ -130,17 +130,15 @@ const History = () => {
           <div className="capsule-container">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                Explore History
+                {t("history_sectionone_pill")}
               </div>
 
               <h2 className="text-3xl text-black sm:text-4xl font-serif font-semibold mb-4">
-                Key Historical Events
+                {t("history_sectionone_title")}
               </h2>
 
               <p className="text-capsule-text/80 leading-relaxed">
-                Discover the pivotal moments that have shaped North Cyprus
-                through the decades, from ancient times to modern day, curated
-                by our community members.
+                {t("history_sectionone_description")}
               </p>
             </div>
 
@@ -170,7 +168,7 @@ const History = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
                   <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                    Featured Article
+                    {t("history_sectiontwo_pill")}
                   </div>
 
                   <h3 className="text-2xl text-black lg:text-3xl font-serif font-semibold mb-4">
@@ -199,7 +197,7 @@ const History = () => {
                       href="#read-more"
                       className="inline-flex items-center gap-2 bg-capsule-accent text-white px-6 py-3 rounded-lg hover:bg-capsule-accent/90 transition-colors"
                     >
-                      <span>Read Full Article</span>
+                      <span>{t("history_sectiontwo_button")}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"

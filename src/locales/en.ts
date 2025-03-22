@@ -103,4 +103,19 @@ export const en = {
   terms_of_service: "Terms of Service",
   contact_us: "Contact Us",
   all_rights_reserved: "All rights reserved",
+
+  // Historical Events
+  historical_event_pill: "Historical Archives",
+  historical_event_title: "Preserving Our Past, Enriching Our Future",
+  historical_event_description: "Explore the rich historical tapestry of North Cyprus through our curated collection of events, milestones, and personal accounts that have shaped our cultural identity.",
+  history_icon_one: "Key Events",
+  history_icon_two: "Personal Accounts",
+  history_icon_three: "Timeline",
+  history_sectionone_pill: "Explore History",
+  history_sectionone_title: "Key Historical Events",
+  history_sectionone_description: "Discover pivotal moments that have shaped North Cyprus through the decades, from ancient times to the modern day, curated by our community members.",
+  history_sectiontwo_pill: "Featured Article",
+  history_sectiontwo_button: "Read Full Article",
+
+
 };
