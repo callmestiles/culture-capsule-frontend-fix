@@ -131,4 +131,16 @@ export const en = {
   recipes_sectiontwo_button: "View Full Recipe",
 
 
+  // Arts Events
+  arts_pill: "Artistic Heritage",
+  arts_title: "Traditional Arts & Crafts",
+  arts_description: "Discover the intricate artistry and craftsmanship that has defined North Cyprus's cultural identity for generations, from pottery and textiles to woodworking and more.",
+  arts_icon_one: "Visual Arts",
+  arts_icon_two: "Craftsmanship",
+  arts_icon_three: "Textile Arts",
+  arts_sectionone_pill: "Explore Arts",
+  arts_sectionone_title: "Handcrafted Traditions",
+  arts_sectionone_description: "Explore our collection of traditional arts and crafts from across North Cyprus, documented and preserved by local artisans and cultural enthusiasts.",
+  arts_sectiontwo_pill: "Featured Art",
+  arts_sectiontwo_button: "View Collection",
 };

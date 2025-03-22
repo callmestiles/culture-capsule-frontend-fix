@@ -132,5 +132,19 @@ export const tr = {
   recipes_sectiontwo_pill: "Öne Çıkan Tarifler",
   recipes_sectiontwo_button: "Tam Tarifi Görüntüle",
 
+  // Arts Events
+  arts_pill: "Sanatsal Miras",
+  arts_title: "Geleneksel Sanatlar ve El İşleri",
+  arts_description: "Seramikten tekstile, ahşap işçiliğinden diğer el sanatlarına kadar Kuzey Kıbrıs’ın kültürel kimliğini nesiller boyu şekillendiren detaylı sanat ve zanaat ustalığını keşfedin.",
+  arts_icon_one: "Görsel Sanatlar",
+  arts_icon_two: "Zanaatkârlık",
+  arts_icon_three: "Tekstil Sanatları",
+  arts_sectionone_pill: "Sanatı Keşfedin",
+  arts_sectionone_title: "El İşçiliği Geleneği",
+  arts_sectionone_description: "Yerel zanaatkârlar ve kültür meraklıları tarafından belgelenen ve korunan geleneksel Kuzey Kıbrıs sanat ve el işlerini keşfedin.",
+  arts_sectiontwo_pill: "Öne Çıkan Sanat",
+  arts_sectiontwo_button: "Koleksiyonu Görüntüle",
+
+
 
 };
