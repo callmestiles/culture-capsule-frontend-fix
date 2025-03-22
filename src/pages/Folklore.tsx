@@ -4,8 +4,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import CollectionCard from "@/components/CollectionCard";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Folklore = () => {
+  const { t } = useLanguage();
   const folkloreCollection = [
     {
       title: "The Legend of the Five Finger Mountain",
@@ -75,15 +77,13 @@ const Folklore = () => {
             <div className="flex flex-col md:flex-row md:items-center gap-8">
               <div className="md:w-1/2">
                 <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                  Oral Traditions
+                  {t("folklore_pill")}
                 </div>
                 <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-4 text-capsule-text">
-                  Folklore & Stories
+                  {t("folklore_title")}
                 </h1>
                 <p className="text-capsule-text/80 leading-relaxed mb-6">
-                  Immerse yourself in the myths, legends, and stories that have
-                  been passed down through generations, shaping the cultural
-                  identity of North Cyprus.
+                  {t("folklore_description")}
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
@@ -91,7 +91,7 @@ const Folklore = () => {
                       <Book size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Myths & Legends
+                      {t("folklore_icon_one")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -99,7 +99,7 @@ const Folklore = () => {
                       <MessageCircle size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Folk Tales
+                      {t("folklore_icon_two")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -107,7 +107,7 @@ const Folklore = () => {
                       <Music size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Songs & Ballads
+                      {t("folklore_icon_three")}
                     </span>
                   </div>
                 </div>
@@ -130,17 +130,15 @@ const Folklore = () => {
           <div className="capsule-container">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                Explore Folklore
+                {t("folklore_pill")}
               </div>
 
               <h2 className="text-3xl text-black sm:text-4xl font-serif font-semibold mb-4">
-                Stories That Shape Our Identity
+                {t("folklore_title")}
               </h2>
 
               <p className="text-capsule-text/80 leading-relaxed">
-                Explore our collection of traditional stories, myths, and
-                legends that have been passed down through generations,
-                preserving the cultural identity of North Cyprus.
+                {t("folklore_description")}
               </p>
             </div>
 
@@ -170,7 +168,7 @@ const Folklore = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
                   <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                    Featured Story
+                    {t("folklore_pill")}
                   </div>
 
                   <h3 className="text-2xl lg:text-3xl font-serif font-semibold mb-4">
@@ -198,7 +196,7 @@ const Folklore = () => {
                       href="#read-story"
                       className="inline-flex items-center gap-2 bg-capsule-accent text-white px-6 py-3 rounded-lg hover:bg-capsule-accent/90 transition-colors"
                     >
-                      <span>Read Full Story</span>
+                      <span>{t("folklore_sectiontwo_button")}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
