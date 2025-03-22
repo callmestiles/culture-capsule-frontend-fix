@@ -147,17 +147,18 @@ export const tr = {
 
 
   // Folklore
-  folklore_pill: "Halk Mirası",
-  folklore_title: "Geleneksel Sanatlar ve El İşleri",
-  folklore_description: "Seramikten tekstile, ahşap işçiliğinden diğer el sanatlarına kadar Kuzey Kıbrıs’ın kültürel kimliğini nesiller boyu şekillendiren detaylı sanat ve zanaat ustalığını keşfedin.",
-  folklore_icon_one: "Görsel Sanatlar",
-  folklore_icon_two: "Zanaatkârlık",
-  folklore_icon_three: "Tekstil Sanatları",
-  folklore_sectionone_pill: "Sanatı Keşfedin",
-  folklore_sectionone_title: "El İşçiliği Geleneği",
-  folklore_sectionone_description: "Yerel zanaatkârlar ve kültür meraklıları tarafından belgelenen ve korunan geleneksel Kuzey Kıbrıs sanat ve el işlerini keşfedin.",
-  folklore_sectiontwo_pill: "Öne Çıkan Sanat",
-  folklore_sectiontwo_button: "Koleksiyonu Görüntüle",
+  folklore_pill: "Sözlü Gelenekler",
+folklore_title: "Folklor ve Hikâyeler",
+folklore_description: "Kuzey Kıbrıs’ın kültürel kimliğini şekillendiren, nesiller boyu aktarılan mitler, efsaneler ve hikâyeler dünyasına dalın.",
+folklore_icon_one: "Mitler ve Efsaneler",
+folklore_icon_two: "Halk Hikâyeleri",
+folklore_icon_three: "Şarkılar ve Baladlar",
+folklore_sectionone_pill: "Folkloru Keşfedin",
+folklore_sectionone_title: "Kimliğimizi Şekillendiren Hikâyeler",
+folklore_sectionone_description: "Kuzey Kıbrıs’ın kültürel kimliğini koruyan, nesiller boyunca aktarılan geleneksel hikâyeler, mitler ve efsaneler koleksiyonumuzu keşfedin.",
+folklore_sectiontwo_pill: "Öne Çıkan Hikâye",
+folklore_sectiontwo_button: "Tam Hikâyeyi Oku",
+
 
 
 };
