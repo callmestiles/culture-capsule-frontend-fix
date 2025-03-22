@@ -4,8 +4,10 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import CollectionCard from "@/components/CollectionCard";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Recipes = () => {
+  const { t } = useLanguage();
   const localRecipes = [
     {
       title: "Traditional Hellim Cheese Making Process",
@@ -75,15 +77,13 @@ const Recipes = () => {
             <div className="flex flex-col md:flex-row md:items-center gap-8">
               <div className="md:w-1/2">
                 <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                  Culinary Heritage
+                  {t("recipes_pill")}
                 </div>
                 <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-4 text-capsule-text">
-                  Flavors of North Cyprus
+                  {t("recipes_title")}
                 </h1>
                 <p className="text-capsule-text/80 leading-relaxed mb-6">
-                  Discover the rich culinary traditions of North Cyprus through
-                  authentic recipes, cooking techniques, and stories that have
-                  been passed down through generations.
+                  {t("recipes_description")}
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
@@ -91,7 +91,7 @@ const Recipes = () => {
                       <Utensils size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Traditional Recipes
+                      {t("recipes_icon_one")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -99,7 +99,7 @@ const Recipes = () => {
                       <Clock size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Preparation Time
+                      {t("recipes_icon_two")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -107,7 +107,7 @@ const Recipes = () => {
                       <Users size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      Serving Size
+                      {t("recipes_icon_three")}
                     </span>
                   </div>
                 </div>
@@ -130,17 +130,15 @@ const Recipes = () => {
           <div className="capsule-container">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                Explore Recipes
+                {t("recipes_pill")}
               </div>
 
               <h2 className="text-3xl text-black sm:text-4xl font-serif font-semibold mb-4">
-                Traditional Culinary Treasures
+                {t("recipes_title")}
               </h2>
 
               <p className="text-capsule-text/80 leading-relaxed">
-                Explore our collection of authentic North Cyprus recipes,
-                carefully documented and preserved by local chefs, families, and
-                culinary enthusiasts.
+                {t("recipes_description")}
               </p>
             </div>
 
@@ -170,7 +168,7 @@ const Recipes = () => {
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
                   <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                    Featured Recipe
+                    {t("recipes_pill")}
                   </div>
 
                   <h3 className="text-2xl lg:text-3xl font-serif font-semibold mb-4">
@@ -211,7 +209,7 @@ const Recipes = () => {
                       href="#view-recipe"
                       className="inline-flex items-center gap-2 bg-capsule-accent text-white px-6 py-3 rounded-lg hover:bg-capsule-accent/90 transition-colors"
                     >
-                      <span>View Full Recipe</span>
+                      <span>{t("recipes_sectiontwo_button")}</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"

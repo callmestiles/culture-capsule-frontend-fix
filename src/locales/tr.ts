@@ -119,4 +119,18 @@ export const tr = {
   history_sectiontwo_pill: "Öne Çıkan Makale",
   history_sectiontwo_button: "Tam Makaleyi Oku",
 
+  // Recipes Events
+  recipes_pill: "Gastronomik Miras",
+  recipes_title: "Kuzey Kıbrıs'ın Lezzetleri",
+  recipes_description: "Kuzey Kıbrıs’ın zengin mutfak geleneklerini, nesilden nesile aktarılan otantik tarifler, pişirme teknikleri ve hikâyeler aracılığıyla keşfedin.",
+  recipes_icon_one: "Geleneksel Tarifler",
+  recipes_icon_two: "Hazırlık Süresi",
+  recipes_icon_three: "Porsiyon Miktarı",
+  recipes_sectionone_pill: "Tarifleri Keşfedin",
+  recipes_sectionone_title: "Geleneksel Mutfak Hazineleri",
+  recipes_sectionone_description: "Yerel şefler, aileler ve mutfak tutkunları tarafından titizlikle belgelenen ve korunan otantik Kuzey Kıbrıs tariflerimizi keşfedin.",
+  recipes_sectiontwo_pill: "Öne Çıkan Tarifler",
+  recipes_sectiontwo_button: "Tam Tarifi Görüntüle",
+
+
 };

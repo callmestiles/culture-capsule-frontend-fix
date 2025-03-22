@@ -117,5 +117,18 @@ export const en = {
   history_sectiontwo_pill: "Featured Article",
   history_sectiontwo_button: "Read Full Article",
 
+  // Recipes Events
+  recipes_pill: "Culinary Heritage",
+  recipes_title: "Flavours of North Cyprus",
+  recipes_description: "Discover the rich culinary traditions of North Cyprus through authentic recipes, cooking techniques, and stories that have been passed down through generations.",
+  recipes_icon_one: "Traditional Recipes",
+  recipes_icon_two: "Preparation Time",
+  recipes_icon_three: "Serving Size",
+  recipes_sectionone_pill: "Explore Recipes",
+  recipes_sectionone_title: "Traditional Culinary Treasures",
+  recipes_sectionone_description: "Explore our collection of authentic North Cyprus recipes, carefully documentated and preserved by local chefs, families, and culinary enthusiasts.",
+  recipes_sectiontwo_pill: "Featured Recipes",
+  recipes_sectiontwo_button: "View Full Recipe",
+
 
 };
