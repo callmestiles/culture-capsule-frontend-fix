@@ -1,10 +1,16 @@
-
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Upload, Book, Utensils, Palette, Music } from "lucide-react";
+import {
+  ArrowLeft,
+  Upload,
+  Book,
+  Utensils,
+  Palette,
+  Music,
+} from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 import Navbar from "@/components/Navbar";
@@ -32,7 +38,9 @@ import {
 const contributionSchema = z.object({
   title: z.string().min(5, { message: "Title must be at least 5 characters" }),
   category: z.string().min(1, { message: "Please select a category" }),
-  description: z.string().min(20, { message: "Description must be at least 20 characters" }),
+  description: z
+    .string()
+    .min(20, { message: "Description must be at least 20 characters" }),
   location: z.string().optional(),
   year: z.string().optional(),
   mediaFiles: z.any().optional(),
@@ -54,7 +62,7 @@ const Contribute = () => {
       const fakeAuthCheck = localStorage.getItem("isLoggedIn") === "true";
       setIsAuthenticated(fakeAuthCheck);
     };
-    
+
     checkAuth();
   }, []);
 
@@ -72,19 +80,19 @@ const Contribute = () => {
   const onSubmit = (values: ContributionValues) => {
     setIsUploading(true);
     console.log("Contribution form submitted:", values);
-    
+
     // Simulate upload delay
     setTimeout(() => {
       setIsUploading(false);
-      
+
       toast({
         title: "Contribution submitted successfully!",
         description: "Thank you for preserving cultural heritage.",
       });
-      
+
       // Reset form
       form.reset();
-      
+
       // Redirect to home page
       setTimeout(() => {
         navigate("/");
@@ -100,7 +108,7 @@ const Contribute = () => {
   return (
     <div className="min-h-screen bg-capsule-bg">
       <Navbar />
-      
+
       <main className="pt-32 pb-20">
         <div className="capsule-container">
           <div className="max-w-3xl mx-auto">
@@ -108,19 +116,23 @@ const Contribute = () => {
               <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
                 Contribute
               </div>
-              <h1 className="text-3xl md:text-4xl font-serif font-semibold mb-4">
+              <h1 className="text-3xl text-black md:text-4xl font-serif font-semibold mb-4">
                 Share Cultural Heritage
               </h1>
               <p className="text-capsule-text/80 leading-relaxed">
-                Help preserve the rich cultural heritage of North Cyprus by contributing stories,
-                recipes, arts, or folklore that you've learned or experienced.
+                Help preserve the rich cultural heritage of North Cyprus by
+                contributing stories, recipes, arts, or folklore that you've
+                learned or experienced.
               </p>
             </div>
-            
+
             {isAuthenticated ? (
               <div className="bg-white rounded-xl shadow-capsule p-6 md:p-8">
                 <Form {...form}>
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="space-y-6"
+                  >
                     <FormField
                       control={form.control}
                       name="title"
@@ -128,23 +140,30 @@ const Contribute = () => {
                         <FormItem>
                           <FormLabel>Title</FormLabel>
                           <FormControl>
-                            <Input placeholder="Give your contribution a descriptive title" {...field} />
+                            <Input
+                              placeholder="Give your contribution a descriptive title"
+                              {...field}
+                            />
                           </FormControl>
                           <FormDescription>
-                            Choose a clear title that describes what you're sharing.
+                            Choose a clear title that describes what you're
+                            sharing.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="category"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Category</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                          <Select
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                          >
                             <FormControl>
                               <SelectTrigger>
                                 <SelectValue placeholder="Select a category" />
@@ -153,44 +172,60 @@ const Contribute = () => {
                             <SelectContent>
                               <SelectItem value="historical-events">
                                 <div className="flex items-center gap-2">
-                                  <Book size={16} className="text-capsule-accent" />
+                                  <Book
+                                    size={16}
+                                    className="text-capsule-accent"
+                                  />
                                   <span>Historical Events</span>
                                 </div>
                               </SelectItem>
                               <SelectItem value="local-recipes">
                                 <div className="flex items-center gap-2">
-                                  <Utensils size={16} className="text-capsule-accent" />
+                                  <Utensils
+                                    size={16}
+                                    className="text-capsule-accent"
+                                  />
                                   <span>Local Recipes</span>
                                 </div>
                               </SelectItem>
                               <SelectItem value="arts-crafts">
                                 <div className="flex items-center gap-2">
-                                  <Palette size={16} className="text-capsule-accent" />
+                                  <Palette
+                                    size={16}
+                                    className="text-capsule-accent"
+                                  />
                                   <span>Arts & Crafts</span>
                                 </div>
                               </SelectItem>
                               <SelectItem value="folklore-stories">
                                 <div className="flex items-center gap-2">
-                                  <Book size={16} className="text-capsule-accent" />
+                                  <Book
+                                    size={16}
+                                    className="text-capsule-accent"
+                                  />
                                   <span>Folklore & Stories</span>
                                 </div>
                               </SelectItem>
                               <SelectItem value="music-dance">
                                 <div className="flex items-center gap-2">
-                                  <Music size={16} className="text-capsule-accent" />
+                                  <Music
+                                    size={16}
+                                    className="text-capsule-accent"
+                                  />
                                   <span>Music & Dance</span>
                                 </div>
                               </SelectItem>
                             </SelectContent>
                           </Select>
                           <FormDescription>
-                            Select the category that best fits your contribution.
+                            Select the category that best fits your
+                            contribution.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <FormField
                         control={form.control}
@@ -199,16 +234,20 @@ const Contribute = () => {
                           <FormItem>
                             <FormLabel>Location (Optional)</FormLabel>
                             <FormControl>
-                              <Input placeholder="e.g., Famagusta, Kyrenia, etc." {...field} />
+                              <Input
+                                placeholder="e.g., Famagusta, Kyrenia, etc."
+                                {...field}
+                              />
                             </FormControl>
                             <FormDescription>
-                              Where this cultural element originated or is practiced.
+                              Where this cultural element originated or is
+                              practiced.
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
                       />
-                      
+
                       <FormField
                         control={form.control}
                         name="year"
@@ -216,7 +255,10 @@ const Contribute = () => {
                           <FormItem>
                             <FormLabel>Year/Period (Optional)</FormLabel>
                             <FormControl>
-                              <Input placeholder="e.g., 1950s, 19th century, etc." {...field} />
+                              <Input
+                                placeholder="e.g., 1950s, 19th century, etc."
+                                {...field}
+                              />
                             </FormControl>
                             <FormDescription>
                               The time period relevant to your contribution.
@@ -226,7 +268,7 @@ const Contribute = () => {
                         )}
                       />
                     </div>
-                    
+
                     <FormField
                       control={form.control}
                       name="description"
@@ -234,20 +276,21 @@ const Contribute = () => {
                         <FormItem>
                           <FormLabel>Description</FormLabel>
                           <FormControl>
-                            <Textarea 
-                              placeholder="Describe the cultural item, story, recipe, etc. in detail..." 
+                            <Textarea
+                              placeholder="Describe the cultural item, story, recipe, etc. in detail..."
                               className="min-h-[150px]"
-                              {...field} 
+                              {...field}
                             />
                           </FormControl>
                           <FormDescription>
-                            Provide as much detail as possible to preserve this cultural knowledge.
+                            Provide as much detail as possible to preserve this
+                            cultural knowledge.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <FormField
                       control={form.control}
                       name="mediaFiles"
@@ -255,7 +298,10 @@ const Contribute = () => {
                         <FormItem>
                           <FormLabel>Upload Media (Optional)</FormLabel>
                           <div className="border-2 border-dashed border-capsule-text/20 rounded-lg p-8 text-center hover:border-capsule-accent/50 transition-colors">
-                            <Upload size={32} className="mx-auto mb-3 text-capsule-text/40" />
+                            <Upload
+                              size={32}
+                              className="mx-auto mb-3 text-capsule-text/40"
+                            />
                             <p className="text-capsule-text/60 mb-2">
                               Drag and drop files here, or click to browse
                             </p>
@@ -273,22 +319,25 @@ const Contribute = () => {
                               type="button"
                               variant="outline"
                               className="mt-4"
-                              onClick={() => document.getElementById("media-upload")?.click()}
+                              onClick={() =>
+                                document.getElementById("media-upload")?.click()
+                              }
                             >
                               Browse Files
                             </Button>
                           </div>
                           <FormDescription>
-                            Upload photos, audio, or video related to your contribution.
+                            Upload photos, audio, or video related to your
+                            contribution.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                    
+
                     <div className="pt-4">
-                      <Button 
-                        type="submit" 
+                      <Button
+                        type="submit"
                         className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
                         disabled={isUploading}
                       >
@@ -303,26 +352,27 @@ const Contribute = () => {
                 <div className="w-16 h-16 bg-capsule-paper rounded-full flex items-center justify-center mx-auto mb-4">
                   <Upload size={28} className="text-capsule-accent" />
                 </div>
-                
-                <h2 className="text-xl font-serif font-semibold mb-2">
+
+                <h2 className="text-xl text-black font-serif font-semibold mb-2">
                   Authentication Required
                 </h2>
-                
+
                 <p className="text-capsule-text/70 mb-6 max-w-md mx-auto">
-                  You need to be logged in to contribute to our cultural preservation efforts.
-                  Please log in or create an account to continue.
+                  You need to be logged in to contribute to our cultural
+                  preservation efforts. Please log in or create an account to
+                  continue.
                 </p>
-                
+
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                  <Button 
+                  <Button
                     onClick={handleAuthPrompt}
                     className="bg-capsule-accent hover:bg-capsule-accent/90"
                   >
                     Log In
                   </Button>
-                  
+
                   <Link to="/signup">
-                    <Button variant="outline">
+                    <Button variant="outline" className="text-black">
                       Create Account
                     </Button>
                   </Link>
@@ -332,7 +382,7 @@ const Contribute = () => {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
