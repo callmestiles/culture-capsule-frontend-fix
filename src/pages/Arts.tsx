@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Palette, Brush, Scissors } from "lucide-react";
 import Navbar from "@/components/Navbar";
@@ -13,7 +12,8 @@ const Arts = () => {
       category: "Arts & Crafts",
       contributor: "Elena Christodoulou",
       date: "Jun 28, 2023",
-      imageSrc: "https://images.unsplash.com/photo-1619065513237-828bf1956fc8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80",
+      imageSrc:
+        "https://images.unsplash.com/photo-1619065513237-828bf1956fc8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80",
       href: "#arts-1",
     },
     {
@@ -21,7 +21,8 @@ const Arts = () => {
       category: "Arts & Crafts",
       contributor: "Sophia Andreou",
       date: "May 17, 2023",
-      imageSrc: "https://images.unsplash.com/photo-1459789587767-50f9e4b05a67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
+      imageSrc:
+        "https://images.unsplash.com/photo-1459789587767-50f9e4b05a67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
       href: "#arts-2",
     },
     {
@@ -29,7 +30,8 @@ const Arts = () => {
       category: "Arts & Crafts",
       contributor: "Mehmet Özgür",
       date: "Apr 21, 2023",
-      imageSrc: "https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+      imageSrc:
+        "https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
       href: "#arts-3",
     },
     {
@@ -37,7 +39,8 @@ const Arts = () => {
       category: "Arts & Crafts",
       contributor: "Ayşe Yılmaz",
       date: "Mar 14, 2023",
-      imageSrc: "https://images.unsplash.com/photo-1635767798638-3e7968993b43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80",
+      imageSrc:
+        "https://images.unsplash.com/photo-1635767798638-3e7968993b43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80",
       href: "#arts-4",
     },
     {
@@ -45,7 +48,8 @@ const Arts = () => {
       category: "Arts & Crafts",
       contributor: "Hasan Çelik",
       date: "Feb 9, 2023",
-      imageSrc: "https://images.unsplash.com/photo-1600045311943-64245394fc84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      imageSrc:
+        "https://images.unsplash.com/photo-1600045311943-64245394fc84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
       href: "#arts-5",
     },
     {
@@ -53,7 +57,8 @@ const Arts = () => {
       category: "Arts & Crafts",
       contributor: "Maria Demetriou",
       date: "Jan 23, 2023",
-      imageSrc: "https://images.unsplash.com/photo-1605116367194-ba30dbc63fe2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+      imageSrc:
+        "https://images.unsplash.com/photo-1605116367194-ba30dbc63fe2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
       href: "#arts-6",
     },
   ];
@@ -61,7 +66,7 @@ const Arts = () => {
   return (
     <div className="min-h-screen bg-capsule-bg">
       <Navbar />
-      
+
       <main>
         {/* Hero Section */}
         <section className="pt-32 pb-16 relative bg-capsule-paper">
@@ -76,32 +81,40 @@ const Arts = () => {
                   Traditional Arts & Crafts
                 </h1>
                 <p className="text-capsule-text/80 leading-relaxed mb-6">
-                  Discover the intricate artistry and craftsmanship that has defined North Cyprus's cultural identity for generations, from pottery and textiles to woodworking and more.
+                  Discover the intricate artistry and craftsmanship that has
+                  defined North Cyprus's cultural identity for generations, from
+                  pottery and textiles to woodworking and more.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-full bg-capsule-sand">
-                      <Palette size={18} className="text-capsule-accent" />
+                      <Palette size={18} className="text-white" />
                     </div>
-                    <span className="text-sm font-medium">Visual Arts</span>
+                    <span className="text-sm text-black font-medium">
+                      Visual Arts
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-full bg-capsule-sand">
-                      <Brush size={18} className="text-capsule-accent" />
+                      <Brush size={18} className="text-white" />
                     </div>
-                    <span className="text-sm font-medium">Craftsmanship</span>
+                    <span className="text-sm text-black font-medium">
+                      Craftsmanship
+                    </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-full bg-capsule-sand">
-                      <Scissors size={18} className="text-capsule-accent" />
+                      <Scissors size={18} className="text-white" />
                     </div>
-                    <span className="text-sm font-medium">Textile Arts</span>
+                    <span className="text-sm text-black font-medium">
+                      Textile Arts
+                    </span>
                   </div>
                 </div>
               </div>
               <div className="md:w-1/2">
-                <AnimatedImage 
-                  src="https://images.unsplash.com/photo-1596455681373-931d0e1d1c92?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                <AnimatedImage
+                  src="/images/arts.jpg"
                   alt="Traditional arts and crafts of North Cyprus"
                   className="rounded-xl shadow-capsule"
                 />
@@ -109,27 +122,28 @@ const Arts = () => {
             </div>
           </div>
         </section>
-        
+
         {/* Arts Collections */}
         <section className="py-20 bg-white relative">
           <div className="absolute inset-0 opacity-[0.02] bg-noise-pattern mix-blend-multiply" />
-          
+
           <div className="capsule-container">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
                 Explore Arts
               </div>
-              
-              <h2 className="text-3xl sm:text-4xl font-serif font-semibold mb-4">
+
+              <h2 className="text-3xl text-black sm:text-4xl font-serif font-semibold mb-4">
                 Handcrafted Traditions
               </h2>
-              
+
               <p className="text-capsule-text/80 leading-relaxed">
-                Explore our collection of traditional arts and crafts from across North Cyprus,
-                documented and preserved by local artisans and cultural enthusiasts.
+                Explore our collection of traditional arts and crafts from
+                across North Cyprus, documented and preserved by local artisans
+                and cultural enthusiasts.
               </p>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {artsCollection.map((art, index) => (
                 <CollectionCard
@@ -146,11 +160,11 @@ const Arts = () => {
             </div>
           </div>
         </section>
-        
+
         {/* Featured Art */}
         <section className="py-20 bg-capsule-paper relative">
           <div className="absolute inset-0 opacity-[0.04] bg-noise-pattern mix-blend-multiply" />
-          
+
           <div className="capsule-container">
             <div className="bg-white rounded-2xl shadow-capsule overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -158,24 +172,27 @@ const Arts = () => {
                   <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
                     Featured Art
                   </div>
-                  
-                  <h3 className="text-2xl lg:text-3xl font-serif font-semibold mb-4">
+
+                  <h3 className="text-2xl text-black lg:text-3xl font-serif font-semibold mb-4">
                     Leftkoniko Pottery: A Dying Artform
                   </h3>
-                  
+
                   <p className="text-capsule-text/80 leading-relaxed mb-6">
-                    Leftkoniko pottery is one of North Cyprus's most distinctive craft traditions,
-                    characterized by its earthy red clay and geometric patterns that tell stories of
-                    village life, nature, and mythology. This ancient craft has been passed down through
-                    generations, with techniques dating back to the Bronze Age.
+                    Leftkoniko pottery is one of North Cyprus's most distinctive
+                    craft traditions, characterized by its earthy red clay and
+                    geometric patterns that tell stories of village life,
+                    nature, and mythology. This ancient craft has been passed
+                    down through generations, with techniques dating back to the
+                    Bronze Age.
                   </p>
-                  
+
                   <p className="text-capsule-text/80 leading-relaxed mb-6">
-                    Today, only a handful of master potters remain who practice this traditional craft.
-                    This collection documents their techniques, stories, and finished works to ensure
-                    this cultural treasure is preserved for future generations.
+                    Today, only a handful of master potters remain who practice
+                    this traditional craft. This collection documents their
+                    techniques, stories, and finished works to ensure this
+                    cultural treasure is preserved for future generations.
                   </p>
-                  
+
                   <div className="mt-4">
                     <a
                       href="#view-collection"
@@ -211,7 +228,7 @@ const Arts = () => {
           </div>
         </section>
       </main>
-      
+
       <Footer />
     </div>
   );
