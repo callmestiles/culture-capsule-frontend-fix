@@ -1,9 +1,14 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (prefers-color-scheme: dark) {
+  /* body {
+    color: black !important;
+  } */
+}
 
 @layer base {
   :root {
@@ -75,7 +80,7 @@
     --border: 36 3% 27%;
     --input: 36 3% 27%;
     --ring: 35 30% 48%;
-    
+
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -94,11 +99,16 @@
 
   body {
     @apply bg-capsule-bg text-capsule-text dark:bg-gray-900 dark:text-gray-100 antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Playfair Display", serif;
   }
 }
 
@@ -107,7 +117,7 @@
   .glass-panel {
     @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-white/20 dark:border-gray-700/20 shadow-glass;
   }
-  
+
   .capsule-container {
     @apply container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
   }
@@ -141,19 +151,19 @@
   .delay-100 {
     animation-delay: 0.1s;
   }
-  
+
   .delay-200 {
     animation-delay: 0.2s;
   }
-  
+
   .delay-300 {
     animation-delay: 0.3s;
   }
-  
+
   .delay-400 {
     animation-delay: 0.4s;
   }
-  
+
   .delay-500 {
     animation-delay: 0.5s;
   }

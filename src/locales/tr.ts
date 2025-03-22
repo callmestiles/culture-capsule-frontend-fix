@@ -1,25 +1,108 @@
 export const tr = {
-  "home": "Anasayfa",
-  "history": "Tarihçe",
-  "recipes": "Tarifler",
-  "arts": "Sanat",
-  "folklore": "Folklor",
-  "featured": "Öne Çıkanlar",
-  "search": "Ara",
-  "darkMode": "Karanlık Mod",
-  "lightMode": "Aydınlık Mod",
-  "language": "Dil",
-  "english": "İngilizce",
-  "turkish": "Türkçe",
-  " capsuleDetail": "Kapsül Detayı",
-  "noCapsules": "Henüz kapsül yok.",
-  "loadMore": "Daha Fazla Yükle",
-  "pageNotFound": "Sayfa Bulunamadı",
-  "returnHome": "Anasayfaya Dön",
-  "contributeText": "Katkıda bulunmak ister misiniz?",
-  "login": "Giriş Yap",
-  "logout": "Çıkış Yap",
-  "signup": "Kayıt Ol",
-  "userMenu": "Kullanıcı Menüsü",
-  "contribute": "Katkıda Bulun",
+  // Navigation
+  home: "Anasayfa",
+  history: "Tarih",
+  recipes: "Tarifler",
+  arts: "Sanatlar",
+  folklore: "Folklor",
+  featured: "Öne Çıkanlar",
+  search: "Ara",
+  darkMode: "Karanlık Mod",
+  lightMode: "Aydınlık Mod",
+  language: "Dil",
+  english: "İngilizce",
+  turkish: "Türkçe",
+  capsuleDetail: "Kapsül Detayı",
+  noCapsules: "Henüz kapsül yok.",
+  loadMore: "Daha Fazla Yükle",
+  pageNotFound: "Sayfa Bulunamadı",
+  returnHome: "Anasayfaya Dön",
+  contributeText: "Katkıda bulunmak ister misiniz?",
+
+  // Hero section
+  hero_title: "Kuzey Kıbrıs Kültürel Mirasını Koruma",
+  hero_subtitle: "Kültürü Yakalamak, Anıları Koruma",
+  hero_description:
+    "Kişisel hikayeler, tarifler, sanatlar ve tarihsel anlatılar aracılığıyla Kuzey Kıbrıs’ın eşsiz kültürel hazinelerini yakalayın, koruyun ve paylaşın.",
+  hero_contribute: "Katkıda Bulunmaya Başlayın",
+  hero_explore: "Arşivleri Keşfedin",
+  get_started: "Başlayın",
+  learn_more: "Daha Fazla Öğrenin",
+
+  // Categories
+  explore_categories: "Kategorileri Keşfedin",
+  discover_heritage: "Kültürel Mirası Keşfedin",
+  categories_description:
+    "Kuzey Kıbrıs’ın zengin kültürel dokusuna, kategorize edilmiş arşivlerimiz aracılığıyla dalın. Her kategori, keşfedilmeyi ve korunmayı bekleyen kültürel mirasın benzersiz bir yönünü temsil eder.",
+  historical_events: "Tarihi Olaylar",
+  historical_events_desc:
+    "Kuzey Kıbrıs’ı şekillendiren dönüm noktalarını keşfedin.",
+  local_recipes: "Yerel Tarifler",
+  local_recipes_desc:
+    "Nesilden nesile aktarılan geleneksel mutfak ve yemek kültürlerini keşfedin.",
+  arts_crafts: "Sanatlar ve El Sanatları",
+  arts_crafts_desc:
+    "Kültürel kimliği temsil eden geleneksel sanat biçimlerini ve el sanatlarını keşfedin.",
+  folklore_stories: "Folklor ve Hikayeler",
+  folklore_stories_desc:
+    "Nesilden nesile aktarılan efsaneler, masallar ve hikayelere dalın.",
+  music_dance: "Müzik ve Dans",
+  music_dance_desc:
+    "Kültürel mirası yansıtan geleneksel müzik ve dansları deneyimleyin.",
+  photo_archive: "Fotoğraf Arşivi",
+  photo_archive_desc:
+    "Hayatı, yerleri ve olayları belgeleyen tarihi fotoğrafları inceleyin.",
+
+  // Featured
+  featured_archives: "Öne Çıkan Arşivler",
+  latest_capsules: "Son Kültürel Kapsüller",
+  featured_description:
+    "Topluluğumuzdan yeni katkı sağlanan kültürel hazineleri keşfedin. Her kapsül, Kuzey Kıbrıs’ın mirasının benzersiz bir yönünü korur.",
+  view_all: "Tüm Kültürel Kapsülleri Görüntüle",
+  featured_capsules: "Öne Çıkan Kapsüller",
+  cultural_capsules: "Kültürel Kapsüller",
+  no_results: "Sonuç bulunamadı",
+  try_different_category:
+    "Farklı bir kategori deneyin veya tüm kapsülleri görüntüleyin",
+  by: "Tarafından",
+
+  // Categories for filtering
+  all: "Tümü",
+  photos: "Fotoğraflar",
+  music: "Müzik",
+
+  // Contribute
+  join_mission: "Misyonumuza Katılın",
+  help_preserve: "Kuzey Kıbrıs Mirasını Koruma Yardımcı Olun",
+  contributions_matter:
+    "Katkılarınız önemlidir. Kuzey Kıbrıs’ın kültürel mirasını gelecek nesiller için korumaya yardımcı olmak için hikayelerinizi, tariflerinizi, fotoğraflarınızı ve kültürel bilginizi paylaşın.",
+  start_contributing: "Katkıda Bulunmaya Başlayın",
+
+  // Auth related
+  login: "Giriş Yap",
+  logout: "Çıkış Yap",
+  signup: "Kayıt Ol",
+  userMenu: "Kullanıcı Menüsü",
+  contribute: "Katkı Sağla",
+
+  // Auth
+  email: "E-posta",
+  password: "Şifre",
+  name: "İsim",
+  forgot_password: "Şifrenizi Mi Unuttunuz?",
+  no_account: "Hesabınız yok mu?",
+  already_account: "Zaten hesabınız var mı?",
+  create_account: "Hesap Oluştur",
+  welcome_back: "Hoş Geldiniz",
+  create_new_account: "Yeni Hesap Oluştur",
+  join_community: "Topluluğumuza katılın ve kültürel mirası korumaya başlayın",
+  login_to_continue:
+    "Kültürel koruma yolculuğunuza devam etmek için giriş yapın",
+
+  // Footer
+  about_us: "Hakkımızda",
+  privacy_policy: "Gizlilik Politikası",
+  terms_of_service: "Hizmet Şartları",
+  contact_us: "Bize Ulaşın",
+  all_rights_reserved: "Tüm hakları saklıdır",
 };

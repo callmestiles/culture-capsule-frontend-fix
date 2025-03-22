@@ -59,12 +59,15 @@ const Navbar: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 relative rounded-full bg-capsule-accent flex items-center justify-center text-white overflow-hidden group">
-            <div className="absolute inset-0 bg-gradient-to-br from-capsule-accent to-capsule-terracotta transition-transform duration-500 ease-in-out group-hover:scale-110" />
-            <span className="font-bold text-xl relative z-10">C</span>
+          <div className="w-10 h-10 relative flex items-center justify-center text-white overflow-hidden group">
+            <img
+              src="/images/logo.png"
+              alt="Culture Capsule"
+              className="w-full h-full object-contain"
+            />
           </div>
           <span className="font-serif text-xl font-semibold text-capsule-text tracking-tight">
-            CultureCapsule
+            Culture Capsule
           </span>
         </Link>
 
@@ -73,7 +76,7 @@ const Navbar: React.FC = () => {
             <Link
               key={item.name}
               to={item.href}
-              className="subtle-link text-sm font-medium"
+              className="subtle-link text-sm font-medium text-black"
             >
               {item.name}
             </Link>
@@ -105,7 +108,7 @@ const Navbar: React.FC = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-1"
+                  className="flex items-center gap-1 text-black"
                 >
                   <LogIn size={16} />
                   <span>{t("login")}</span>
