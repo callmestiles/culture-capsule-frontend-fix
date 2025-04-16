@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
 
 import {
   Form,
@@ -19,7 +20,12 @@ import { Button } from "@/components/ui/button";
 
 const signUpSchema = z
   .object({
-    name: z.string().min(2, { message: "Name must be at least 2 characters" }),
+    firstName: z
+      .string()
+      .min(2, { message: "Name must be at least 2 characters" }),
+    lastName: z
+      .string()
+      .min(2, { message: "Name must be at least 2 characters" }),
     email: z.string().email({ message: "Please enter a valid email address" }),
     password: z
       .string()
@@ -46,26 +52,38 @@ const SignUp = () => {
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      name: "",
+      firstName: "",
+      lastName: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  const onSubmit = (values: SignUpValues) => {
-    console.log("Sign up form submitted:", values);
-
-    // Simulating successful sign up
-    toast({
-      title: "Account created successfully!",
-      description: "You can now log in to your account.",
-    });
-
-    // Redirect to login page after successful signup
-    setTimeout(() => {
-      navigate("/login");
-    }, 1500);
+  const onSubmit = async (values: SignUpValues) => {
+    try {
+      const response = await axios.post(
+        "https://culture-capsule-backend.onrender.com/api/auth/register",
+        values
+      );
+      console.log("Response:", response.data);
+      // Simulating successful sign up
+      toast({
+        title: "Account created successfully!",
+        description: "You can now log in to your account.",
+      });
+      console.log("Sign up form submitted:", values);
+      // Redirect to login page after successful signup
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+    } catch (error) {
+      toast({
+        title: "Registration failed",
+        description: "Please try again later.",
+      });
+      console.error("Error during sign up:", error);
+    }
   };
 
   return (
@@ -108,12 +126,26 @@ const SignUp = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
-                name="name"
+                name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your full name" {...field} />
+                      <Input placeholder="Enter your first name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="lastName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter your last name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -205,6 +237,9 @@ const SignUp = () => {
               <Button
                 type="submit"
                 className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
+                onClick={() => {
+                  onSubmit(form.getValues());
+                }}
               >
                 Create Account
               </Button>
