@@ -62,6 +62,7 @@ const SignUp = () => {
 
   const onSubmit = async (values: SignUpValues) => {
     try {
+      console.log(values);
       const response = await axios.post(
         "https://culture-capsule-backend.onrender.com/api/auth/register",
         values
