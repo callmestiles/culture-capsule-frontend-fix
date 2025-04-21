@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -47,6 +48,7 @@ const SignUp = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
   const form = useForm<SignUpValues>({
@@ -61,29 +63,39 @@ const SignUp = () => {
   });
 
   const onSubmit = async (values: SignUpValues) => {
+    setLoading(true);
     try {
-      console.log(values);
       const response = await axios.post(
         "https://culture-capsule-backend.onrender.com/api/auth/register",
         values
       );
       console.log("Response:", response.data);
-      // Simulating successful sign up
-      toast({
-        title: "Account created successfully!",
-        description: "You can now log in to your account.",
-      });
-      console.log("Sign up form submitted:", values);
-      // Redirect to login page after successful signup
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
+      if (response.data.success) {
+        toast({
+          title: "Account created successfully!",
+          description: "You can now log in to your account.",
+        });
+        // Redirect to login page after successful signup
+        setTimeout(() => {
+          navigate("/login");
+        }, 1500);
+      } else {
+        toast({
+          title: "Registration failed",
+          description: response.data.message,
+        });
+      }
     } catch (error) {
+      const message =
+        error.response?.data?.message || "Please try again later.";
+
       toast({
         title: "Registration failed",
-        description: "Please try again later.",
+        description: message,
       });
       console.error("Error during sign up:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -242,7 +254,8 @@ const SignUp = () => {
                   onSubmit(form.getValues());
                 }}
               >
-                Create Account
+                Create Account{" "}
+                {loading && <Loader2 className="animate-spin ml-2" />}
               </Button>
 
               <div className="text-center mt-6">

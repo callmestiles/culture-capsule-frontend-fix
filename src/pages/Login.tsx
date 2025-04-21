@@ -5,6 +5,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 import {
   Form,
@@ -29,6 +31,7 @@ const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -39,8 +42,38 @@ const Login = () => {
     },
   });
 
-  const onSubmit = (values: LoginValues) => {
-    console.log("Login form submitted:", values);
+  const onSubmit = async (values: LoginValues) => {
+    setLoading(true);
+    try {
+      const response = await axios.post("/api/login", values);
+      console.log("Login response:", response.data);
+      if (response.data.success) {
+        toast({
+          title: "Login successful!",
+          description: "You are now logged into your account.",
+        });
+        // Redirect to login page after successful signup
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      } else {
+        toast({
+          title: "Login failed",
+          description: response.data.message,
+        });
+      }
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Please try again later.";
+
+      toast({
+        title: "Login failed",
+        description: message,
+      });
+      console.error("Error during login:", error);
+    } finally {
+      setLoading(false);
+    }
 
     // Simulating successful login
     toast({
@@ -171,7 +204,7 @@ const Login = () => {
                 type="submit"
                 className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
               >
-                Log In
+                Log In {loading && <Loader2 className="animate-spin ml-2" />}
               </Button>
 
               <div className="text-center mt-6">
