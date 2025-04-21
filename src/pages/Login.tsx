@@ -45,7 +45,10 @@ const Login = () => {
   const onSubmit = async (values: LoginValues) => {
     setLoading(true);
     try {
-      const response = await axios.post("/api/login", values);
+      const response = await axios.post(
+        "https://culture-capsule-backend.onrender.com/api/auth/login",
+        values
+      );
       console.log("Login response:", response.data);
       if (response.data.success) {
         toast({

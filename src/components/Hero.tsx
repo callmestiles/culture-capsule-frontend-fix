@@ -28,7 +28,7 @@ const Hero: React.FC = () => {
 
       <div className="absolute inset-0 opacity-[0.03] bg-noise-pattern mix-blend-multiply -z-10" />
 
-      <div className="capsule-container grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-6 items-center">
+      <div className="capsule-container grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
         <div className="max-w-xl">
           <div
             className={cn(
