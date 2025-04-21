@@ -7,6 +7,7 @@ import { ArrowLeft, Eye, EyeOff } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 import {
   Form,
@@ -30,6 +31,7 @@ type LoginValues = z.infer<typeof loginSchema>;
 const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
 
@@ -49,12 +51,20 @@ const Login = () => {
         "https://culture-capsule-backend.onrender.com/api/auth/login",
         values
       );
+      console.log(response.data.success);
       console.log("Login response:", response.data);
+
       if (response.data.success) {
         toast({
           title: "Login successful!",
           description: "You are now logged into your account.",
         });
+        const userDataRes = await axios.get(
+          "https://culture-capsule-backend.onrender.com/api/auth/me",
+          response.data.accessToken
+        );
+
+        // login(values.email, response.data.accessToken, userDataRes.data.user._id, response.data.name);
         // Redirect to login page after successful signup
         setTimeout(() => {
           navigate("/");
@@ -77,17 +87,6 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
-
-    // Simulating successful login
-    toast({
-      title: "Successfully logged in!",
-      description: "Welcome back to CultureCapsule.",
-    });
-
-    // Redirect to home page after successful login
-    setTimeout(() => {
-      navigate("/");
-    }, 1500);
   };
 
   return (

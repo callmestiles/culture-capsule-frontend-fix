@@ -10,7 +10,7 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (accessToken: string, user: User) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -43,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     checkAuth();
   }, []);
 
-  const login = async (email: string, password: string) => {
+  const login = async (accessToken: string, user: User) => {
     setIsLoading(true);
 
     try {
@@ -51,11 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // For demo purposes - in a real app, this would validate credentials with a backend
-      const mockUser = {
-        id: "user-123",
-        name: email.split("@")[0],
-        email,
-      };
+      const mockUser = user;
 
       // Store user info (in a real app, you'd store a token)
       localStorage.setItem("user", JSON.stringify(mockUser));
