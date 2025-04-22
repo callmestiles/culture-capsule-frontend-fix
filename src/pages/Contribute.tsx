@@ -59,7 +59,7 @@ const Contribute = () => {
     // Simulate checking if user is logged in
     const checkAuth = () => {
       // This is just a stub - in a real app, you'd check for a token or session
-      const fakeAuthCheck = localStorage.getItem("isLoggedIn") === "true";
+      const fakeAuthCheck = true;
       setIsAuthenticated(fakeAuthCheck);
     };
 
