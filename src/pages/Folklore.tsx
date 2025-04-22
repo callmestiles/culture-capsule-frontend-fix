@@ -5,10 +5,12 @@ import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import CollectionCard from "@/components/CollectionCard";
 import { useLanguage } from "@/contexts/LanguageContext";
+import axios from "axios";
+import { useEffect } from "react";
 
 const Folklore = () => {
   const { t } = useLanguage();
-  const folkloreCollection = [
+  let folkloreCollection = [
     {
       title: "The Legend of the Five Finger Mountain",
       category: "Folklore & Stories",
@@ -65,6 +67,31 @@ const Folklore = () => {
     },
   ];
 
+  const [folkloreData, setFolkloreData] = React.useState([]);
+  const getResponse = async () => {
+    try {
+      const response = await axios.get(
+        "https://culture-capsule-backend.onrender.com/api/posts"
+      );
+      const data = response.data.posts;
+      const transformedData = data.map((item) => ({
+        title: item.title,
+        category: "Folklore & Stories", // Assuming category is not available in the response, you can set it to a default value or fetch it from another source
+        contributor: `${item.author.firstName} ${item.author.lastName}`,
+        date: new Date(item.createdAt).toLocaleDateString(),
+        imageSrc: item.images[0] || "https://placehold.co/400?text=!",
+        href: `#${item._id}`,
+      }));
+      setFolkloreData(transformedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  folkloreCollection = folkloreData.concat(folkloreCollection);
+
+  useEffect(() => {
+    getResponse();
+  }, []);
   return (
     <div className="min-h-screen bg-capsule-bg">
       <Navbar />
