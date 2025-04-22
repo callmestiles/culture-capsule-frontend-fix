@@ -250,12 +250,16 @@ const SignUp = () => {
               <Button
                 type="submit"
                 className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
-                onClick={() => {
-                  onSubmit(form.getValues());
-                }}
+                disabled={loading}
               >
-                Create Account{" "}
-                {loading && <Loader2 className="animate-spin ml-2" />}
+                {loading ? (
+                  <>
+                    Creating Account...
+                    <Loader2 className="animate-spin ml-2" />
+                  </>
+                ) : (
+                  "Create Account"
+                )}
               </Button>
 
               <div className="text-center mt-6">

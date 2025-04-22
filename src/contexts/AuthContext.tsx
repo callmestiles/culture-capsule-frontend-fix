@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+// src/context/AuthContext.tsx
+import React, { createContext, useContext, useEffect, useState } from "react";
+import api from "@/api/axios"; // axios instance with refresh interceptor
 
 interface User {
   id: string;
@@ -10,9 +12,9 @@ interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  login: (accessToken: string, user: User) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   signup: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -23,41 +25,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const fetchUser = async () => {
+    try {
+      const response = await api.get(
+        "https://culture-capsule-backend.onrender.com/api/user/profile"
+      );
+      setUser(response.data.user); // Adjust based on actual backend response shape
+    } catch (error) {
+      setUser(null);
+      console.error("Failed to fetch user:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    // Check if user is already logged in (using localStorage in this demo)
-    const checkAuth = () => {
-      try {
-        const storedUser = localStorage.getItem("user");
-        const isLoggedIn = localStorage.getItem("isLoggedIn");
-
-        if (storedUser && isLoggedIn === "true") {
-          setUser(JSON.parse(storedUser));
-        }
-      } catch (error) {
-        console.error("Error checking authentication:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuth();
+    // fetchUser();
   }, []);
 
-  const login = async (accessToken: string, user: User) => {
+  const login = async (email: string, password: string) => {
     setIsLoading(true);
-
     try {
-      // Simulate API request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // For demo purposes - in a real app, this would validate credentials with a backend
-      const mockUser = user;
-
-      // Store user info (in a real app, you'd store a token)
-      localStorage.setItem("user", JSON.stringify(mockUser));
-      localStorage.setItem("isLoggedIn", "true");
-
-      setUser(mockUser);
+      const res = await api.post("/auth/login", { email, password });
+      // await fetchUser(); // Refresh user after login
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -68,24 +58,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const signup = async (name: string, email: string, password: string) => {
     setIsLoading(true);
-
     try {
-      // Simulate API request
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      // For demo purposes - in a real app, this would create a user in the backend
-      const mockUser = {
-        id: "user-" + Math.floor(Math.random() * 1000),
-        name,
-        email,
-      };
-
-      // In a real app, you'd typically not auto-login after signup,
-      // but for demo purposes we'll do that
-      localStorage.setItem("user", JSON.stringify(mockUser));
-      localStorage.setItem("isLoggedIn", "true");
-
-      setUser(mockUser);
+      await api.post("/auth/register", { name, email, password });
+      await login(email, password); // Auto-login after signup
     } catch (error) {
       console.error("Signup error:", error);
       throw error;
@@ -94,11 +69,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const logout = () => {
-    // Clear user data
-    localStorage.removeItem("user");
-    localStorage.setItem("isLoggedIn", "false");
-    setUser(null);
+  const logout = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
+      setUser(null);
+    }
   };
 
   return (
@@ -119,7 +97,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;

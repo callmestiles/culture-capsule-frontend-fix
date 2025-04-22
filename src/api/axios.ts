@@ -1,26 +1,51 @@
 // src/api/axios.ts
 import axios from "axios";
 
+// Axios instance for all API calls
 const api = axios.create({
-  baseURL: "https://culture-capsule-backend.onrender.com/api", // Replace with your real backend URL
-  withCredentials: true, // This sends the refresh token cookie
+  baseURL: "https://culture-capsule-backend.onrender.com/api",
+  withCredentials: true, // Required for sending cookies like refresh token
 });
 
-// Response interceptor to handle token refresh
+// Separate instance for refreshing tokens (avoids recursion)
+const refreshInstance = axios.create({
+  baseURL: "https://culture-capsule-backend.onrender.com/api",
+  withCredentials: true,
+});
+
+// Attach access token to all outgoing requests
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Handle 401s by attempting token refresh
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
-    if (error.response?.status === 401 && !error.config._retry) {
-      error.config._retry = true;
+    const originalRequest = error.config;
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes("/auth/login") // Don't refresh on login failures
+    ) {
+      originalRequest._retry = true;
       try {
-        const res = await api.post("/refresh-token");
+        const res = await refreshInstance.post("/auth/refresh-token");
         const newAccessToken = res.data.accessToken;
 
-        // Update the failed request with the new access token
-        error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        return api.request(error.config);
+        localStorage.setItem("accessToken", newAccessToken);
+
+        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+        return api(originalRequest); // retry original request
       } catch (refreshError) {
-        window.location.href = "/login"; // Optional: auto logout on refresh failure
+        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }

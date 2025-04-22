@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
+import axios from "axios";
 
 import {
   Form,
@@ -51,18 +50,15 @@ const Login = () => {
         "https://culture-capsule-backend.onrender.com/api/auth/login",
         values
       );
-      console.log(response.data.success);
-      console.log("Login response:", response.data);
-
       if (response.data.success) {
         toast({
           title: "Login successful!",
           description: "You are now logged into your account.",
         });
-        const userDataRes = await axios.get(
-          "https://culture-capsule-backend.onrender.com/api/auth/me",
-          response.data.accessToken
-        );
+        //  const userDataRes = await axios.get(
+        //    "https://culture-capsule-backend.onrender.com/api/auth/me",
+        //    response.data.accessToken
+        //  );
 
         // login(values.email, response.data.accessToken, userDataRes.data.user._id, response.data.name);
         // Redirect to login page after successful signup
@@ -77,8 +73,7 @@ const Login = () => {
       }
     } catch (error) {
       const message =
-        error.response?.data?.message || "Please try again later.";
-
+        error?.response?.data?.message || "Please try again later.";
       toast({
         title: "Login failed",
         description: message,
@@ -193,7 +188,6 @@ const Login = () => {
                     Remember me
                   </label>
                 </div>
-
                 <a
                   href="#forgot-password"
                   className="text-sm text-capsule-accent hover:underline"
