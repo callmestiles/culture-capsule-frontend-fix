@@ -5,10 +5,12 @@ import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import CollectionCard from "@/components/CollectionCard";
 import { useLanguage } from "@/contexts/LanguageContext";
+import axios from "axios";
+import { useEffect } from "react";
 
 const Recipes = () => {
   const { t } = useLanguage();
-  const localRecipes = [
+  let localRecipes = [
     {
       title: "Traditional Hellim Cheese Making Process",
       category: "Local Recipes",
@@ -64,7 +66,31 @@ const Recipes = () => {
       href: "#recipe-6",
     },
   ];
+  const [recipesData, setRecipesData] = React.useState([]);
+  const getResponse = async () => {
+    try {
+      const response = await axios.get(
+        "https://culture-capsule-backend.onrender.com/api/posts"
+      );
+      const data = response.data.posts;
+      const transformedData = data.map((item) => ({
+        title: item.title,
+        category: "Local Recipes", // Assuming category is not available in the response, you can set it to a default value or fetch it from another source
+        contributor: `${item.author.firstName} ${item.author.lastName}`,
+        date: new Date(item.createdAt).toLocaleDateString(),
+        imageSrc: item.images[0] || "https://placehold.co/400?text=!",
+        href: `#${item._id}`,
+      }));
+      setRecipesData(transformedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  localRecipes = recipesData.concat(localRecipes);
 
+  useEffect(() => {
+    getResponse();
+  }, []);
   return (
     <div className="min-h-screen bg-capsule-bg">
       <Navbar />

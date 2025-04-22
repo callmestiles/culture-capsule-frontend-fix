@@ -78,7 +78,7 @@ const History = () => {
         // Assuming category is not available in the response, you can set it to a default value or fetch it from another source
         contributor: `${item.author.firstName} ${item.author.lastName}`,
         date: new Date(item.createdAt).toLocaleDateString(),
-        imageSrc: item.images[0],
+        imageSrc: item.images[0] || "https://placehold.co/400?text=!",
         href: `#${item._id}`,
       }));
       setHistoricalData(transformedData);
