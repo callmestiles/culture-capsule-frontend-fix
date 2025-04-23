@@ -1,18 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { Menu, X, Search, User, LogIn } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "./LanguageSwitcher";
+import refreshToken from "@/api/refresh";
+import axios from "axios";
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, isAuthenticated, logout } = useAuth();
+  // const { user, isAuthenticated, logout } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const user = useRef(null);
+  const isAuthenticated = useRef(false); // Use a ref to store authentication status
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,6 +25,50 @@ const Navbar: React.FC = () => {
         setIsScrolled(false);
       }
     };
+    axios
+      .get("https://culture-capsule-backend.onrender.com/api/auth/me", {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log("User Profile:", response.data);
+        user.current = response.data;
+        isAuthenticated.current = true; // Update authentication status
+      })
+      .catch((error) => {
+        if (error.response?.status === 401) {
+          refreshToken()
+            .then(() => {
+              // Retry the request after refreshing the token
+              return axios.get(
+                "https://culture-capsule-backend.onrender.com/api/auth/me",
+                {
+                  withCredentials: true,
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                      "accessToken"
+                    )}`,
+                  },
+                }
+              );
+            })
+            .then((response) => {
+              console.log("User Profile after refresh:", response.data);
+              user.current = response.data;
+              isAuthenticated.current = true; // Update authentication status
+            })
+            .catch((refreshError) => {
+              console.error("Error refreshing token:", refreshError);
+              // Handle token refresh failure (e.g., redirect to login)
+            });
+        }
+        console.error("Error fetching user profile:", error);
+        // Handle error (e.g., show a toast notification)
+      });
+
+    console.log("User Profile:", user.current);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -35,9 +82,8 @@ const Navbar: React.FC = () => {
       document.body.style.overflow = "auto";
     }
   };
-  const test = true;
   const handleLogout = () => {
-    logout();
+    // logout();
     navigate("/");
   };
 
@@ -49,6 +95,19 @@ const Navbar: React.FC = () => {
     { name: t("folklore"), href: "/folklore" },
     { name: t("contribute"), href: "/contribute" },
   ];
+  const [delayedMount, setDelayedMount] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDelayedMount(true);
+    }, 1000); // 2 seconds
+
+    return () => clearTimeout(timer); // cleanup
+  }, []);
+
+  if (!delayedMount) {
+    return <div> </div>; // or a spinner
+  }
 
   return (
     <header
@@ -96,7 +155,7 @@ const Navbar: React.FC = () => {
           {isAuthenticated ? (
             <div className="hidden md:flex items-center gap-2">
               <div className="flex items-center gap-2 text-sm text-capsule-text">
-                <span>Hi, {user?.name || "User"}</span>
+                <span>Hi, {user.current?.user.firstName}</span>
                 <Button variant="outline" size="sm" onClick={handleLogout}>
                   {t("logout")}
                 </Button>
@@ -162,9 +221,9 @@ const Navbar: React.FC = () => {
                     <User size={18} />
                   </div>
                   <div>
-                    <p className="font-medium">{user?.name || "User"}</p>
+                    <p className="font-medium">{"User"}</p>
                     <p className="text-xs text-capsule-text/70">
-                      {user?.email}
+                      {/* {user?.email} */}User Email
                     </p>
                   </div>
                 </div>

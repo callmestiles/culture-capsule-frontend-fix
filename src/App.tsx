@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./contexts/AuthContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -27,26 +26,24 @@ const App = () => (
     <TooltipProvider>
       <ThemeProvider>
         <LanguageProvider>
-          <AuthProvider>
-            <Toaster />
-            <Sonner />
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/history" element={<History />} />
-                <Route path="/recipes" element={<Recipes />} />
-                <Route path="/arts" element={<Arts />} />
-                <Route path="/folklore" element={<Folklore />} />
-                <Route path="/featured" element={<Featured />} />
-                <Route path="/capsule/:id" element={<CapsuleDetail />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/contribute" element={<Contribute />} />
-                <Route path="/events" element={<EventsPage />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </BrowserRouter>
-          </AuthProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/recipes" element={<Recipes />} />
+              <Route path="/arts" element={<Arts />} />
+              <Route path="/folklore" element={<Folklore />} />
+              <Route path="/featured" element={<Featured />} />
+              <Route path="/capsule/:id" element={<CapsuleDetail />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/contribute" element={<Contribute />} />
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
         </LanguageProvider>
       </ThemeProvider>
     </TooltipProvider>
