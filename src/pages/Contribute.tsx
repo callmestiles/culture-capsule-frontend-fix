@@ -40,12 +40,12 @@ import refreshToken from "@/api/refresh";
 const contributionSchema = z.object({
   title: z.string().min(5, { message: "Title must be at least 5 characters" }),
   category: z.string().min(1, { message: "Please select a category" }),
-  description: z
+  content: z
     .string()
     .min(20, { message: "Description must be at least 20 characters" }),
   location: z.string().optional(),
   year: z.string().optional(),
-  mediaFiles: z.any().optional(),
+  image: z.any().optional(),
 });
 
 type ContributionValues = z.infer<typeof contributionSchema>;
@@ -99,33 +99,60 @@ const Contribute = () => {
     defaultValues: {
       title: "",
       category: "",
-      description: "",
+      content: "",
       location: "",
       year: "",
     },
   });
 
-  const onSubmit = (values: ContributionValues) => {
+  const onSubmit = async (values: ContributionValues) => {
     setIsUploading(true);
-    console.log("Contribution form submitted:", values);
-
-    // Simulate upload delay
-    setTimeout(() => {
-      setIsUploading(false);
-
-      toast({
-        title: "Contribution submitted successfully!",
-        description: "Thank you for preserving cultural heritage.",
-      });
-
-      // Reset form
+    const formData = new FormData();
+    formData.append("title", values.title);
+    formData.append("category", values.category);
+    formData.append("content", values.content);
+    formData.append("location", values.location || "");
+    formData.append("year", values.year || "");
+    if (values.image && values.image.length > 0) {
+      for (let i = 0; i < values.image.length; i++) {
+        formData.append("image", values.image[i]);
+      }
+    }
+    console.log(formData);
+    try {
+      const response = await axios.post(
+        "https://culture-capsule-backend.onrender.com/api/posts",
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        toast({
+          title: "Contribution submitted successfully!",
+          description: "Thank you for preserving cultural heritage.",
+        });
+      } else {
+        toast({
+          title: "Submission failed",
+          description: response.data.message,
+        });
+      }
       form.reset();
-
-      // Redirect to home page
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
-    }, 2000);
+      console.log("Contribution response:", response.data);
+    } catch (error) {
+      const message =
+        error.response?.data?.message || "Please try again later.";
+      toast({
+        title: "Submission failed",
+        description: message,
+      });
+      console.error("Error during submission:", error);
+    }
+    setIsUploading(false);
   };
 
   // Redirect to login if not authenticated
@@ -299,7 +326,7 @@ const Contribute = () => {
 
                     <FormField
                       control={form.control}
-                      name="description"
+                      name="content"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Description</FormLabel>
@@ -321,7 +348,7 @@ const Contribute = () => {
 
                     <FormField
                       control={form.control}
-                      name="mediaFiles"
+                      name="image"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Upload Media (Optional)</FormLabel>
@@ -334,7 +361,7 @@ const Contribute = () => {
                               Drag and drop files here, or click to browse
                             </p>
                             <p className="text-xs text-capsule-text/50">
-                              Supported formats: JPG, PNG, MP3, MP4 (Max 20MB)
+                              Supported formats: JPG, PNG, WEBMP (Max 20MB)
                             </p>
                             <input
                               type="file"
@@ -355,8 +382,7 @@ const Contribute = () => {
                             </Button>
                           </div>
                           <FormDescription>
-                            Upload photos, audio, or video related to your
-                            contribution.
+                            Upload photos related to your contribution.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
