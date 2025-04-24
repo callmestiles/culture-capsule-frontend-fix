@@ -18,6 +18,7 @@ export const en = {
   pageNotFound: "Page Not Found",
   returnHome: "Return Home",
   contributeText: "Want to contribute?",
+  events: "Events",
 
   // Hero section
   hero_title: "Preserving North Cyprus Cultural Heritage",

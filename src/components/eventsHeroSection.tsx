@@ -1,4 +1,13 @@
+"use client";
+
 export function HeroSection() {
+  const scrollToEvents = () => {
+    const eventsSection = document.getElementById("events");
+    if (eventsSection) {
+      eventsSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="relative h-[400px] w-full overflow-hidden">
       <div className="absolute inset-0 bg-black/50 z-10"></div>
@@ -14,7 +23,10 @@ export function HeroSection() {
         <p className="mb-6 max-w-2xl text-xl">
           Discover and participate in cultural events happening around you
         </p>
-        <button className="rounded-full bg-[rgb(82,104,45)] px-8 py-3 font-semibold text-white transition-colors hover:bg-[rgb(65,85,35)]">
+        <button
+          onClick={scrollToEvents}
+          className="rounded-full bg-[rgb(82,104,45)] px-8 py-3 font-semibold text-white transition-colors hover:bg-[rgb(65,85,35)]"
+        >
           Explore Events
         </button>
       </div>

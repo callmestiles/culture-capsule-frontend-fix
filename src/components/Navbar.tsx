@@ -73,6 +73,7 @@ const Navbar: React.FC = () => {
     { name: t("arts"), href: "/arts" },
     { name: t("folklore"), href: "/folklore" },
     { name: t("contribute"), href: "/contribute" },
+    { name: t("events"), href: "/events" },
   ];
   const [delayedMount, setDelayedMount] = useState(false);
 

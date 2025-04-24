@@ -18,6 +18,7 @@ export const tr = {
   pageNotFound: "Sayfa Bulunamadı",
   returnHome: "Anasayfaya Dön",
   contributeText: "Katkıda bulunmak ister misiniz?",
+  events: "Olaylar",
 
   // Hero section
   hero_title: "Kuzey Kıbrıs Kültürel Mirasını Koruma",

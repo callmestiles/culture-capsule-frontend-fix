@@ -41,9 +41,11 @@ export function EventCard({ event, compact = false }: EventCardProps) {
               <span>{event.location}</span>
             </div>
           </div>
-          <button className="mt-3 w-full rounded-full bg-[rgb(82,104,45)] px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[rgb(65,85,35)]">
-            View Details
-          </button>
+          <a href={`/events/${event.id}`} className="mt-3 block w-full">
+            <button className="w-full rounded-full bg-[rgb(82,104,45)] px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[rgb(65,85,35)]">
+              View Details
+            </button>
+          </a>
         </CardContent>
       </Card>
     );
@@ -81,9 +83,11 @@ export function EventCard({ event, compact = false }: EventCardProps) {
               <span>{event.location}</span>
             </div>
           </div>
-          <button className="mt-4 rounded-full bg-[rgb(82,104,45)] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-[rgb(65,85,35)]">
-            View Details
-          </button>
+          <a href={`/events/${event.id}`}>
+            <button className="mt-4 rounded-full bg-[rgb(82,104,45)] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-[rgb(65,85,35)]">
+              View Details
+            </button>
+          </a>
         </CardContent>
       </div>
     </Card>

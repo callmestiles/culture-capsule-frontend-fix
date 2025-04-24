@@ -18,6 +18,7 @@ import SignUp from "./pages/SignUp";
 import Contribute from "./pages/Contribute";
 import NotFound from "./pages/NotFound";
 import EventsPage from "./pages/Events";
+import EventDetailsPage from "./pages/eventDetails";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/signup" element={<SignUp />} />
               <Route path="/contribute" element={<Contribute />} />
               <Route path="/events" element={<EventsPage />} />
+              <Route path="/events/:id" element={<EventDetailsPage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

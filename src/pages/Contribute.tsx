@@ -35,6 +35,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import axios from "axios";
+import refreshToken from "@/api/refresh";
 
 const contributionSchema = z.object({
   title: z.string().min(5, { message: "Title must be at least 5 characters" }),
@@ -54,6 +55,7 @@ const Contribute = () => {
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const user = React.useRef(null);
 
   // For demonstration purposes - in a real app, this would be a proper auth check
   React.useEffect(() => {
@@ -65,6 +67,31 @@ const Contribute = () => {
     };
 
     checkAuth();
+
+    const getData = async () => {
+      await axios
+        .get("https://culture-capsule-backend.onrender.com/api/auth/me", {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((response) => {
+          console.log("User Profile:", response.data);
+          user.current = response.data;
+          setIsAuthenticated(true); // Update authentication status
+        })
+        .catch((error) => {
+          if (error.response?.status === 401) {
+            refreshToken();
+            getData(); // Retry fetching user profile after refreshing token
+          }
+          console.error("Error fetching user profile:", error);
+          // Handle error (e.g., show a toast notification)
+        });
+    };
+    console.log("User Profile:", user.current);
+    getData();
   }, []);
 
   const form = useForm<ContributionValues>({
