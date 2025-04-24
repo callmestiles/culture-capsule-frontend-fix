@@ -19,6 +19,7 @@ import Contribute from "./pages/Contribute";
 import NotFound from "./pages/NotFound";
 import EventsPage from "./pages/Events";
 import EventDetailsPage from "./pages/eventDetails";
+import ProfilePage from "./pages/profile";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/contribute" element={<Contribute />} />
               <Route path="/events" element={<EventsPage />} />
               <Route path="/events/:id" element={<EventDetailsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
