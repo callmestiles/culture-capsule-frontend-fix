@@ -25,51 +25,30 @@ const Navbar: React.FC = () => {
         setIsScrolled(false);
       }
     };
-    axios
-      .get("https://culture-capsule-backend.onrender.com/api/auth/me", {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-        },
-      })
-      .then((response) => {
-        console.log("User Profile:", response.data);
-        user.current = response.data;
-        isAuthenticated.current = true; // Update authentication status
-      })
-      .catch((error) => {
-        if (error.response?.status === 401) {
-          refreshToken()
-            .then(() => {
-              // Retry the request after refreshing the token
-              return axios.get(
-                "https://culture-capsule-backend.onrender.com/api/auth/me",
-                {
-                  withCredentials: true,
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                      "accessToken"
-                    )}`,
-                  },
-                }
-              );
-            })
-            .then((response) => {
-              console.log("User Profile after refresh:", response.data);
-              user.current = response.data;
-              isAuthenticated.current = true; // Update authentication status
-            })
-            .catch((refreshError) => {
-              console.error("Error refreshing token:", refreshError);
-              // Handle token refresh failure (e.g., redirect to login)
-            });
-        }
-        console.error("Error fetching user profile:", error);
-        // Handle error (e.g., show a toast notification)
-      });
-
+    const getData = async () => {
+      await axios
+        .get("https://culture-capsule-backend.onrender.com/api/auth/me", {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        })
+        .then((response) => {
+          console.log("User Profile:", response.data);
+          user.current = response.data;
+          isAuthenticated.current = true; // Update authentication status
+        })
+        .catch((error) => {
+          if (error.response?.status === 401) {
+            refreshToken();
+            getData(); // Retry fetching user profile after refreshing token
+          }
+          console.error("Error fetching user profile:", error);
+          // Handle error (e.g., show a toast notification)
+        });
+    };
     console.log("User Profile:", user.current);
-
+    getData();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
