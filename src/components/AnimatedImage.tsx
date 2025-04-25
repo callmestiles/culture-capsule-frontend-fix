@@ -1,6 +1,5 @@
-
-import React, { useState, useEffect } from 'react';
-import { cn } from '@/lib/utils';
+import React, { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 
 interface AnimatedImageProps {
   src: string;
@@ -17,11 +16,11 @@ const AnimatedImage: React.FC<AnimatedImageProps> = ({
   className,
   lowResSrc,
   aspectRatio = "aspect-video",
-  loadingColor = "bg-capsule-paper"
+  loadingColor = "bg-capsule-paper",
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(false);
-  
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -32,14 +31,16 @@ const AnimatedImage: React.FC<AnimatedImageProps> = ({
           }
         });
       },
-      { rootMargin: '200px' }
+      { rootMargin: "200px" }
     );
-    
-    const currentElement = document.getElementById(`image-${src.replace(/\W/g, '')}`);
+
+    const currentElement = document.getElementById(
+      `image-${src.replace(/\W/g, "")}`
+    );
     if (currentElement) {
       observer.observe(currentElement);
     }
-    
+
     return () => {
       if (currentElement) {
         observer.unobserve(currentElement);
@@ -48,15 +49,19 @@ const AnimatedImage: React.FC<AnimatedImageProps> = ({
   }, [src]);
 
   return (
-    <div 
-      id={`image-${src.replace(/\W/g, '')}`}
+    <div
+      id={`image-${src.replace(/\W/g, "")}`}
       className={cn(
         aspectRatio,
         "overflow-hidden relative",
         loadingColor,
         className
       )}
-      style={lowResSrc ? { backgroundImage: `url(${lowResSrc})`, backgroundSize: 'cover' } : undefined}
+      style={
+        lowResSrc
+          ? { backgroundImage: `url(${lowResSrc})`, backgroundSize: "cover" }
+          : undefined
+      }
     >
       {isIntersecting && (
         <>

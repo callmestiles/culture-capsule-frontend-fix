@@ -14,8 +14,8 @@ const Navbar: React.FC = () => {
   // const { user, isAuthenticated, logout } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const user = useRef(null);
-  const isAuthenticated = useRef(false); // Use a ref to store authentication status
+  const [user, setUser] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,28 +26,30 @@ const Navbar: React.FC = () => {
       }
     };
     const getData = async () => {
-      await axios
-        .get("https://culture-capsule-backend.onrender.com/api/auth/me", {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        })
-        .then((response) => {
-          console.log("User Profile:", response.data);
-          user.current = response.data;
-          isAuthenticated.current = true; // Update authentication status
-        })
-        .catch((error) => {
-          if (error.response?.status === 401) {
-            refreshToken();
-            getData(); // Retry fetching user profile after refreshing token
+      try {
+        const response = await axios.get(
+          "https://culture-capsule-backend.onrender.com/api/auth/me",
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
           }
+        );
+        console.log("User Profile:", response.data);
+        setUser(response.data);
+        setIsAuthenticated(true);
+      } catch (error) {
+        if (error.response?.status === 401) {
+          await refreshToken();
+          getData(); // Retry after token refresh
+        } else {
           console.error("Error fetching user profile:", error);
-          // Handle error (e.g., show a toast notification)
-        });
+        }
+      }
     };
-    console.log("User Profile:", user.current);
+
+    console.log("User Profile:", user);
     getData();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -135,7 +137,7 @@ const Navbar: React.FC = () => {
           {isAuthenticated ? (
             <div className="hidden md:flex items-center gap-2">
               <div className="flex items-center gap-2 text-sm text-capsule-text">
-                <span>Hi, {user.current?.user.firstName}</span>
+                <span>Hi, {user?.user?.firstName || "User"}</span>
                 <Button variant="outline" size="sm" onClick={handleLogout}>
                   {t("logout")}
                 </Button>
