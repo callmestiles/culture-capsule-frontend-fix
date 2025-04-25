@@ -77,6 +77,9 @@ const Navbar: React.FC = () => {
     { name: t("contribute"), href: "/contribute" },
     { name: t("events"), href: "/events" },
   ];
+  if (isAuthenticated) {
+    navItems.push({ name: t("Profile"), href: "/profile" });
+  }
   const [delayedMount, setDelayedMount] = useState(false);
 
   useEffect(() => {
@@ -125,19 +128,14 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-4">
-          <button
-            className="p-2 rounded-full text-capsule-text hover:bg-capsule-paper transition-colors duration-200"
-            aria-label={t("search")}
-          >
-            <Search size={20} />
-          </button>
-
           <LanguageSwitcher />
 
           {isAuthenticated ? (
             <div className="hidden md:flex items-center gap-2">
               <div className="flex items-center gap-2 text-sm text-capsule-text">
-                <span>Hi, {user?.user?.firstName || "User"}</span>
+                <span>
+                  Hi, <a href="/profile"> {user?.user?.firstName || "User"}</a>
+                </span>
                 <Button variant="outline" size="sm" onClick={handleLogout}>
                   {t("logout")}
                 </Button>
