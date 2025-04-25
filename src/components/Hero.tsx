@@ -77,7 +77,7 @@ const Hero: React.FC = () => {
               <div className="absolute inset-0 bg-noise-pattern opacity-[0.04] mix-blend-multiply" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-xl" />
               <img
-                src="/public/images/hero.jpeg"
+                src="/images/hero.jpeg"
                 alt="Cyprus Sea View"
                 className="w-full h-full object-cover"
               />
