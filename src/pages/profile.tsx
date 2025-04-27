@@ -14,7 +14,7 @@ import { get } from "http";
 export default function ProfilePage() {
   // In a real application, you would fetch the user data from an API
   const [user, setUser] = useState(null);
-  const userData = mockUserData;
+  const userData = mockUserData; // Replace with actual user data fetching logic
   const userPosts = mockUserPosts;
 
   const getData = async () => {
