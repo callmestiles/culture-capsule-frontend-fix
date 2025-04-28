@@ -46,6 +46,7 @@ const contributionSchema = z.object({
   location: z.string().optional(),
   year: z.string().optional(),
   image: z.any().optional(),
+  language: z.string().optional(),
 });
 
 type ContributionValues = z.infer<typeof contributionSchema>;
@@ -102,6 +103,7 @@ const Contribute = () => {
       content: "",
       location: "",
       year: "",
+      language: localStorage.getItem("language"),
     },
   });
 
@@ -113,6 +115,7 @@ const Contribute = () => {
     formData.append("content", values.content);
     formData.append("location", values.location || "");
     formData.append("year", values.year || "");
+    formData.append("language", values.language || "en");
     if (values.image && values.image.length > 0) {
       for (let i = 0; i < values.image.length; i++) {
         formData.append("image", values.image[i]);
@@ -361,7 +364,7 @@ const Contribute = () => {
                               Drag and drop files here, or click to browse
                             </p>
                             <p className="text-xs text-capsule-text/50">
-                              Supported formats: JPG, PNG, WEBMP (Max 20MB)
+                              Supported formats: JPG, PNG, JPEG (Max 20MB)
                             </p>
                             <input
                               type="file"
