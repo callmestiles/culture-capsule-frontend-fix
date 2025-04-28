@@ -11,20 +11,18 @@ import axios from "axios";
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // const { user, isAuthenticated, logout } = useAuth();
   const { t } = useLanguage();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [user, setUser] = useState<any>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authLoading, setAuthLoading] = useState(true); // <-- Add loading state
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
+
     const getData = async () => {
       try {
         const response = await axios.get(
@@ -42,14 +40,15 @@ const Navbar: React.FC = () => {
       } catch (error) {
         if (error.response?.status === 401) {
           await refreshToken();
-          getData(); // Retry after token refresh
+          await getData(); // Retry after token refresh
         } else {
           console.error("Error fetching user profile:", error);
         }
+      } finally {
+        setAuthLoading(false); // <-- Always end loading
       }
     };
 
-    console.log("User Profile:", user);
     getData();
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -57,14 +56,10 @@ const Navbar: React.FC = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-    if (!mobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
   };
+
   const handleLogout = () => {
-    // logout();
     navigate("/");
   };
 
@@ -80,18 +75,17 @@ const Navbar: React.FC = () => {
   if (isAuthenticated) {
     navItems.push({ name: t("Profile"), href: "/profile" });
   }
-  const [delayedMount, setDelayedMount] = useState(false);
 
+  const [delayedMount, setDelayedMount] = useState(false);
   useEffect(() => {
     const timer = setTimeout(() => {
       setDelayedMount(true);
-    }, 1000); // 2 seconds
-
-    return () => clearTimeout(timer); // cleanup
+    }, 1000);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (!delayedMount) {
-    return <div> </div>; // or a spinner
+  if (!delayedMount || authLoading) {
+    return <div></div>; // Loading screen / spinner can go here
   }
 
   return (
@@ -173,7 +167,6 @@ const Navbar: React.FC = () => {
           </button>
         </div>
       </div>
-
       {/* Mobile menu */}
       <div
         className={cn(

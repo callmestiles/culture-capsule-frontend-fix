@@ -1,6 +1,7 @@
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Event } from "@/lib/data";
+import { Image } from "lucide-react";
 
 interface EventCardProps {
   event: Event;
@@ -55,11 +56,15 @@ export function EventCard({ event, compact = false }: EventCardProps) {
     <Card className="overflow-hidden hover:shadow-md transition-shadow">
       <div className="flex flex-col md:flex-row">
         <div className="h-48 w-full md:h-auto md:w-1/3">
-          <img
-            src={event.image || `/placeholder.svg?height=300&width=400`}
-            alt={event.title}
-            className="h-full w-full object-cover"
-          />
+          {event.image ? (
+            <img
+              src={event.image}
+              alt={event.title}
+              className="h-full w-full object-cover"
+            />
+          ) : (
+            <Image className="w-full h-full text-gray-400 object-cover" />
+          )}
         </div>
         <CardContent className="flex-1 p-6">
           <div className="mb-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">
