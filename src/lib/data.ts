@@ -1,5 +1,4 @@
 import axios from "axios"
-import { ImageOff } from "lucide-react"
 
 export interface Event {
   id: number
