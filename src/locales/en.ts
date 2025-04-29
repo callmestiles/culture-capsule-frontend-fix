@@ -57,6 +57,8 @@ export const en = {
   poem: "Poem",
   poem_desc:
     "Explore a collection of expressive poetry that captures emotions, culture, and imagination through words.",
+  event_desc: "Discover and participate in cultural events happening around Northern Cyprus",
+  
 
   // Featured
   featured_archives: "Featured Archives",

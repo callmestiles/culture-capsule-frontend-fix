@@ -1,5 +1,5 @@
 "use client";
-import heroImg from "../../public/images/eventHomePage.jpeg";
+import heroImg from "/images/eventHomePage.jpeg";
 
 export function HeroSection() {
   const scrollToEvents = () => {
@@ -13,7 +13,7 @@ export function HeroSection() {
     <div className="relative h-[600px] w-full overflow-hidden">
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       <img
-        src={heroImg}
+        src={heroImg || "https://placehold.co/1600x800"}
         alt="An event happening where fireworks are being displayed"
         loading="lazy"
         width={1600}

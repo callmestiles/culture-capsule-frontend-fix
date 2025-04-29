@@ -57,6 +57,7 @@ export const tr = {
   poem: "Şiir",
   poem_desc:
     "Duyguları, kültürü ve hayal gücünü kelimelerle yansıtan etkileyici şiir koleksiyonunu keşfedin.",
+  event_desc: "Kuzey Kıbrıs'ta gerçekleşen kültürel etkinlikleri keşfedin ve katılın",
 
   // Featured
   featured_archives: "Öne Çıkan Arşivler",

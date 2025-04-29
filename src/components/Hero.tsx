@@ -53,7 +53,7 @@ const Hero: React.FC = () => {
 
             <div className="flex flex-wrap gap-4">
               <a
-                href="#contribute"
+                href="/contribute"
                 className="px-6 py-3 bg-capsule-accent hover:bg-capsule-accent/90 text-white rounded-md font-medium transition-all transform hover:translate-y-[-2px] hover:shadow-md"
               >
                 {t("hero_contribute")}

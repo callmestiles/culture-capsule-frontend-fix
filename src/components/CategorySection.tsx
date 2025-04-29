@@ -7,6 +7,7 @@ import {
   Landmark,
   Camera,
   BookOpenText,
+  Calendar1,
 } from "lucide-react";
 import CategoryCard from "./CategoryCard";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -51,11 +52,11 @@ const CategorySection: React.FC = () => {
       href: "#music",
     },
     {
-      title: t("poem"),
-      description: t("poem_desc"),
+      title: t("events"),
+      description: t("event_desc"),
       imageSrc: "/images/poem.jpg",
-      icon: <BookOpenText className="text-white" size={24} />,
-      href: "#poem",
+      icon: <Calendar1 className="text-white" size={24} />,
+      href: "/events",
     },
   ];
 
