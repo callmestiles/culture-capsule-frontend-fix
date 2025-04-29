@@ -110,56 +110,80 @@ export const tr = {
   // Historical Events
   historical_event_pill: "Tarihî Arşivler",
   historical_event_title: "Geçmişimizi Koruyarak Geleceğimizi Zenginleştirmek",
-  historical_event_description: "Kuzey Kıbrıs’ın zengin tarihî dokusunu, kültürel kimliğimizi şekillendiren etkinlikler, dönüm noktaları ve kişisel anlatımlardan oluşan seçkimizle keşfedin.",
+  historical_event_description:
+    "Kuzey Kıbrıs’ın zengin tarihî dokusunu, kültürel kimliğimizi şekillendiren etkinlikler, dönüm noktaları ve kişisel anlatımlardan oluşan seçkimizle keşfedin.",
   history_icon_one: "Önemli Olaylar",
   history_icon_two: "Kişisel Anlatılar",
   history_icon_three: "Zaman Çizelgesi",
   history_sectionone_pill: "Tarihi Keşfedin",
   history_sectionone_title: "Önemli Tarihî Olaylar",
-  history_sectionone_description: "Antik çağlardan günümüze uzanan, Kuzey Kıbrıs’ın tarihini şekillendiren önemli anları topluluk üyelerimiz tarafından özenle derlenmiş şekilde keşfedin.",
+  history_sectionone_description:
+    "Antik çağlardan günümüze uzanan, Kuzey Kıbrıs’ın tarihini şekillendiren önemli anları topluluk üyelerimiz tarafından özenle derlenmiş şekilde keşfedin.",
   history_sectiontwo_pill: "Öne Çıkan Makale",
   history_sectiontwo_button: "Tam Makaleyi Oku",
 
   // Recipes Events
   recipes_pill: "Gastronomik Miras",
   recipes_title: "Kuzey Kıbrıs'ın Lezzetleri",
-  recipes_description: "Kuzey Kıbrıs’ın zengin mutfak geleneklerini, nesilden nesile aktarılan otantik tarifler, pişirme teknikleri ve hikâyeler aracılığıyla keşfedin.",
+  recipes_description:
+    "Kuzey Kıbrıs’ın zengin mutfak geleneklerini, nesilden nesile aktarılan otantik tarifler, pişirme teknikleri ve hikâyeler aracılığıyla keşfedin.",
   recipes_icon_one: "Geleneksel Tarifler",
   recipes_icon_two: "Hazırlık Süresi",
   recipes_icon_three: "Porsiyon Miktarı",
   recipes_sectionone_pill: "Tarifleri Keşfedin",
   recipes_sectionone_title: "Geleneksel Mutfak Hazineleri",
-  recipes_sectionone_description: "Yerel şefler, aileler ve mutfak tutkunları tarafından titizlikle belgelenen ve korunan otantik Kuzey Kıbrıs tariflerimizi keşfedin.",
+  recipes_sectionone_description:
+    "Yerel şefler, aileler ve mutfak tutkunları tarafından titizlikle belgelenen ve korunan otantik Kuzey Kıbrıs tariflerimizi keşfedin.",
   recipes_sectiontwo_pill: "Öne Çıkan Tarifler",
   recipes_sectiontwo_button: "Tam Tarifi Görüntüle",
 
   // Arts Events
   arts_pill: "Sanatsal Miras",
   arts_title: "Geleneksel Sanatlar ve El İşleri",
-  arts_description: "Seramikten tekstile, ahşap işçiliğinden diğer el sanatlarına kadar Kuzey Kıbrıs’ın kültürel kimliğini nesiller boyu şekillendiren detaylı sanat ve zanaat ustalığını keşfedin.",
+  arts_description:
+    "Seramikten tekstile, ahşap işçiliğinden diğer el sanatlarına kadar Kuzey Kıbrıs’ın kültürel kimliğini nesiller boyu şekillendiren detaylı sanat ve zanaat ustalığını keşfedin.",
   arts_icon_one: "Görsel Sanatlar",
   arts_icon_two: "Zanaatkârlık",
   arts_icon_three: "Tekstil Sanatları",
   arts_sectionone_pill: "Sanatı Keşfedin",
   arts_sectionone_title: "El İşçiliği Geleneği",
-  arts_sectionone_description: "Yerel zanaatkârlar ve kültür meraklıları tarafından belgelenen ve korunan geleneksel Kuzey Kıbrıs sanat ve el işlerini keşfedin.",
+  arts_sectionone_description:
+    "Yerel zanaatkârlar ve kültür meraklıları tarafından belgelenen ve korunan geleneksel Kuzey Kıbrıs sanat ve el işlerini keşfedin.",
   arts_sectiontwo_pill: "Öne Çıkan Sanat",
   arts_sectiontwo_button: "Koleksiyonu Görüntüle",
 
-
   // Folklore
   folklore_pill: "Sözlü Gelenekler",
-folklore_title: "Folklor ve Hikâyeler",
-folklore_description: "Kuzey Kıbrıs’ın kültürel kimliğini şekillendiren, nesiller boyu aktarılan mitler, efsaneler ve hikâyeler dünyasına dalın.",
-folklore_icon_one: "Mitler ve Efsaneler",
-folklore_icon_two: "Halk Hikâyeleri",
-folklore_icon_three: "Şarkılar ve Baladlar",
-folklore_sectionone_pill: "Folkloru Keşfedin",
-folklore_sectionone_title: "Kimliğimizi Şekillendiren Hikâyeler",
-folklore_sectionone_description: "Kuzey Kıbrıs’ın kültürel kimliğini koruyan, nesiller boyunca aktarılan geleneksel hikâyeler, mitler ve efsaneler koleksiyonumuzu keşfedin.",
-folklore_sectiontwo_pill: "Öne Çıkan Hikâye",
-folklore_sectiontwo_button: "Tam Hikâyeyi Oku",
+  folklore_title: "Folklor ve Hikâyeler",
+  folklore_description:
+    "Kuzey Kıbrıs’ın kültürel kimliğini şekillendiren, nesiller boyu aktarılan mitler, efsaneler ve hikâyeler dünyasına dalın.",
+  folklore_icon_one: "Mitler ve Efsaneler",
+  folklore_icon_two: "Halk Hikâyeleri",
+  folklore_icon_three: "Şarkılar ve Baladlar",
+  folklore_sectionone_pill: "Folkloru Keşfedin",
+  folklore_sectionone_title: "Kimliğimizi Şekillendiren Hikâyeler",
+  folklore_sectionone_description:
+    "Kuzey Kıbrıs’ın kültürel kimliğini koruyan, nesiller boyunca aktarılan geleneksel hikâyeler, mitler ve efsaneler koleksiyonumuzu keşfedin.",
+  folklore_sectiontwo_pill: "Öne Çıkan Hikâye",
+  folklore_sectiontwo_button: "Tam Hikâyeyi Oku",
 
-
-
+  //Footer
+  explore: "Keşfet",
+  categories: "Kategoriler",
+  recentAdditions: "Son Eklenenler",
+  featuredStories: "Öne Çıkan Hikayeler",
+  community: "Topluluk",
+  "contribute-footer": "Katkıda Bulun",
+  submitContent: "İçerik Gönder",
+  becomeVolunteer: "Gönüllü Ol",
+  donation: "Bağış",
+  partnerWithUs: "Bizimle Ortak Olun",
+  about: "Hakkında",
+  ourMission: "Misyonumuz",
+  theTeam: "Ekip",
+  privacyPolicy: "Gizlilik Politikası",
+  termsOfService: "Hizmet Şartları",
+  brand_name: "Culture Capsule",
+  brand_description:
+    "Kuzey Kıbrıs'ın zengin kültürel mirasını topluluk odaklı belgeleme ve arşivleme ile korumak.",
 };

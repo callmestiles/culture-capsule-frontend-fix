@@ -108,53 +108,80 @@ export const en = {
   // Historical Events
   historical_event_pill: "Historical Archives",
   historical_event_title: "Preserving Our Past, Enriching Our Future",
-  historical_event_description: "Explore the rich historical tapestry of North Cyprus through our curated collection of events, milestones, and personal accounts that have shaped our cultural identity.",
+  historical_event_description:
+    "Explore the rich historical tapestry of North Cyprus through our curated collection of events, milestones, and personal accounts that have shaped our cultural identity.",
   history_icon_one: "Key Events",
   history_icon_two: "Personal Accounts",
   history_icon_three: "Timeline",
   history_sectionone_pill: "Explore History",
   history_sectionone_title: "Key Historical Events",
-  history_sectionone_description: "Discover pivotal moments that have shaped North Cyprus through the decades, from ancient times to the modern day, curated by our community members.",
+  history_sectionone_description:
+    "Discover pivotal moments that have shaped North Cyprus through the decades, from ancient times to the modern day, curated by our community members.",
   history_sectiontwo_pill: "Featured Article",
   history_sectiontwo_button: "Read Full Article",
 
   // Recipes Events
   recipes_pill: "Culinary Heritage",
   recipes_title: "Flavours of North Cyprus",
-  recipes_description: "Discover the rich culinary traditions of North Cyprus through authentic recipes, cooking techniques, and stories that have been passed down through generations.",
+  recipes_description:
+    "Discover the rich culinary traditions of North Cyprus through authentic recipes, cooking techniques, and stories that have been passed down through generations.",
   recipes_icon_one: "Traditional Recipes",
   recipes_icon_two: "Preparation Time",
   recipes_icon_three: "Serving Size",
   recipes_sectionone_pill: "Explore Recipes",
   recipes_sectionone_title: "Traditional Culinary Treasures",
-  recipes_sectionone_description: "Explore our collection of authentic North Cyprus recipes, carefully documentated and preserved by local chefs, families, and culinary enthusiasts.",
+  recipes_sectionone_description:
+    "Explore our collection of authentic North Cyprus recipes, carefully documentated and preserved by local chefs, families, and culinary enthusiasts.",
   recipes_sectiontwo_pill: "Featured Recipes",
   recipes_sectiontwo_button: "View Full Recipe",
-
 
   // Arts Events
   arts_pill: "Artistic Heritage",
   arts_title: "Traditional Arts & Crafts",
-  arts_description: "Discover the intricate artistry and craftsmanship that has defined North Cyprus's cultural identity for generations, from pottery and textiles to woodworking and more.",
+  arts_description:
+    "Discover the intricate artistry and craftsmanship that has defined North Cyprus's cultural identity for generations, from pottery and textiles to woodworking and more.",
   arts_icon_one: "Visual Arts",
   arts_icon_two: "Craftsmanship",
   arts_icon_three: "Textile Arts",
   arts_sectionone_pill: "Explore Arts",
   arts_sectionone_title: "Handcrafted Traditions",
-  arts_sectionone_description: "Explore our collection of traditional arts and crafts from across North Cyprus, documented and preserved by local artisans and cultural enthusiasts.",
+  arts_sectionone_description:
+    "Explore our collection of traditional arts and crafts from across North Cyprus, documented and preserved by local artisans and cultural enthusiasts.",
   arts_sectiontwo_pill: "Featured Art",
   arts_sectiontwo_button: "View Collection",
 
   // Folklore
   folklore_pill: "Oral Traditions",
   folklore_title: "Folklore & Stories",
-  folklore_description: "Immerse yourself in the myths, legends, and stories that have been passed down through generations, shaping the cultural identity of North Cyprus.",
+  folklore_description:
+    "Immerse yourself in the myths, legends, and stories that have been passed down through generations, shaping the cultural identity of North Cyprus.",
   folklore_icon_one: "Myths & Legends",
   folklore_icon_two: "Folk Tales",
   folklore_icon_three: "Songs & Ballads",
   folklore_sectionone_pill: "Explore Folklore",
   folklore_sectionone_title: "Stories That Shape Our Identity",
-  folklore_sectionone_description: "Explore our collection of traditional stories, myths, and legends that have been passed down through generations, preserving the cultural identity of North Cyprus.",
+  folklore_sectionone_description:
+    "Explore our collection of traditional stories, myths, and legends that have been passed down through generations, preserving the cultural identity of North Cyprus.",
   folklore_sectiontwo_pill: "Featured Story",
   folklore_sectiontwo_button: "Read Full Story",
+
+  //Footer
+  explore: "Explore",
+  categories: "Categories",
+  recentAdditions: "Recent Additions",
+  featuredStories: "Featured Stories",
+  community: "Community",
+  "contribute-footer": "Contribute",
+  submitContent: "Submit Content",
+  becomeVolunteer: "Become a Volunteer",
+  donation: "Donation",
+  partnerWithUs: "Partner With Us",
+  about: "About",
+  ourMission: "Our Mission",
+  theTeam: "The Team",
+  privacyPolicy: "Privacy Policy",
+  termsOfService: "Terms of Service",
+  brand_name: "Culture Capsule",
+  brand_description:
+    "Preserving North Cyprus's rich cultural heritage through community-driven documentation and archiving.",
 };

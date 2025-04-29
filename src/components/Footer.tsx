@@ -1,44 +1,45 @@
-
-import React from 'react';
-import { Heart, Mail, Instagram, Twitter, Facebook } from 'lucide-react';
+import React from "react";
+import { Heart, Mail, Instagram, Twitter, Facebook } from "lucide-react";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Footer: React.FC = () => {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
-  
+
   const footerLinks = [
     {
-      title: 'Explore',
+      title: t("explore"),
       links: [
-        { name: 'Categories', href: '#categories' },
-        { name: 'Recent Additions', href: '#explore' },
-        { name: 'Featured Stories', href: '#stories' },
-        { name: 'Community', href: '#community' },
-      ]
+        { name: t("categories"), href: "#categories" },
+        { name: t("recentAdditions"), href: "#explore" },
+        { name: t("featuredStories"), href: "#stories" },
+        { name: t("community"), href: "#community" },
+      ],
     },
     {
-      title: 'Contribute',
+      title: t("contribute-footer"),
       links: [
-        { name: 'Submit Content', href: '#submit' },
-        { name: 'Become a Volunteer', href: '#volunteer' },
-        { name: 'Donation', href: '#donate' },
-        { name: 'Partner With Us', href: '#partner' },
-      ]
+        { name: t("submitContent"), href: "#submit" },
+        { name: t("becomeVolunteer"), href: "#volunteer" },
+        { name: t("donation"), href: "#donate" },
+        { name: t("partnerWithUs"), href: "#partner" },
+      ],
     },
     {
-      title: 'About',
+      title: t("about"),
       links: [
-        { name: 'Our Mission', href: '#mission' },
-        { name: 'The Team', href: '#team' },
-        { name: 'Privacy Policy', href: '#privacy' },
-        { name: 'Terms of Service', href: '#terms' },
-      ]
+        { name: t("ourMission"), href: "#mission" },
+        { name: t("theTeam"), href: "#team" },
+        { name: t("privacyPolicy"), href: "#privacy" },
+        { name: t("termsOfService"), href: "#terms" },
+      ],
     },
   ];
 
   return (
     <footer className="bg-capsule-paper py-16 relative">
       <div className="absolute inset-0 opacity-[0.04] bg-noise-pattern mix-blend-multiply" />
-      
+
       <div className="capsule-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
@@ -48,38 +49,38 @@ const Footer: React.FC = () => {
                 <span className="font-bold text-xl relative z-10">C</span>
               </div>
               <span className="font-serif text-xl font-semibold text-capsule-text tracking-tight">
-                CultureCapsule
+                {t("brand_name")}
               </span>
             </div>
-            
+
             <p className="text-sm text-capsule-text/80 mb-6 max-w-xs">
-              Preserving North Cyprus's rich cultural heritage through community-driven documentation and archiving.
+              {t("brand_description")}
             </p>
-            
+
             <div className="flex items-center gap-4">
-              <a 
-                href="#instagram" 
+              <a
+                href="#instagram"
                 className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-capsule-accent hover:text-white hover:bg-capsule-accent transition-colors shadow-sm"
                 aria-label="Instagram"
               >
                 <Instagram size={18} />
               </a>
-              <a 
-                href="#twitter" 
+              <a
+                href="#twitter"
                 className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-capsule-accent hover:text-white hover:bg-capsule-accent transition-colors shadow-sm"
                 aria-label="Twitter"
               >
                 <Twitter size={18} />
               </a>
-              <a 
-                href="#facebook" 
+              <a
+                href="#facebook"
                 className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-capsule-accent hover:text-white hover:bg-capsule-accent transition-colors shadow-sm"
                 aria-label="Facebook"
               >
                 <Facebook size={18} />
               </a>
-              <a 
-                href="mailto:info@culturecapsule.org" 
+              <a
+                href="mailto:info@culturecapsule.org"
                 className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-capsule-accent hover:text-white hover:bg-capsule-accent transition-colors shadow-sm"
                 aria-label="Email"
               >
@@ -87,15 +88,17 @@ const Footer: React.FC = () => {
               </a>
             </div>
           </div>
-          
+
           {footerLinks.map((column) => (
             <div key={column.title}>
-              <h3 className="font-semibold text-capsule-text mb-4">{column.title}</h3>
+              <h3 className="font-semibold text-capsule-text mb-4">
+                {column.title}
+              </h3>
               <ul className="space-y-2">
                 {column.links.map((link) => (
                   <li key={link.name}>
-                    <a 
-                      href={link.href} 
+                    <a
+                      href={link.href}
                       className="text-sm text-capsule-text/70 hover:text-capsule-accent transition-colors"
                     >
                       {link.name}
@@ -106,15 +109,15 @@ const Footer: React.FC = () => {
             </div>
           ))}
         </div>
-        
+
         <div className="mt-12 pt-6 border-t border-capsule-sand flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-capsule-text/60">
             © {currentYear} CultureCapsule. All rights reserved.
           </p>
-          
+
           <p className="text-xs text-capsule-text/60 flex items-center">
-            Made with 
-            <Heart size={12} className="mx-1 text-capsule-accent" /> 
+            Made with
+            <Heart size={12} className="mx-1 text-capsule-accent" />
             for the people of North Cyprus
           </p>
         </div>
