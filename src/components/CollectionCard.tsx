@@ -61,7 +61,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
       </div>
       <div className="p-5 flex flex-col justify-between h-[175px]">
         <div>
-          <h3 className="text-xl font-serif font-semibold text-capsule-text dark:text-white mb-2 line-clamp-2 transition-colors">
+          <h3 className="text-xl font-serif font-semibold text-white mb-2 line-clamp-2 transition-colors">
             {title}
           </h3>
         </div>
@@ -75,9 +75,9 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
               <ThumbsUp size={24} />
               <span className="ml-1">{likes || 0}</span>
             </button>
-            <button className="flex items-center text-gray-300 transition-colors">
-              <ThumbsDown size={24} />
-              <span className="ml-1">{dislikes || 0}</span>
+            <button className="flex items-center text-capsule-text/70 dark:text-gray-400 hover:text-capsule-accent dark:hover:text-capsule-accent/80 transition-colors">
+              <ThumbsDown />
+              <span className="ml-1">{likes || 0}</span>
             </button>
           </div>
         </div>
