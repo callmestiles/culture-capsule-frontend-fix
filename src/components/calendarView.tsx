@@ -30,12 +30,10 @@ export function CalendarView() {
     );
   };
 
-  // Get days in month
   const getDaysInMonth = (year: number, month: number) => {
     return new Date(year, month + 1, 0).getDate();
   };
 
-  // Get day of week for first day of month (0 = Sunday, 6 = Saturday)
   const getFirstDayOfMonth = (year: number, month: number) => {
     return new Date(year, month, 1).getDay();
   };
@@ -45,41 +43,38 @@ export function CalendarView() {
   const daysInMonth = getDaysInMonth(year, month);
   const firstDayOfMonth = getFirstDayOfMonth(year, month);
 
-  // Create array of day numbers for the month
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
-
-  // Add empty cells for days before the first day of the month
-  const emptyCells = Array.from({ length: firstDayOfMonth }, (_, i) => null);
-
-  // Combine empty cells and days
+  const emptyCells = Array.from({ length: firstDayOfMonth }, () => null);
   const allCells = [...emptyCells, ...days];
 
-  // Format month name
   const monthName = currentMonth.toLocaleString("default", { month: "long" });
 
-  // Check if a day has events
   const hasEvents = (day: number) => {
     if (!day) return false;
     const dateToCheck = new Date(year, month, day);
-    const dateString = dateToCheck.toISOString().split("T")[0];
     return eventData.some((event) => {
-      const eventDate = new Date(event.date).toISOString().split("T")[0];
-      return eventDate === dateString;
+      const eventDate = new Date(event.date);
+      return (
+        eventDate.getFullYear() === dateToCheck.getFullYear() &&
+        eventDate.getMonth() === dateToCheck.getMonth() &&
+        eventDate.getDate() === dateToCheck.getDate()
+      );
     });
   };
 
-  // Get events for a specific day
   const getEventsForDay = (day: number) => {
     if (!day) return [];
     const dateToCheck = new Date(year, month, day);
-    const dateString = dateToCheck.toISOString().split("T")[0];
     return eventData.filter((event) => {
-      const eventDate = new Date(event.date).toISOString().split("T")[0];
-      return eventDate === dateString;
+      const eventDate = new Date(event.date);
+      return (
+        eventDate.getFullYear() === dateToCheck.getFullYear() &&
+        eventDate.getMonth() === dateToCheck.getMonth() &&
+        eventDate.getDate() === dateToCheck.getDate()
+      );
     });
   };
 
-  // Handle day click
   const handleDayClick = (day: number | null) => {
     if (!day || !hasEvents(day)) return;
 
@@ -87,7 +82,6 @@ export function CalendarView() {
     setIsDialogOpen(true);
   };
 
-  // Format date for display
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
       weekday: "long",

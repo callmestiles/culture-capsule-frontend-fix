@@ -157,26 +157,14 @@ const History = () => {
                   </div>
 
                   <h3 className="text-2xl text-black lg:text-3xl font-serif font-semibold mb-4">
-                    The 1974 Turkish Intervention: A Turning Point in North
-                    Cyprus History
+                    {historicalEvents[0]?.title ||
+                      "The Turkish Intervention of 1974"}
                   </h3>
 
                   <p className="text-capsule-text/80 leading-relaxed mb-6">
-                    The Turkish intervention of 1974, also known as the "Peace
-                    Operation" in Turkey, marked a significant turning point in
-                    the history of Cyprus. Following years of inter-communal
-                    tensions and a coup d'état backed by the Greek military
-                    junta, Turkey intervened militarily, ultimately leading to
-                    the de facto division of the island.
+                    {historicalEvents[0]?.description ||
+                      "The Turkish intervention of 1974 in Cyprus was a significant event that led to the division of the island into two parts: the Republic of Cyprus and the Turkish Republic of Northern Cyprus. This intervention was a response to a coup d'état that aimed to unite Cyprus with Greece, which was opposed by Turkey."}
                   </p>
-
-                  <p className="text-capsule-text/80 leading-relaxed mb-6">
-                    This collection includes personal testimonies, historical
-                    documents, and photographs documenting this critical period,
-                    offering multiple perspectives on events that continue to
-                    shape the political landscape of Cyprus today.
-                  </p>
-
                   <div className="mt-6">
                     <a
                       href="#read-more"

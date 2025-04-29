@@ -27,7 +27,7 @@ export function EventsList() {
   return (
     <div className="space-y-6">
       <Tabs defaultValue="all" onValueChange={setActiveTab}>
-        <TabsList className="mb-6 grid w-full grid-cols-4 bg-gray-100">
+        <TabsList className="mb-6 grid w-full grid-cols-7 bg-gray-100">
           <TabsTrigger
             value="all"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
@@ -51,6 +51,24 @@ export function EventsList() {
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
             Food
+          </TabsTrigger>
+          <TabsTrigger
+            value="heritage"
+            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
+          >
+            Heritage
+          </TabsTrigger>
+          <TabsTrigger
+            value="community"
+            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
+          >
+            Community
+          </TabsTrigger>
+          <TabsTrigger
+            value="theater"
+            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
+          >
+            Theater
           </TabsTrigger>
         </TabsList>
 

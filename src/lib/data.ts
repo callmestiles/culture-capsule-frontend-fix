@@ -14,12 +14,13 @@ export interface Event {
 const eventRealData = async () => {
   try {
     const response = await axios.get(
-      "https://culture-capsule-backend.onrender.com/api/events"
+      `https://culture-capsule-backend.onrender.com/api/events?language=${localStorage.getItem(
+        "language")}`
     )
     return response.data
   } catch (error) {
     console.error("Error fetching events:", error)
-    return "";
+    return {};
   }
 }
 const response = await eventRealData();
@@ -32,7 +33,7 @@ export const eventData: Event[] = response.events.map(events => {
     date: events?.startDate || "2023-10-01",
     time: events?.time || "6:00 PM - 8:00 PM",
     location: events?.location || "Event Location",
-    category: events?.category || "Event Category",
-    image: events?.imageUrl.length > 0 ? events.imageUrl[0] : "https://picsum.photos/200",
+    category: events?.category.charAt(0).toUpperCase() +  events?.category.slice(1)|| "Event Category",
+    image: events?.imageUrl.length > 0 ? events.imageUrl[0] : "https://placehold.co/200?text=No+Image",
   }
 })
