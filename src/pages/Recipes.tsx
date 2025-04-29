@@ -10,67 +10,14 @@ import { useEffect } from "react";
 
 const Recipes = () => {
   const { t } = useLanguage();
-  let localRecipes = [
-    {
-      title: "Traditional Hellim Cheese Making Process",
-      category: "Local Recipes",
-      contributor: "Ayşe Yılmaz",
-      date: "Jun 15, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1505253716291-6997be06f64b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-      href: "#recipe-1",
-    },
-    {
-      title: "Authentic Şeftali Kebab",
-      category: "Local Recipes",
-      contributor: "Mehmet Özgür",
-      date: "May 22, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#recipe-2",
-    },
-    {
-      title: "Homemade Molehiya Soup",
-      category: "Local Recipes",
-      contributor: "Elena Papadopoulos",
-      date: "Apr 18, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#recipe-3",
-    },
-    {
-      title: "Traditional Pilavuna Pastries",
-      category: "Local Recipes",
-      contributor: "Maria Demetriou",
-      date: "Mar 7, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1608835291093-394b0c943a75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#recipe-4",
-    },
-    {
-      title: "Cypriot Mezze Platter",
-      category: "Local Recipes",
-      contributor: "Hasan Çelik",
-      date: "Feb 12, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1543826173-1beeb97525d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#recipe-5",
-    },
-    {
-      title: "Traditional Lokma Dessert",
-      category: "Local Recipes",
-      contributor: "Sophia Andreou",
-      date: "Jan 5, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1567051183542-96707f287a07?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-      href: "#recipe-6",
-    },
-  ];
+  let localRecipes = [];
   const [recipesData, setRecipesData] = React.useState([]);
   const getResponse = async () => {
     try {
       const response = await axios.get(
-        "https://culture-capsule-backend.onrender.com/api/posts"
+        `https://culture-capsule-backend.onrender.com/api/posts/category/Local Recipes?language=${localStorage.getItem(
+          "language"
+        )}`
       );
       const data = response.data.posts;
       const transformedData = data.map((item) => ({
@@ -79,7 +26,7 @@ const Recipes = () => {
         contributor: `${item.author.firstName} ${item.author.lastName}`,
         date: new Date(item.createdAt).toLocaleDateString(),
         imageSrc: item.images[0] || "https://placehold.co/400?text=!",
-        href: `#${item._id}`,
+        href: `/capsule/${item._id}`,
       }));
       setRecipesData(transformedData);
     } catch (error) {

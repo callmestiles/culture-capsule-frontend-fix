@@ -39,7 +39,6 @@ import refreshToken from "@/api/refresh";
 
 const contributionSchema = z.object({
   title: z.string().min(5, { message: "Title must be at least 5 characters" }),
-  category: z.string().min(1, { message: "Please select a category" }),
   content: z
     .string()
     .min(20, { message: "Description must be at least 20 characters" }),
@@ -99,7 +98,6 @@ const Contribute = () => {
     resolver: zodResolver(contributionSchema),
     defaultValues: {
       title: "",
-      category: "",
       content: "",
       location: "",
       year: "",
@@ -111,7 +109,6 @@ const Contribute = () => {
     setIsUploading(true);
     const formData = new FormData();
     formData.append("title", values.title);
-    formData.append("category", values.category);
     formData.append("content", values.content);
     formData.append("location", values.location || "");
     formData.append("year", values.year || "");
@@ -206,78 +203,6 @@ const Contribute = () => {
                           <FormDescription>
                             Choose a clear title that describes what you're
                             sharing.
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <FormField
-                      control={form.control}
-                      name="category"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Category</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder="Select a category" />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="historical-events">
-                                <div className="flex items-center gap-2">
-                                  <Book
-                                    size={16}
-                                    className="text-capsule-accent"
-                                  />
-                                  <span>Historical Events</span>
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="local-recipes">
-                                <div className="flex items-center gap-2">
-                                  <Utensils
-                                    size={16}
-                                    className="text-capsule-accent"
-                                  />
-                                  <span>Local Recipes</span>
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="arts-crafts">
-                                <div className="flex items-center gap-2">
-                                  <Palette
-                                    size={16}
-                                    className="text-capsule-accent"
-                                  />
-                                  <span>Arts & Crafts</span>
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="folklore-stories">
-                                <div className="flex items-center gap-2">
-                                  <Book
-                                    size={16}
-                                    className="text-capsule-accent"
-                                  />
-                                  <span>Folklore & Stories</span>
-                                </div>
-                              </SelectItem>
-                              <SelectItem value="music-dance">
-                                <div className="flex items-center gap-2">
-                                  <Music
-                                    size={16}
-                                    className="text-capsule-accent"
-                                  />
-                                  <span>Music & Dance</span>
-                                </div>
-                              </SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormDescription>
-                            Select the category that best fits your
-                            contribution.
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
