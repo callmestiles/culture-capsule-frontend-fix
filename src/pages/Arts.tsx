@@ -10,67 +10,14 @@ import { useEffect } from "react";
 
 const Arts = () => {
   const { t } = useLanguage();
-  let artsCollection = [
-    {
-      title: "Leftkoniko Pottery: A Dying Artform",
-      category: "Arts & Crafts",
-      contributor: "Elena Christodoulou",
-      date: "Jun 28, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1619065513237-828bf1956fc8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80",
-      href: "#arts-1",
-    },
-    {
-      title: "Traditional Lefkara Lace Embroidery",
-      category: "Arts & Crafts",
-      contributor: "Sophia Andreou",
-      date: "May 17, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1459789587767-50f9e4b05a67?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
-      href: "#arts-2",
-    },
-    {
-      title: "Cypriot Folk Painting Techniques",
-      category: "Arts & Crafts",
-      contributor: "Mehmet Özgür",
-      date: "Apr 21, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1579762715118-a6f1d4b934f1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
-      href: "#arts-3",
-    },
-    {
-      title: "Basket Weaving from Karpaz Region",
-      category: "Arts & Crafts",
-      contributor: "Ayşe Yılmaz",
-      date: "Mar 14, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1635767798638-3e7968993b43?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80",
-      href: "#arts-4",
-    },
-    {
-      title: "Traditional Carpet Making in Güzelyurt",
-      category: "Arts & Crafts",
-      contributor: "Hasan Çelik",
-      date: "Feb 9, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1600045311943-64245394fc84?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#arts-5",
-    },
-    {
-      title: "Cypriot Woodcarving Traditions",
-      category: "Arts & Crafts",
-      contributor: "Maria Demetriou",
-      date: "Jan 23, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1605116367194-ba30dbc63fe2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#arts-6",
-    },
-  ];
+  let artsCollection = [];
   const [artsData, setArtsData] = React.useState([]);
   const getResponse = async () => {
     try {
       const response = await axios.get(
-        "https://culture-capsule-backend.onrender.com/api/posts"
+        `https://culture-capsule-backend.onrender.com/api/posts/category/Arts and Crafts?language=${localStorage.getItem(
+          "language"
+        )}`
       );
       const data = response.data.posts;
       const transformedData = data.map((item) => ({
@@ -79,7 +26,7 @@ const Arts = () => {
         contributor: `${item.author.firstName} ${item.author.lastName}`,
         date: new Date(item.createdAt).toLocaleDateString(),
         imageSrc: item.images[0] || "https://placehold.co/400?text=!",
-        href: `#${item._id}`,
+        href: `/capsule/${item._id}`,
       }));
       setArtsData(transformedData);
     } catch (error) {
