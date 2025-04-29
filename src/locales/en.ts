@@ -19,6 +19,10 @@ export const en = {
   returnHome: "Return Home",
   contributeText: "Want to contribute?",
   events: "Events",
+  good_morning: "Morning",
+  good_afternoon: "Afternoon",
+  good_evening: "Evening",
+  user: "User",
 
   // Hero section
   hero_title: "Preserving North Cyprus Cultural Heritage",

@@ -97,7 +97,7 @@ const History = () => {
 
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-16 relative bg-capsule-paper">
+        <section className="pb-16 relative bg-capsule-paper">
           <div className="absolute inset-0 opacity-[0.04] bg-noise-pattern mix-blend-multiply" />
           <div className="capsule-container">
             <div className="flex flex-col md:flex-row md:items-center gap-8">

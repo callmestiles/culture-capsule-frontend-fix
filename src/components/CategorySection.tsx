@@ -58,7 +58,7 @@ const CategorySection: React.FC = () => {
 
       <div className="capsule-container">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <div className="inline-block  px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
+          <div className="inline-block  px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
             {t("explore_categories")}
           </div>
 

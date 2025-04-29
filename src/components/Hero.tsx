@@ -23,7 +23,10 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 pb-10">
+    <section
+      className="relative min-h- flex items-center justify-center overflow-hidden"
+      style={{ minHeight: "calc(100vh - 5rem)" }}
+    >
       <div className="absolute inset-0 bg-gradient-to-b from-capsule-bg to-white/50 -z-10" />
 
       <div className="absolute inset-0 opacity-[0.03] bg-noise-pattern mix-blend-multiply -z-10" />
@@ -36,7 +39,7 @@ const Hero: React.FC = () => {
               isVisible && "opacity-100 translate-y-0"
             )}
           >
-            <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-6">
+            <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-6">
               {t("hero_title")}
             </div>
 
@@ -88,7 +91,7 @@ const Hero: React.FC = () => {
 
       <button
         onClick={scrollToCategories}
-        className="absolute bottom-5 left-1/2 transform -translate-x-1/2 animate-float text-capsule-accent hover:text-capsule-text transition-colors"
+        className="absolute bottom-3 left-1/2 transform -translate-x-1/2 animate-float text-capsule-accent hover:text-capsule-text transition-colors"
         aria-label="Scroll down"
       >
         <ArrowDownCircle size={36} />

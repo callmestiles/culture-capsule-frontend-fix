@@ -21,7 +21,7 @@ const FeaturedCollections: React.FC = () => {
       <div className="capsule-container">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div className="mb-6 md:mb-0">
-            <div className="inline-block  px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
+            <div className="inline-block  px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
               {t("featured_archives")}
             </div>
 

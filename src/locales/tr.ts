@@ -19,6 +19,10 @@ export const tr = {
   returnHome: "Anasayfaya Dön",
   contributeText: "Katkıda bulunmak ister misiniz?",
   events: "Olaylar",
+  good_morning: "Günaydın",
+  good_afternoon: "Tünaydın",
+  good_evening: "İyi akşamlar",
+  user: "Kullanıcı",
 
   // Hero section
   hero_title: "Kuzey Kıbrıs Kültürel Mirasını Koruma",

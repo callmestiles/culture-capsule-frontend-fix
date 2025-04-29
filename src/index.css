@@ -5,7 +5,11 @@
 @tailwind utilities;
 
 @media (prefers-color-scheme: dark) {
-  input, select, option, textarea, button {  
+  input,
+  select,
+  option,
+  textarea,
+  button {
     color: black;
   }
 }
@@ -30,15 +34,15 @@
     --muted: 40 12% 90%;
     --muted-foreground: 36 5% 40%;
 
-    --accent: 20 50% 58%;
+    --accent: 90 13% 49%;
     --accent-foreground: 40 38% 97%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 39 30% 85%;
-    --input: 39 30% 85%;
-    --ring: 35 30% 48%;
+    --border: 82, 39%, 54%;
+    --input: 82, 39%, 54%;
+    --ring: 90 13% 49%;
 
     --radius: 0.5rem;
 
@@ -98,7 +102,7 @@
   }
 
   body {
-    @apply bg-capsule-bg text-capsule-text dark:bg-gray-900 dark:text-gray-100 antialiased;
+    /* @apply bg-capsule-bg text-capsule-text dark:bg-gray-900 dark:text-gray-100 antialiased; */
     font-family: "Inter", sans-serif;
   }
 

@@ -45,7 +45,7 @@ const Navbar: React.FC = () => {
           console.error("Error fetching user profile:", error);
         }
       } finally {
-        setAuthLoading(false); // <-- Always end loading
+        setAuthLoading(false);
       }
     };
 
@@ -53,6 +53,13 @@ const Navbar: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return t("good_morning");
+    if (hour < 18) return t("good_afternoon");
+    return t("good_evening");
+  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -76,26 +83,15 @@ const Navbar: React.FC = () => {
     navItems.push({ name: t("Profile"), href: "/profile" });
   }
 
-  const [delayedMount, setDelayedMount] = useState(false);
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDelayedMount(true);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (!delayedMount || authLoading) {
-    return <div></div>; // Loading screen / spinner can go here
-  }
-
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-4 px-6",
-        isScrolled ? "bg-white/80 backdrop-blur-sm shadow-sm" : "bg-transparent"
+        "z-50 transition-all duration-300 h-20 px-6 border-b-[1.5px] border-b-secondary flex items-center",
+        isScrolled &&
+          "fixed top-0 left-0 right-0 bg-secondary/55 backdrop-blur-md shadow-sm"
       )}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-10 h-10 relative flex items-center justify-center text-white overflow-hidden group">
             <img
@@ -104,7 +100,11 @@ const Navbar: React.FC = () => {
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-serif text-xl font-semibold text-capsule-text tracking-tight">
+          <span
+            className={`font-serif text-xl font-semibold tracking-tight ${
+              isScrolled ? "text-white" : "text-black"
+            }`}
+          >
             Culture Capsule
           </span>
         </Link>
@@ -114,7 +114,9 @@ const Navbar: React.FC = () => {
             <Link
               key={item.name}
               to={item.href}
-              className="subtle-link text-sm font-medium text-black"
+              className={`subtle-link text-sm font-medium ${
+                isScrolled ? "text-white" : "text-black"
+              }`}
             >
               {item.name}
             </Link>
@@ -122,13 +124,20 @@ const Navbar: React.FC = () => {
         </nav>
 
         <div className="flex items-center gap-4">
-          <LanguageSwitcher />
+          <LanguageSwitcher isScrolled={isScrolled} />
 
           {isAuthenticated ? (
             <div className="hidden md:flex items-center gap-2">
-              <div className="flex items-center gap-2 text-sm text-capsule-text">
+              <div
+                className={`flex items-center gap-8 text-sm ${
+                  isScrolled ? "text-white" : "text-black"
+                }`}
+              >
                 <span>
-                  Hi, <a href="/profile"> {user?.user?.firstName || "User"}</a>
+                  <span>
+                    {getGreeting()},{" "}
+                    <a href="/profile">{user?.user?.firstName || t("user")}</a>
+                  </span>
                 </span>
                 <Button variant="outline" size="sm" onClick={handleLogout}>
                   {t("logout")}
@@ -136,7 +145,7 @@ const Navbar: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden md:flex items-center gap-4">
               <Link to="/login">
                 <Button
                   variant="outline"
