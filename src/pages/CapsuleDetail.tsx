@@ -219,11 +219,22 @@ const CapsuleDetail: React.FC = () => {
                     <CarouselNext className="right-4 z-10" />
                   </Carousel>
                 ) : (
-                  <div className="w-full flex justify-center">
+                  <div className="w-full flex justify-center relative overflow-hidden bg-gray-100">
+                    <div
+                      className="absolute inset-0 z-0"
+                      style={{
+                        backgroundImage: `url(${capsule.post.images[0]})`,
+                        backgroundSize: "cover",
+                        backgroundPosition: "center",
+                        filter: "blur(15px)",
+                        transform: "scale(1.1)",
+                        opacity: 0.7,
+                      }}
+                    />
                     <img
                       src={capsule.post.images[0]}
                       alt={capsule.post.title}
-                      className="w-full max-h-[500px] object-contain"
+                      className="relative z-1 max-w-full max-h-[300px] object-contain my-6"
                     />
                   </div>
                 )}
