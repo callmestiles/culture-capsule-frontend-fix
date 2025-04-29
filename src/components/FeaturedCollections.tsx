@@ -32,6 +32,8 @@ const FeaturedCollections: React.FC = () => {
         date: new Date(item.createdAt).toLocaleDateString(),
         imageSrc: item.images[0] || "https://placehold.co/400?text=!",
         href: `/capsule/${item._id}`,
+        noOfLikes: item.likes.length || 0,
+        noOfDislikes: item.dislikes.length || 0,
       }));
       setRecipesData(transformedData);
     } catch (error) {
