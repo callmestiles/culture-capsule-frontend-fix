@@ -10,68 +10,15 @@ import { useEffect } from "react";
 
 const Folklore = () => {
   const { t } = useLanguage();
-  let folkloreCollection = [
-    {
-      title: "The Legend of the Five Finger Mountain",
-      category: "Folklore & Stories",
-      contributor: "Mustafa Kaya",
-      date: "Jun 19, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1657214059233-5626b35eb349?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=736&q=80",
-      href: "#folklore-1",
-    },
-    {
-      title: "Tales of the Girne Harbor",
-      category: "Folklore & Stories",
-      contributor: "Elena Christodoulou",
-      date: "May 28, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1559682468-a6bd8b843382?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1035&q=80",
-      href: "#folklore-2",
-    },
-    {
-      title: "Mythical Creatures of Cyprus",
-      category: "Folklore & Stories",
-      contributor: "Maria Demetriou",
-      date: "Apr 15, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1586861256632-28a61a895464?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
-      href: "#folklore-3",
-    },
-    {
-      title: "Legends of Famagusta's Hidden Treasures",
-      category: "Folklore & Stories",
-      contributor: "Ahmet Yılmaz",
-      date: "Mar 22, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1597776941486-c5e248dc734a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
-      href: "#folklore-4",
-    },
-    {
-      title: "Traditional Cypriot Proverbs and Sayings",
-      category: "Folklore & Stories",
-      contributor: "Sophia Andreou",
-      date: "Feb 11, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1569170380238-39cc3e91f991?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#folklore-5",
-    },
-    {
-      title: "Origins of North Cyprus Folk Tales",
-      category: "Folklore & Stories",
-      contributor: "Hasan Çelik",
-      date: "Jan 7, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#folklore-6",
-    },
-  ];
+  let folkloreCollection = [];
 
   const [folkloreData, setFolkloreData] = React.useState([]);
   const getResponse = async () => {
     try {
       const response = await axios.get(
-        "https://culture-capsule-backend.onrender.com/api/posts"
+        `https://culture-capsule-backend.onrender.com/api/posts/category/Folklore and Stories?language=${localStorage.getItem(
+          "language"
+        )}`
       );
       const data = response.data.posts;
       const transformedData = data.map((item) => ({
@@ -80,7 +27,7 @@ const Folklore = () => {
         contributor: `${item.author.firstName} ${item.author.lastName}`,
         date: new Date(item.createdAt).toLocaleDateString(),
         imageSrc: item.images[0] || "https://placehold.co/400?text=!",
-        href: `#${item._id}`,
+        href: `/capsule/${item._id}`,
       }));
       setFolkloreData(transformedData);
     } catch (error) {
