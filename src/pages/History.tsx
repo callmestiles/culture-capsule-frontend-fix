@@ -9,78 +9,32 @@ import axios from "axios";
 
 const History = () => {
   const { t } = useLanguage();
-  let historicalEvents = [
-    {
-      title: "The 1974 Turkish Intervention",
-      category: "Historical Events",
-      contributor: "Prof. Mehmet Kaplan",
-      date: "Jun 23, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#event-1",
-    },
-    {
-      title: "The British Colonial Era",
-      category: "Historical Events",
-      contributor: "Dr. Sophia Andreou",
-      date: "May 15, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1559682468-a6bd8b843382?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#event-2",
-    },
-    {
-      title: "The Ottoman Period",
-      category: "Historical Events",
-      contributor: "Ahmet Yılmaz",
-      date: "Apr 10, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1630335528121-4163321542b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#event-3",
-    },
-    {
-      title: "The Independence Movement",
-      category: "Historical Events",
-      contributor: "Elena Christodoulou",
-      date: "Mar 5, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1603145733146-ae562a55031e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
-      href: "#event-4",
-    },
-    {
-      title: "Ancient Civilizations of Cyprus",
-      category: "Historical Events",
-      contributor: "Prof. Hasan Çelik",
-      date: "Feb 18, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1572952112965-cff7bb6f93fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#event-5",
-    },
-    {
-      title: "The Venetian Rule",
-      category: "Historical Events",
-      contributor: "Maria Demetriou",
-      date: "Jan 30, 2023",
-      imageSrc:
-        "https://images.unsplash.com/photo-1638113067847-eee9e6aadc4a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-      href: "#event-6",
-    },
-  ];
+  let historicalEvents = [];
   const [historicalData, setHistoricalData] = React.useState([]);
   const getResponse = async () => {
     try {
       const response = await axios.get(
-        "https://culture-capsule-backend.onrender.com/api/posts"
+        "https://culture-capsule-backend.onrender.com/api/posts?language=en"
       );
       const data = response.data.posts;
-      const transformedData = data.map((item) => ({
-        title: item.title,
-        category: "Historical Events",
-        // Assuming category is not available in the response, you can set it to a default value or fetch it from another source
-        contributor: `${item.author.firstName} ${item.author.lastName}`,
-        date: new Date(item.createdAt).toLocaleDateString(),
-        imageSrc: item.images[0] || "https://placehold.co/400?text=!",
-        href: `#${item._id}`,
-      }));
+      console.log("Data fetched:", data);
+      const transformedData = data
+        .filter(
+          (item) =>
+            item.category === "Historical Events" ||
+            item.category === "historical-events"
+        )
+        .map((item) => ({
+          title: item.title,
+          category: "Historical Events",
+          contributor: `${item.author.firstName} ${item.author.lastName}`,
+          date: new Date(item.createdAt).toLocaleDateString(),
+          imageSrc: item.images[0] || "https://placehold.co/400?text=!",
+          href: `/capsule/${item._id}`,
+          noOfLikes: item.likes.length || 0,
+          noOfDislikes: item.dislikes.length || 0,
+        }));
+
       setHistoricalData(transformedData);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -179,6 +133,9 @@ const History = () => {
                   imageSrc={event.imageSrc}
                   href={event.href}
                   className="animate-fade-in opacity-0"
+                  index={index} // Adjust the index for the href
+                  likes={event.noOfLikes}
+                  dislikes={event.noOfDislikes}
                 />
               ))}
             </div>

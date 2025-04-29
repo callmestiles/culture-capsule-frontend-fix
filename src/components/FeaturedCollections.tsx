@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import CollectionCard from "./CollectionCard";
 import { collections } from "@/data/collections";
+import { useEffect } from "react";
+import axios from "axios";
 import {
   Carousel,
   CarouselContent,
@@ -13,6 +15,34 @@ import {
 
 const FeaturedCollections: React.FC = () => {
   const { t } = useLanguage();
+  let localRecipes = [];
+  const [recipesData, setRecipesData] = React.useState([]);
+  const getResponse = async () => {
+    try {
+      const response = await axios.get(
+        `https://culture-capsule-backend.onrender.com/api/posts?language=${localStorage.getItem(
+          "language"
+        )}`
+      );
+      const data = response.data.posts;
+      const transformedData = data.map((item) => ({
+        title: item.title,
+        category: item.category, // Assuming category is not available in the response, you can set it to a default value or fetch it from another source
+        contributor: `${item.author.firstName} ${item.author.lastName}`,
+        date: new Date(item.createdAt).toLocaleDateString(),
+        imageSrc: item.images[0] || "https://placehold.co/400?text=!",
+        href: `/capsule/${item._id}`,
+      }));
+      setRecipesData(transformedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  localRecipes = recipesData.concat(localRecipes);
+
+  useEffect(() => {
+    getResponse();
+  }, []);
 
   return (
     <section id="explore" className="py-20 bg-white relative">
@@ -43,7 +73,7 @@ const FeaturedCollections: React.FC = () => {
           }}
         >
           <CarouselContent className="-ml-4">
-            {collections.slice(0, 6).map((collection, index) => (
+            {localRecipes.slice(0, 6).map((collection, index) => (
               <CarouselItem
                 key={collection.title}
                 className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
