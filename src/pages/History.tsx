@@ -72,6 +72,7 @@ const History = () => {
         "https://culture-capsule-backend.onrender.com/api/posts"
       );
       const data = response.data.posts;
+      console.log("Data fetched:", data);
       const transformedData = data.map((item) => ({
         title: item.title,
         category: "Historical Events",
@@ -79,7 +80,7 @@ const History = () => {
         contributor: `${item.author.firstName} ${item.author.lastName}`,
         date: new Date(item.createdAt).toLocaleDateString(),
         imageSrc: item.images[0] || "https://placehold.co/400?text=!",
-        href: `#${item._id}`,
+        href: `/capsule/${item._id}`,
       }));
       setHistoricalData(transformedData);
     } catch (error) {
@@ -179,6 +180,7 @@ const History = () => {
                   imageSrc={event.imageSrc}
                   href={event.href}
                   className="animate-fade-in opacity-0"
+                  index={index} // Adjust the index for the href
                 />
               ))}
             </div>
