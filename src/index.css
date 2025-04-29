@@ -5,9 +5,9 @@
 @tailwind utilities;
 
 @media (prefers-color-scheme: dark) {
-  /* body {
-    color: black !important;
-  } */
+  input, select, option, textarea, button {  
+    color: black;
+  }
 }
 
 @layer base {
