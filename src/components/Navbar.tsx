@@ -88,7 +88,7 @@ const Navbar: React.FC = () => {
       className={cn(
         "z-50 transition-all duration-300 h-20 px-6 border-b-[1.5px] border-b-secondary flex items-center",
         isScrolled &&
-          "fixed top-0 left-0 right-0 bg-secondary/55 backdrop-blur-md shadow-sm"
+          "fixed top-0 left-0 right-0 bg-secondary/80 backdrop-blur-md shadow-sm"
       )}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
@@ -139,7 +139,12 @@ const Navbar: React.FC = () => {
                     <a href="/profile">{user?.user?.firstName || t("user")}</a>
                   </span>
                 </span>
-                <Button variant="outline" size="sm" onClick={handleLogout}>
+                <Button
+                  className="text-black"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLogout}
+                >
                   {t("logout")}
                 </Button>
               </div>
