@@ -28,6 +28,8 @@ const Folklore = () => {
         date: new Date(item.createdAt).toLocaleDateString(),
         imageSrc: item.images[0] || "https://placehold.co/400?text=!",
         href: `/capsule/${item._id}`,
+        noOfLikes: item.likes.length || 0,
+        noOfDislikes: item.dislikes.length || 0,
       }));
       setFolkloreData(transformedData);
     } catch (error) {
@@ -127,6 +129,8 @@ const Folklore = () => {
                   imageSrc={folklore.imageSrc}
                   href={folklore.href}
                   className="animate-fade-in opacity-0"
+                  likes={folklore.noOfLikes}
+                  dislikes={folklore.noOfDislikes}
                 />
               ))}
             </div>

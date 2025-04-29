@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import AnimatedImage from "./AnimatedImage";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 
 interface CollectionCardProps {
   title: string;
@@ -13,6 +14,8 @@ interface CollectionCardProps {
   href: string;
   className?: string;
   index?: number;
+  likes: number;
+  dislikes: number;
 }
 
 const CollectionCard: React.FC<CollectionCardProps> = ({
@@ -24,6 +27,8 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   href,
   className,
   index = 0,
+  likes,
+  dislikes,
 }) => {
   const { t } = useLanguage();
 
@@ -58,9 +63,19 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
 
         <div className="mt-auto pt-4 flex items-center justify-between text-xs text-capsule-text/70 dark:text-gray-400">
           <span>
+            <p>{date}</p>
             {t("by")} {contributor}
           </span>
-          <span>{date}</span>
+          <div className="flex items-left space-x-2">
+            <button className="flex items-center text-capsule-text/70 dark:text-gray-400 hover:text-capsule-accent dark:hover:text-capsule-accent/80 transition-colors">
+              <ThumbsUp />
+              <span className="ml-1">{likes || 0}</span>
+            </button>
+            <button className="flex items-center text-capsule-text/70 dark:text-gray-400 hover:text-capsule-accent dark:hover:text-capsule-accent/80 transition-colors">
+              <ThumbsDown />
+              <span className="ml-1">{likes || 0}</span>
+            </button>
+          </div>
         </div>
       </div>
     </Link>

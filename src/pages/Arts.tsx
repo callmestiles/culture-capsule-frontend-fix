@@ -27,6 +27,8 @@ const Arts = () => {
         date: new Date(item.createdAt).toLocaleDateString(),
         imageSrc: item.images[0] || "https://placehold.co/400?text=!",
         href: `/capsule/${item._id}`,
+        noOfLikes: item.likes.length || 0,
+        noOfDislikes: item.dislikes.length || 0,
       }));
       setArtsData(transformedData);
     } catch (error) {
@@ -127,6 +129,8 @@ const Arts = () => {
                   imageSrc={art.imageSrc}
                   href={art.href}
                   className="animate-fade-in opacity-0"
+                  likes={art.noOfLikes}
+                  dislikes={art.noOfDislikes}
                 />
               ))}
             </div>

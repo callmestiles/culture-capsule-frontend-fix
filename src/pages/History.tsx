@@ -31,6 +31,8 @@ const History = () => {
           date: new Date(item.createdAt).toLocaleDateString(),
           imageSrc: item.images[0] || "https://placehold.co/400?text=!",
           href: `/capsule/${item._id}`,
+          noOfLikes: item.likes.length || 0,
+          noOfDislikes: item.dislikes.length || 0,
         }));
 
       setHistoricalData(transformedData);
@@ -132,6 +134,8 @@ const History = () => {
                   href={event.href}
                   className="animate-fade-in opacity-0"
                   index={index} // Adjust the index for the href
+                  likes={event.noOfLikes}
+                  dislikes={event.noOfDislikes}
                 />
               ))}
             </div>
