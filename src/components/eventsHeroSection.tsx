@@ -1,19 +1,21 @@
 "use client";
+import heroImg from "../../public/images/eventHomePage.jpeg";
 
 export function HeroSection() {
   const scrollToEvents = () => {
-    const eventsSection = document.getElementById("events");
+    const eventsSection = document.getElementById("main-content");
     if (eventsSection) {
       eventsSection.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <div className="relative h-[400px] w-full overflow-hidden">
+    <div className="relative h-[600px] w-full overflow-hidden">
       <div className="absolute inset-0 bg-black/50 z-10"></div>
       <img
-        src="/placeholder.svg?height=800&width=1600"
-        alt="Events hero image"
+        src={heroImg}
+        alt="An event happening where fireworks are being displayed"
+        loading="lazy"
         width={1600}
         height={800}
         className="h-full w-full object-cover"

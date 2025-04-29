@@ -34,6 +34,6 @@ export const eventData: Event[] = response.events.map(events => {
     time: events?.time || "6:00 PM - 8:00 PM",
     location: events?.location || "Event Location",
     category: events?.category.charAt(0).toUpperCase() +  events?.category.slice(1)|| "Event Category",
-    image: events?.imageUrl.length > 0 ? events.imageUrl[0] : "https://picsum.photos/200",
+    image: events?.imageUrl.length > 0 ? events.imageUrl[0] : "https://placehold.co/200?text=No+Image",
   }
 })

@@ -42,11 +42,6 @@ export function EventCard({ event, compact = false }: EventCardProps) {
               <span>{event.location}</span>
             </div>
           </div>
-          <a href={`/events/${event.id}`} className="mt-3 block w-full">
-            <button className="w-full rounded-full bg-[rgb(82,104,45)] px-4 py-1.5 text-xs font-medium text-white transition-colors hover:bg-[rgb(65,85,35)]">
-              View Details
-            </button>
-          </a>
         </CardContent>
       </Card>
     );
@@ -66,7 +61,7 @@ export function EventCard({ event, compact = false }: EventCardProps) {
             <Image className="w-full h-full text-gray-400 object-cover" />
           )}
         </div>
-        <CardContent className="flex-1 p-6">
+        <CardContent className="flex-1 py-9 px-6 items-center">
           <div className="mb-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">
             {event.category}
           </div>
@@ -88,11 +83,6 @@ export function EventCard({ event, compact = false }: EventCardProps) {
               <span>{event.location}</span>
             </div>
           </div>
-          <a href={`/events/${event.id}`}>
-            <button className="mt-4 rounded-full bg-[rgb(82,104,45)] px-6 py-2 text-sm font-medium text-white transition-colors hover:bg-[rgb(65,85,35)]">
-              View Details
-            </button>
-          </a>
         </CardContent>
       </div>
     </Card>
