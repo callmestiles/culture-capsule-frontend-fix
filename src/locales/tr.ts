@@ -54,9 +54,9 @@ export const tr = {
   music_dance: "Müzik ve Dans",
   music_dance_desc:
     "Kültürel mirası yansıtan geleneksel müzik ve dansları deneyimleyin.",
-  photo_archive: "Fotoğraf Arşivi",
-  photo_archive_desc:
-    "Hayatı, yerleri ve olayları belgeleyen tarihi fotoğrafları inceleyin.",
+  poem: "Şiir",
+  poem_desc:
+    "Duyguları, kültürü ve hayal gücünü kelimelerle yansıtan etkileyici şiir koleksiyonunu keşfedin.",
 
   // Featured
   featured_archives: "Öne Çıkan Arşivler",
@@ -70,6 +70,7 @@ export const tr = {
   try_different_category:
     "Farklı bir kategori deneyin veya tüm kapsülleri görüntüleyin",
   by: "Tarafından",
+  share: "Paylaşım",
 
   // Categories for filtering
   all: "Tümü",

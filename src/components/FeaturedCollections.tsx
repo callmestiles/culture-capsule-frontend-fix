@@ -1,8 +1,6 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import CollectionCard from "./CollectionCard";
-import { collections } from "@/data/collections";
 import { useEffect } from "react";
 import axios from "axios";
 import {
@@ -12,37 +10,53 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { ArrowRight, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const FeaturedCollections: React.FC = () => {
-  const { t } = useLanguage();
-  let localRecipes = [];
-  const [recipesData, setRecipesData] = React.useState([]);
-  const getResponse = async () => {
-    try {
-      const response = await axios.get(
-        `https://culture-capsule-backend.onrender.com/api/posts?language=${localStorage.getItem(
-          "language"
-        )}`
-      );
-      const data = response.data.posts;
-      const transformedData = data.map((item) => ({
-        title: item.title,
-        category: item.category, // Assuming category is not available in the response, you can set it to a default value or fetch it from another source
-        contributor: `${item.author.firstName} ${item.author.lastName}`,
-        date: new Date(item.createdAt).toLocaleDateString(),
-        imageSrc: item.images[0] || "https://placehold.co/400?text=!",
-        href: `/capsule/${item._id}`,
-      }));
-      setRecipesData(transformedData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  localRecipes = recipesData.concat(localRecipes);
+  const { t, language } = useLanguage();
+  const [isLoading, setIsLoading] = useState(false);
+  const [featuredData, setFeaturedData] = useState([]);
+  console.log("Language:", language);
 
   useEffect(() => {
-    getResponse();
-  }, []);
+    const getData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await axios.get(
+          `https://culture-capsule-backend.onrender.com/api/posts?language=${language}`
+        );
+        if (response.data.success) {
+          const transformedData = response.data.posts.map((item) => {
+            let hasImages = true;
+            if (item.images.length === 0) {
+              hasImages = false;
+            }
+            return {
+              title: item.title,
+              category: item.category,
+              contributor: item.author.username,
+              date: new Date(item.createdAt).toLocaleDateString(),
+              hasImages: hasImages,
+              imageSrc: item.images[0] || " ",
+              href: `/capsule/${item._id}`,
+              likes: item.likes.length || 0,
+              dislikes: item.dislikes.length || 0,
+            };
+          });
+          setFeaturedData(transformedData);
+        } else {
+          toast.error("Failed to fetch data. Please try again later.");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getData();
+  }, [language]);
 
   return (
     <section id="explore" className="py-20 bg-white relative">
@@ -65,55 +79,45 @@ const FeaturedCollections: React.FC = () => {
           </div>
         </div>
 
-        <Carousel
-          className="w-full"
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-        >
-          <CarouselContent className="-ml-4">
-            {localRecipes.slice(0, 6).map((collection, index) => (
-              <CarouselItem
-                key={collection.title}
-                className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
-              >
-                <div
-                  className="animate-fade-in opacity-0"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <CollectionCard {...collection} index={index} />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <div className="hidden md:block">
-            <CarouselPrevious className="-left-4 bg-white dark:bg-gray-800" />
-            <CarouselNext className="-right-4 bg-white dark:bg-gray-800" />
+        {isLoading ? (
+          <div className="flex justify-center">
+            <Loader2 className="animate-spin" />
           </div>
-        </Carousel>
+        ) : (
+          <Carousel
+            className="w-full"
+            opts={{
+              align: "start",
+              loop: true,
+            }}
+          >
+            <CarouselContent className="-ml-4">
+              {featuredData.slice(0, 6).map((collection, index) => (
+                <CarouselItem
+                  key={collection.title}
+                  className="pl-4 basis-full sm:basis-1/3 lg:basis-1/4"
+                >
+                  <div className="animate-fade-in opacity-0">
+                    <CollectionCard {...collection} index={index} />
+                  </div>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="hidden md:block">
+              <CarouselPrevious className="-left-4 bg-white" />
+              <CarouselNext className="-right-4 bg-white" />
+            </div>
+          </Carousel>
+        )}
 
         <div className="mt-10 text-center">
-          <Link
-            to="/featured"
-            className="inline-flex items-center gap-2 text-capsule-accent hover:text-capsule-accent/80 font-medium transition-colors"
+          <a
+            href="/featured"
+            className="flex justify-center items-center gap-2 text-capsule-accent hover:text-capsule-accent/80 font-medium transition-colors"
           >
             <span>{t("view_all")}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M5 12h14" />
-              <path d="m12 5 7 7-7 7" />
-            </svg>
-          </Link>
+            <ArrowRight />
+          </a>
         </div>
       </div>
     </section>

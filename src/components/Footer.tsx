@@ -1,6 +1,7 @@
 import React from "react";
 import { Heart, Mail, Instagram, Twitter, Facebook } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const { t } = useLanguage();
@@ -43,15 +44,20 @@ const Footer: React.FC = () => {
       <div className="capsule-container">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 relative rounded-full bg-capsule-accent flex items-center justify-center text-white overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-capsule-accent to-capsule-terracotta" />
-                <span className="font-bold text-xl relative z-10">C</span>
+            <Link to="/" className="flex items-center gap-2">
+              <div className="w-12 h-12 relative flex items-center justify-center text-white overflow-hidden group">
+                <img
+                  src="/images/logo-black.png"
+                  alt="Culture Capsule"
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <span className="font-serif text-xl font-semibold text-capsule-text tracking-tight">
-                {t("brand_name")}
+              <span
+                className={"font-serif text-xl font-semibold tracking-tight"}
+              >
+                Culture Capsule
               </span>
-            </div>
+            </Link>
 
             <p className="text-sm text-capsule-text/80 mb-6 max-w-xs">
               {t("brand_description")}

@@ -8,7 +8,11 @@ import LanguageSwitcher from "./LanguageSwitcher";
 import refreshToken from "@/api/refresh";
 import axios from "axios";
 
-const Navbar: React.FC = () => {
+interface NavbarProps {
+  backgroundColor?: string;
+}
+
+const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { t } = useLanguage();
@@ -86,19 +90,27 @@ const Navbar: React.FC = () => {
   return (
     <header
       className={cn(
-        "z-50 transition-all duration-300 h-20 px-6 border-b-[1.5px] border-b-secondary flex items-center",
+        `${backgroundColor} z-50 h-20 px-6 border-b-[1.5px] border-b-secondary flex items-center transition-colors duration-75`,
         isScrolled &&
-          "fixed top-0 left-0 right-0 bg-secondary/80 backdrop-blur-md shadow-sm"
+          "fixed top-0 left-0 right-0 bg-secondary/80 backdrop-blur-md shadow-sm border-b-white"
       )}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 relative flex items-center justify-center text-white overflow-hidden group">
-            <img
-              src="/images/logo.png"
-              alt="Culture Capsule"
-              className="w-full h-full object-contain"
-            />
+          <div className="w-12 h-12 relative flex items-center justify-center text-white overflow-hidden group">
+            {isScrolled ? (
+              <img
+                src="/images/logo-white.png"
+                alt="Culture Capsule"
+                className="w-full h-full object-contain"
+              />
+            ) : (
+              <img
+                src="/images/logo-black.png"
+                alt="Culture Capsule"
+                className="w-full h-full object-contain"
+              />
+            )}
           </div>
           <span
             className={`font-serif text-xl font-semibold tracking-tight ${
@@ -114,7 +126,7 @@ const Navbar: React.FC = () => {
             <Link
               key={item.name}
               to={item.href}
-              className={`subtle-link text-sm font-medium ${
+              className={`subtle-link text-sm font-medium hover:text-capsule-accent ${
                 isScrolled ? "text-white" : "text-black"
               }`}
             >

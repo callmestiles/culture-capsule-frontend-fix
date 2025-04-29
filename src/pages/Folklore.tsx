@@ -43,19 +43,22 @@ const Folklore = () => {
   }, []);
   return (
     <div className="min-h-screen bg-capsule-bg">
-      <Navbar />
+      <Navbar backgroundColor="bg-capsule-paper" />
 
       <main>
         {/* Hero Section */}
-        <section className="pt-32 pb-16 relative bg-capsule-paper">
+        <section
+          className="relative bg-capsule-paper flex items-center"
+          style={{ minHeight: "calc(100vh - 5rem)" }}
+        >
           <div className="absolute inset-0 opacity-[0.04] bg-noise-pattern mix-blend-multiply" />
           <div className="capsule-container">
             <div className="flex flex-col md:flex-row md:items-center gap-8">
               <div className="md:w-1/2">
-                <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
+                <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
                   {t("folklore_pill")}
                 </div>
-                <h1 className="text-4xl md:text-5xl font-serif font-semibold mb-4 text-capsule-text">
+                <h1 className="sm:text-5xl lg:text-6xl font-serif font-semibold mb-4 text-capsule-text">
                   {t("folklore_title")}
                 </h1>
                 <p className="text-capsule-text/80 leading-relaxed mb-6">
@@ -105,7 +108,7 @@ const Folklore = () => {
 
           <div className="capsule-container">
             <div className="text-center max-w-2xl mx-auto mb-16">
-              <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
+              <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
                 {t("folklore_pill")}
               </div>
 
@@ -118,7 +121,7 @@ const Folklore = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {folkloreCollection.map((folklore, index) => (
                 <CollectionCard
                   key={folklore.title}
@@ -145,7 +148,7 @@ const Folklore = () => {
             <div className="bg-white rounded-2xl shadow-capsule overflow-hidden">
               <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="p-8 lg:p-12 flex flex-col justify-center">
-                  <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
+                  <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
                     {t("folklore_pill")}
                   </div>
 

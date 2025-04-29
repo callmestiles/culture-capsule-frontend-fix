@@ -8,6 +8,7 @@ interface AnimatedImageProps {
   lowResSrc?: string;
   aspectRatio?: string;
   loadingColor?: string;
+  shouldBlur?: boolean;
 }
 
 const AnimatedImage: React.FC<AnimatedImageProps> = ({
@@ -17,6 +18,7 @@ const AnimatedImage: React.FC<AnimatedImageProps> = ({
   lowResSrc,
   aspectRatio = "aspect-video",
   loadingColor = "bg-capsule-paper",
+  shouldBlur = false,
 }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -65,7 +67,7 @@ const AnimatedImage: React.FC<AnimatedImageProps> = ({
     >
       {isIntersecting && (
         <>
-          <div className="absolute inset-0 backdrop-blur-xs" />
+          {shouldBlur && <div className="absolute inset-0 backdrop-blur-xs" />}
           <img
             src={src}
             alt={alt}

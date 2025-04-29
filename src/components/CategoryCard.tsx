@@ -36,12 +36,13 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
           alt={title}
           aspectRatio="aspect-[3/2]"
           className="w-full h-full"
+          shouldBlur={true}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/5" />
       </div>
 
       <div className="relative z-10 p-6 h-full flex flex-col justify-end">
-        <div className="mb-4 w-14 h-14 rounded-full bg-black/90 backdrop-blur-sm flex items-center justify-center shadow-sm transition-transform duration-500 group-hover:scale-110">
+        <div className="mb-4 w-14 h-14 rounded-full bg-capsule-accent backdrop-blur-sm flex items-center justify-center shadow-sm transition-transform duration-500 group-hover:scale-110">
           {icon}
         </div>
 

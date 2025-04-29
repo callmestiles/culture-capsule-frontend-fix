@@ -54,9 +54,9 @@ export const en = {
   music_dance: "Music & Dance",
   music_dance_desc:
     "Experience traditional music and dances that reflect cultural heritage.",
-  photo_archive: "Photo Archive",
-  photo_archive_desc:
-    "Browse historical photographs documenting life, places, and events.",
+  poem: "Poem",
+  poem_desc:
+    "Explore a collection of expressive poetry that captures emotions, culture, and imagination through words.",
 
   // Featured
   featured_archives: "Featured Archives",
@@ -69,6 +69,7 @@ export const en = {
   no_results: "No results found",
   try_different_category: "Try a different category or view all capsules",
   by: "By",
+  share: "Share",
 
   // Categories for filtering
   all: "All",

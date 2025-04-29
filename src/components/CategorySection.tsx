@@ -1,5 +1,13 @@
 import React from "react";
-import { Book, Utensils, Palette, Music, Landmark, Camera } from "lucide-react";
+import {
+  Book,
+  Utensils,
+  Palette,
+  Music,
+  Landmark,
+  Camera,
+  BookOpenText,
+} from "lucide-react";
 import CategoryCard from "./CategoryCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 
@@ -42,14 +50,13 @@ const CategorySection: React.FC = () => {
       icon: <Music className="text-white" size={24} />,
       href: "#music",
     },
-    // {
-    //   title: t("photo_archive"),
-    //   description: t("photo_archive_desc"),
-    //   imageSrc:
-    //     "https://images.unsplash.com/photo-1551225183-94acb7d595b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    //   icon: <Camera className="text-capsule-accent" size={24} />,
-    //   href: "#photos",
-    // },
+    {
+      title: t("poem"),
+      description: t("poem_desc"),
+      imageSrc: "/images/poem.jpg",
+      icon: <BookOpenText className="text-white" size={24} />,
+      href: "#poem",
+    },
   ];
 
   return (

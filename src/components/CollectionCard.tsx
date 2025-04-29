@@ -1,9 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import AnimatedImage from "./AnimatedImage";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Image } from "lucide-react";
 
 interface CollectionCardProps {
   title: string;
@@ -11,6 +10,7 @@ interface CollectionCardProps {
   contributor: string;
   date: string;
   imageSrc: string;
+  hasImages?: boolean;
   href: string;
   className?: string;
   index?: number;
@@ -23,6 +23,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   category,
   contributor,
   date,
+  hasImages,
   imageSrc,
   href,
   className,
@@ -31,7 +32,6 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
   dislikes,
 }) => {
   const { t } = useLanguage();
-
   // Extract the collection index from the href if it exists
   const detailLink = `/capsule/${index}`;
 
@@ -39,41 +39,45 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
     <Link
       to={href}
       className={cn(
-        "group flex flex-col bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-card hover:shadow-capsule transition-all duration-500 transform hover:-translate-y-1",
+        "group bg-capsule-accent text-white flex flex-col rounded-xl overflow-hidden shadow-card hover:shadow-capsule transition-all duration-500 transform hover:-translate-y-1 h-full",
         className
       )}
     >
       <div className="relative overflow-hidden">
-        <AnimatedImage
-          src={imageSrc}
-          alt={title}
-          aspectRatio="aspect-[3/2]"
-          className="w-full transition-transform duration-700 group-hover:scale-105"
-        />
-
-        <div className="absolute top-3 left-3 px-3 py-1 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full text-xs font-medium text-capsule-text dark:text-white">
+        {hasImages ? (
+          <img
+            src={imageSrc}
+            alt={title}
+            className="w-full h-full aspect-[3/2] transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <div className="bg-capsule-olive w-full h-full aspect-[3/2] flex justify-center items-center transition-transform duration-700 group-hover:scale-105">
+            <Image size={100} />
+          </div>
+        )}
+        <div className="absolute top-3 left-3 px-3 py-1 bg-capsule-sand text-white backdrop-blur-sm rounded-full text-xs font-medium">
           {category}
         </div>
       </div>
-
-      <div className="p-5 flex-grow flex flex-col">
-        <h3 className="text-xl font-serif font-semibold text-capsule-text dark:text-white mb-2 group-hover:text-capsule-accent dark:group-hover:text-capsule-accent/80 transition-colors">
-          {title}
-        </h3>
-
-        <div className="mt-auto pt-4 flex items-center justify-between text-xs text-capsule-text/70 dark:text-gray-400">
+      <div className="p-5 flex flex-col justify-between h-[175px]">
+        <div>
+          <h3 className="text-xl font-serif font-semibold text-capsule-text dark:text-white mb-2 line-clamp-2 transition-colors">
+            {title}
+          </h3>
+        </div>
+        <div className="flex items-center justify-between text-xs text-gray-300">
           <span>
-            <p>{date}</p>
+            <p className="mb-2">{date}</p>
             {t("by")} {contributor}
           </span>
-          <div className="flex items-left space-x-2">
-            <button className="flex items-center text-capsule-text/70 dark:text-gray-400 hover:text-capsule-accent dark:hover:text-capsule-accent/80 transition-colors">
-              <ThumbsUp />
+          <div className="flex items-center space-x-2">
+            <button className="flex items-center text-gray-300 transition-colors">
+              <ThumbsUp size={24} />
               <span className="ml-1">{likes || 0}</span>
             </button>
-            <button className="flex items-center text-capsule-text/70 dark:text-gray-400 hover:text-capsule-accent dark:hover:text-capsule-accent/80 transition-colors">
-              <ThumbsDown />
-              <span className="ml-1">{likes || 0}</span>
+            <button className="flex items-center text-gray-300 transition-colors">
+              <ThumbsDown size={24} />
+              <span className="ml-1">{dislikes || 0}</span>
             </button>
           </div>
         </div>
