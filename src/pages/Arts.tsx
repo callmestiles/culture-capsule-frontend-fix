@@ -93,7 +93,7 @@ const Arts = () => {
               </div>
               <div className="md:w-1/2">
                 <AnimatedImage
-                  src="/images/arts.jpg"
+                  src="/images/artsOne.jpg"
                   alt="Traditional arts and crafts of North Cyprus"
                   className="rounded-xl shadow-capsule"
                 />

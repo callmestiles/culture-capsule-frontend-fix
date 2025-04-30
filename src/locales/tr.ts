@@ -18,7 +18,7 @@ export const tr = {
   pageNotFound: "Sayfa Bulunamadı",
   returnHome: "Anasayfaya Dön",
   contributeText: "Katkıda bulunmak ister misiniz?",
-  events: "Olaylar",
+  events: "Etkinlikler",
   good_morning: "Günaydın",
   good_afternoon: "Tünaydın",
   good_evening: "İyi akşamlar",

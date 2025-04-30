@@ -26,14 +26,14 @@ const CategorySection: React.FC = () => {
     {
       title: t("local_recipes"),
       description: t("local_recipes_desc"),
-      imageSrc: "/images/food.jpg",
+      imageSrc: "/images/foodCulture.webp",
       icon: <Utensils className="text-white" size={24} />,
       href: "/recipes",
     },
     {
       title: t("arts_crafts"),
       description: t("arts_crafts_desc"),
-      imageSrc: "/images/arts.jpg",
+      imageSrc: "/images/artsOne.jpg",
       icon: <Palette className="text-white" size={24} />,
       href: "/arts",
     },
@@ -54,7 +54,7 @@ const CategorySection: React.FC = () => {
     {
       title: t("events"),
       description: t("event_desc"),
-      imageSrc: "/images/poem.jpg",
+      imageSrc: "/images/events.webp",
       icon: <Calendar1 className="text-white" size={24} />,
       href: "/events",
     },

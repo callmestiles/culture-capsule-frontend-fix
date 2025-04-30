@@ -1,5 +1,5 @@
 "use client";
-import heroImg from "/images/eventHomePage.jpeg";
+import heroImg from "/images/events.webp";
 
 export function HeroSection() {
   const scrollToEvents = () => {
