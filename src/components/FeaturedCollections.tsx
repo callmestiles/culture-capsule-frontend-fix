@@ -95,7 +95,7 @@ const FeaturedCollections: React.FC = () => {
               {featuredData.slice(0, 6).map((collection, index) => (
                 <CarouselItem
                   key={collection.title}
-                  className="pl-4 basis-full sm:basis-1/3 lg:basis-1/4"
+                  className="pl-4 basis-full sm:basis-1/3 lg:basis-1/4 2xl:basis-1/3"
                 >
                   <div className="animate-fade-in opacity-0">
                     <CollectionCard {...collection} index={index} />
