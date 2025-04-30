@@ -21,6 +21,7 @@ import EventsPage from "./pages/Events";
 import ProfilePage from "./pages/profile";
 import Music from "./pages/music";
 import PoemPage from "./pages/poem";
+import AllPage from "./pages/all";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ const App = () => (
             <Route path="/arts" element={<Arts />} />
             <Route path="/folklore" element={<Folklore />} />
             <Route path="/music" element={<Music />} />
+            <Route path="/posts" element={<AllPage />} />
             <Route path="/poems" element={<PoemPage />} />
             <Route path="/featured" element={<Featured />} />
             <Route path="/capsule/:id" element={<CapsuleDetail />} />

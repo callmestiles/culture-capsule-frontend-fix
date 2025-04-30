@@ -33,7 +33,7 @@ const Featured: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const categoryData = [
-    { key: "all_category", route: "/categories" },
+    { key: "all_category", route: "/posts" },
     { key: "historical_events_category", route: "/history" },
     { key: "local_recipes_category", route: "/recipes" },
     { key: "arts_and_crafts_category", route: "/arts" },

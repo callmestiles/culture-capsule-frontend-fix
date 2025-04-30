@@ -265,6 +265,12 @@ export const en = {
   profile_title: "My Contributions",
   profile_button: "Create New Post",
 
+  // All Page
+  all_pill: "Explore All posts",
+  all_title: "All Culture Capsules",
+  all_description:
+    "Explore a diverse collection of cultural capsules contributed by our community. Each capsule represents a unique aspect of North Cyprus's heritage, waiting to be discovered and preserved.",
+
 
 
   //Footer
