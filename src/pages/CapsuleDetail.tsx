@@ -34,6 +34,7 @@ const CapsuleDetail: React.FC = () => {
   const [capsule, setCapsule] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
+  const [disliked, setdisLiked] = useState(false);
 
   useEffect(() => {
     const fetchCapsule = async () => {
@@ -72,6 +73,96 @@ const CapsuleDetail: React.FC = () => {
       }).format(date);
     } catch (e) {
       return dateString;
+    }
+  };
+
+  const handleLike = async () => {
+    try {
+      if (liked) {
+        // Unlike if already liked
+        const response = await axios.post(
+          `https://culture-capsule-backend.onrender.com/api/posts/${id}/unlike`,
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        if (response.data.success) {
+          setLiked(false);
+        }
+      } else {
+        // Like if not already liked
+        const response = await axios.post(
+          `https://culture-capsule-backend.onrender.com/api/posts/${id}/like`,
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        if (response.data.success) {
+          setLiked(true);
+          setdisLiked(false); // remove dislike if it was active
+        }
+      }
+    } catch (error) {
+      console.error("Error (un)liking post:", error);
+      toast({
+        variant: "destructive",
+        title: t("Error"),
+        description: t("Failed to process your like action. Please try again."),
+      });
+    }
+  };
+
+  const handleDislike = async () => {
+    try {
+      if (disliked) {
+        // Undislike if already disliked
+        const response = await axios.post(
+          `https://culture-capsule-backend.onrender.com/api/posts/${id}/undislike`,
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        if (response.data.success) {
+          setdisLiked(false);
+        }
+      } else {
+        // Dislike if not already disliked
+        const response = await axios.post(
+          `https://culture-capsule-backend.onrender.com/api/posts/${id}/dislike`,
+          {},
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        if (response.data.success) {
+          setdisLiked(true);
+          setLiked(false); // remove like if it was active
+        }
+      }
+    } catch (error) {
+      console.error("Error (un)disliking post:", error);
+      toast({
+        variant: "destructive",
+        title: t("Error"),
+        description: t(
+          "Failed to process your dislike action. Please try again."
+        ),
+      });
     }
   };
 
@@ -261,7 +352,7 @@ const CapsuleDetail: React.FC = () => {
                           ? "text-capsule-accent"
                           : "text-gray-500 dark:text-gray-400"
                       }`}
-                      onClick={() => setLiked(!liked)}
+                      onClick={() => handleLike()}
                     >
                       <ThumbsUp
                         size={18}
@@ -275,10 +366,20 @@ const CapsuleDetail: React.FC = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="flex items-center gap-2 text-gray-500 dark:text-gray-400"
+                      className={`flex items-center gap-2 ${
+                        liked
+                          ? "text-capsule-accent"
+                          : "text-gray-500 dark:text-gray-400"
+                      }`}
+                      onClick={() => handleDislike()}
                     >
-                      <ThumbsDown size={18} />
-                      <span>{capsule.post.dislikes?.length || 0}</span>
+                      <ThumbsDown
+                        size={18}
+                        className={disliked ? "fill-current" : ""}
+                      />
+                      <span>
+                        {capsule.post.dislikes?.length + (disliked ? 1 : 0)}
+                      </span>
                     </Button>
                   </div>
 
