@@ -39,7 +39,7 @@ type ContributionValues = z.infer<typeof contributionSchema>;
 
 const Contribute = () => {
   const { toast } = useToast();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
@@ -103,11 +103,40 @@ const Contribute = () => {
       );
 
       if (response.data.success) {
-        toast({
-          title: "Contribution submitted successfully!",
-          description: "Thank you for preserving cultural heritage.",
-        });
-        form.reset();
+        const postId = response.data.post._id;
+        setTimeout(async () => {
+          try {
+            const postRes = await axios.get(
+              `https://culture-capsule-backend.onrender.com/api/posts/${postId}`,
+              {
+                withCredentials: true,
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              }
+            );
+            if (postRes.data.status === "approved") {
+              toast({
+                title: "Post submitted successfully",
+                description: "Thank you for preserving cultural heritage.",
+              });
+              setIsUploading(false);
+            }
+          } catch (error) {
+            console.error("Error adding author to post:", error.status);
+            if (error.status === 404) {
+              toast({
+                title: "Post rejected",
+                description: "Your contribution has been regarded as spam.",
+              });
+            }
+            setIsUploading(false);
+            return;
+          }
+          form.reset();
+        }, 5000);
       } else {
         throw new Error(response.data.message || "Submission failed");
       }
@@ -118,8 +147,9 @@ const Contribute = () => {
           error instanceof Error ? error.message : "Please try again later.",
         variant: "destructive",
       });
-    } finally {
       setIsUploading(false);
+    } finally {
+      // setIsUploading(false);
     }
   };
 
