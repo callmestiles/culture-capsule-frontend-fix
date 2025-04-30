@@ -2,12 +2,19 @@ import { ThumbsUp, ThumbsDown, MessageSquare, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Post } from "@/lib/types";
+import { a } from "node_modules/framer-motion/dist/types.d-DDSxwf0n";
+import { useToast } from "@/components/ui/use-toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { clear } from "console";
 
 interface UserPostsProps {
   posts: Post[];
 }
 
 export function UserPosts({ posts }: UserPostsProps) {
+  const { toast } = useToast();
+  const Navigate = useNavigate();
   // Format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -18,13 +25,53 @@ export function UserPosts({ posts }: UserPostsProps) {
     });
   };
 
+  const deletePost = async (postId: string) => {
+    try {
+      const response = await axios.delete(
+        `https://culture-capsule-backend.onrender.com/api/posts/${postId}`,
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+
+      if (!response.data.success) {
+        toast({
+          title: "Failed to delete post",
+          description: "Please try again later.",
+        });
+        throw new Error("Failed to delete post");
+      } else {
+        toast({
+          title: "Post deleted",
+          description: "Your post has been successfully deleted.",
+        });
+        setTimeout(() => {
+          Navigate(0);
+        }, 2000);
+      }
+
+      // Optionally, you can refresh the posts list or update the UI after deletion
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      toast({
+        title: "Failed to delete post",
+        description: error.message,
+      });
+    }
+  };
+
   if (posts.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
         <p className="text-gray-500">No posts found in this category.</p>
-        <button className="mt-4 rounded-md bg-[rgb(82,104,45)] px-4 py-2 text-sm font-medium text-white hover:bg-[rgb(65,85,35)]">
-          Create New Post
-        </button>
+        <a href="/contribute">
+          <button className="mt-4 rounded-md bg-[rgb(82,104,45)] px-4 py-2 text-sm font-medium text-white hover:bg-[rgb(65,85,35)]">
+            Create New Post
+          </button>
+        </a>
       </div>
     );
   }
@@ -71,10 +118,17 @@ export function UserPosts({ posts }: UserPostsProps) {
                   <span className="text-sm">{post.comments}</span>
                 </div>
               </div>
-
-              <button className="text-sm font-medium text-[rgb(82,104,45)] hover:underline">
-                View Post
-              </button>
+              <div className="flex items-center gap-4">
+                <button className="text-sm font-medium text-[rgb(82,104,45)] hover:underline">
+                  View Post
+                </button>
+                <button
+                  className="text-sm font-medium text-[rgb(255,0,0)] hover:underline"
+                  onClick={() => deletePost(post.id)}
+                >
+                  Delete Post
+                </button>
+              </div>
             </div>
           </CardContent>
         </Card>
