@@ -168,6 +168,20 @@ export const tr = {
   music_sectiontwo_pill: "Öne Çıkan Makale",
   music_sectiontwo_button: "Tam Makaleyi Oku",
 
+    // Poem
+  poem_pill: "Kültürel İfadeler",
+  poem_title: "Seslerimize Saygı, Dizelerimizi Koruma",
+  poem_description:
+    "Kuzey Kıbrıs'ın şiirsel geleneğine adım atın — zamansız halk şiirlerinden, topluluğun ruhunu yansıtan çağdaş dizelere kadar. Sözcüklerin, ritmin ve duyguların nasıl birleşerek kültürel hafızayı ve kimliği yaşattığını keşfedin.",
+  poem_icon_one: "Halk Şiirleri",
+  poem_icon_two: "Anlatı Geleneği",
+  poem_icon_three: "Şiir Arşivi",
+  poem_sectionone_pill: "Şiirleri Keşfet",
+  poem_sectionone_title: "Öne Çıkan Şiir Gelenekleri",
+  poem_sectionone_description:
+    "Kuzey Kıbrıs’ın zengin şiir mirasını keşfedin — topluluklarda okunan içten halk dizelerinden nesiller boyu aktarılan etkileyici şiirlere kadar, kültürel katkı sunanlar tarafından sevgiyle korunmuş eserlerle tanışın.",
+  poem_sectiontwo_pill: "Öne Çıkan Makale",
+  poem_sectiontwo_button: "Makaleyi Oku",
 
   // Arts 
   arts_pill: "Sanatsal Miras",
