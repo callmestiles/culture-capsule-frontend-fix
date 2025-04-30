@@ -231,6 +231,37 @@ export const tr = {
   folklore_sectiontwo_pill: "Öne Çıkan Hikâye",
   folklore_sectiontwo_button: "Tam Hikâyeyi Oku",
 
+  // Contribute
+  contribute_pill: "Misyonumuza Katılın",
+  contribute_title: "Kültürel Mirası Paylaşın",
+  contribute_description:
+    "Kuzey Kıbrıs’ın zengin kültürel mirasını korumamıza yardım edin; öğrendiğiniz veya deneyimlediğiniz hikâyeleri, tarifleri, sanatları veya folkloru katkıda bulunarak paylaşın.",
+  contribute_formOne_title: "Başlık",
+  contribute_formOne_placeholder: "Katkınıza açıklayıcı bir başlık verin",
+  contribute_formOne_description: "Paylaştığınız şeyi açıklayan net bir başlık seçin.",
+  contribute_formTwo_title: "Konum (İsteğe Bağlı)",
+  contribute_formTwo_placeholder: "Örn. Gazimağusa, Girne, vb.",
+  contribute_formTwo_description:
+    "Bu kültürel ögenin ortaya çıktığı veya uygulandığı yer.",
+  contribute_formThree_title: "Yıl/Dönem (İsteğe Bağlı)",
+  contribute_formThree_placeholder: "Örn. 1950'ler, 19. yüzyıl, vb.",
+  contribute_formThree_description: "Katkınızla ilgili zaman dilimi.",
+  contribute_formFour_title: "Açıklama",
+  contribute_formFour_placeholder:
+    "Kültürel öğeyi, hikâyeyi, tarifi vb. ayrıntılı şekilde tanımlayın",
+  contribute_formFour_description: "Bu kültürel bilgiyi korumak için olabildiğince ayrıntı verin.",
+  contribute_formFive_title: "Medya Yükle (İsteğe Bağlı)",
+  contribute_formFive_placeholderOne:
+    "Dosyaları buraya sürükleyip bırakın ya da tıklayarak göz atın",
+  contribute_formFive_placeholderTwo:
+    "Desteklenen formatlar: JPG, PNG, JPEG (Maks. 20MB)",
+  contribute_formFive_description:
+    "Katkınızla ilgili fotoğrafları yükleyin.",
+  contribute_formFive_description_btn: "Dosya Seç",
+  contribute_formSubmitBtn: "Katkıyı Gönder",
+  contribute_formSubmitBtnLoading: "Gönderiliyor...",
+
+
   //Footer
   explore: "Keşfet",
   categories_footer: "Kategoriler",
