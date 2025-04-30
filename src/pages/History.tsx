@@ -245,7 +245,7 @@ const History = () => {
                   <button
                     onClick={handlePreviousPage}
                     disabled={currentPage === 1}
-                    className={`p-2 rounded-lg bg-red-300 flex items-center justify-center ${
+                    className={`p-2 z-10 rounded-lg flex items-center justify-center  ${
                       currentPage === 1
                         ? "text-gray-400 cursor-not-allowed"
                         : "text-capsule-text hover:bg-capsule-sand hover:text-white"
@@ -276,7 +276,7 @@ const History = () => {
                   <button
                     onClick={handleNextPage}
                     disabled={currentPage === totalPages}
-                    className={`p-2 rounded-lg flex items-center justify-center ${
+                    className={`p-2 z-10 rounded-lg flex items-center justify-center ${
                       currentPage === totalPages
                         ? "text-gray-400 cursor-not-allowed"
                         : "text-capsule-text hover:bg-capsule-sand hover:text-white"

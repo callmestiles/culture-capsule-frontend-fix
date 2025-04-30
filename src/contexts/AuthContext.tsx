@@ -1,6 +1,6 @@
-// src/context/AuthContext.tsx
 import React, { createContext, useContext, useEffect, useState } from "react";
 import api from "@/api/axios"; // axios instance with refresh interceptor
+import refreshToken from "@/api/tokenService";
 
 interface User {
   id: string;
@@ -27,10 +27,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const fetchUser = async () => {
     try {
-      const response = await api.get(
-        "https://culture-capsule-backend.onrender.com/api/user/profile"
-      );
-      setUser(response.data.user); // Adjust based on actual backend response shape
+      const response = await api.get("/user/profile");
+      setUser(response.data.user);
     } catch (error) {
       setUser(null);
       console.error("Failed to fetch user:", error);
@@ -39,15 +37,63 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  // Check and set up token refresh schedule
   useEffect(() => {
-    // fetchUser();
+    // Function to check token and user session on mount
+    const initializeAuth = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (token) {
+        // Attempt to fetch user profile to validate session
+        await fetchUser();
+
+        // Set up token refresh schedule
+        setupTokenRefresh();
+      } else {
+        setIsLoading(false);
+      }
+    };
+
+    initializeAuth();
+
+    // Cleanup function
+    return () => {
+      // Clear any token refresh intervals when component unmounts
+      if (window.tokenRefreshInterval) {
+        clearInterval(window.tokenRefreshInterval);
+      }
+    };
   }, []);
+
+  // Set up token refresh on a schedule (every 25 minutes to be safe)
+  const setupTokenRefresh = () => {
+    // Clear any existing interval
+    if (window.tokenRefreshInterval) {
+      clearInterval(window.tokenRefreshInterval);
+    }
+
+    // Set up a new interval to refresh token every 25 minutes (before the 30 min expiry)
+    window.tokenRefreshInterval = setInterval(async () => {
+      try {
+        await refreshToken();
+        console.log("Token refreshed proactively");
+      } catch (error) {
+        console.error("Failed to refresh token proactively:", error);
+      }
+    }, 25 * 60 * 1000); // 25 minutes in milliseconds
+  };
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
       const res = await api.post("/auth/login", { email, password });
-      // await fetchUser(); // Refresh user after login
+      const { accessToken } = res.data;
+
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken);
+      }
+
+      await fetchUser(); // Refresh user after login
+      setupTokenRefresh(); // Setup token refresh schedule
     } catch (error) {
       console.error("Login error:", error);
       throw error;
@@ -72,6 +118,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const logout = async () => {
     try {
       await api.post("/auth/logout");
+      localStorage.removeItem("accessToken");
+
+      // Clear token refresh interval
+      if (window.tokenRefreshInterval) {
+        clearInterval(window.tokenRefreshInterval);
+      }
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
@@ -102,3 +154,10 @@ export const useAuth = () => {
   }
   return context;
 };
+
+// Add token refresh interval to window type
+declare global {
+  interface Window {
+    tokenRefreshInterval?: NodeJS.Timeout;
+  }
+}
