@@ -1,7 +1,7 @@
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import type { Event } from "@/lib/data";
 import { Image } from "lucide-react";
+import { Event } from "./eventsList";
 
 interface EventCardProps {
   event: Event;
@@ -23,10 +23,10 @@ export function EventCard({ event, compact = false }: EventCardProps) {
     return (
       <Card className="overflow-hidden hover:shadow-sm transition-shadow">
         <CardContent className="p-4">
-          <div className="mb-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">
+          <div className="mb-2 inline-block rounded-full bg-capsule-sand px-3 py-1 text-xs font-medium text-white">
             {event.category}
           </div>
-          <h3 className="mb-2 text-lg font-bold text-gray-800">
+          <h3 className="mb-2 text-lg font-bold text-capsule-accent">
             {event.title}
           </h3>
           <p className="mb-3 text-sm text-gray-600 line-clamp-2">
@@ -62,7 +62,7 @@ export function EventCard({ event, compact = false }: EventCardProps) {
           )}
         </div>
         <CardContent className="flex-1 py-9 px-6 items-center">
-          <div className="mb-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-800">
+          <div className="mb-2 inline-block rounded-full bg-capsule-sand px-3 py-1 text-xs font-medium text-white">
             {event.category}
           </div>
           <h3 className="mb-2 text-xl font-bold text-gray-800">

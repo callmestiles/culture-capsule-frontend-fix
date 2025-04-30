@@ -84,6 +84,22 @@ export const en = {
   categories: "Categories",
   profile: "Profile",
 
+  // Events
+  hero_alt: "An event happening where fireworks are being displayed",
+  cultural_events: "Cultural Events",
+  discover_events:
+    "Discover and participate in cultural events happening around you",
+  explore_events: "Explore Events",
+  upcoming_events: "Upcoming Events",
+  calendar: "Calendar",
+  art: "Art",
+  food: "Food",
+  heritage: "Heritage",
+  community: "Community",
+  theater: "Theater",
+  no_events_found: "No events found in this category.",
+  event_location: "Event Location",
+
   // Categories for filtering
   all: "All",
   photos: "Photos",
@@ -220,7 +236,6 @@ export const en = {
   categories_footer: "Categories",
   recentAdditions: "Recent Additions",
   featuredStories: "Featured Stories",
-  community: "Community",
   "contribute-footer": "Contribute",
   submitContent: "Submit Content",
   becomeVolunteer: "Become a Volunteer",

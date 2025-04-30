@@ -84,6 +84,21 @@ export const tr = {
   categories: "Kategoriler",
   profile: "Profil",
 
+  //Events
+  hero_alt: "Havai fişeklerin gösterildiği bir etkinlik",
+  cultural_events: "Kültürel Etkinlikler",
+  discover_events:
+    "Çevrenizde gerçekleşen kültürel etkinlikleri keşfedin ve katılın",
+  explore_events: "Etkinlikleri Keşfet",
+  upcoming_events: "Yaklaşan Etkinlikler",
+  calendar: "Takvim",
+  art: "Sanat",
+  food: "Yiyecek",
+  heritage: "Miras",
+  theater: "Tiyatro",
+  no_events_found: "Bu kategoride etkinlik bulunamadı.",
+  event_location: "Etkinlik Konumu",
+
   // Categories for filtering
   all: "Tümü",
   photos: "Fotoğraflar",
@@ -156,7 +171,7 @@ export const tr = {
   recipes_sectiontwo_pill: "Öne Çıkan Tarifler",
   recipes_sectiontwo_button: "Tam Tarifi Görüntüle",
 
-  // Music 
+  // Music
   music_pill: "Kültürel İfadeler",
   music_title: "Ritimlerimizi Kutluyor, Hareketlerimizi Onurlandırıyoruz",
   music_description:
@@ -171,7 +186,7 @@ export const tr = {
   music_sectiontwo_pill: "Öne Çıkan Makale",
   music_sectiontwo_button: "Tam Makaleyi Oku",
 
-    // Poem
+  // Poem
   poem_pill: "Kültürel İfadeler",
   poem_title: "Seslerimize Saygı, Dizelerimizi Koruma",
   poem_description:
@@ -186,7 +201,7 @@ export const tr = {
   poem_sectiontwo_pill: "Öne Çıkan Makale",
   poem_sectiontwo_button: "Makaleyi Oku",
 
-  // Arts 
+  // Arts
   arts_pill: "Sanatsal Miras",
   arts_title: "Geleneksel Sanatlar ve El İşleri",
   arts_description:

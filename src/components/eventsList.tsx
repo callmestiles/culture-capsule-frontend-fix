@@ -1,20 +1,65 @@
-"use client";
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { eventData } from "@/lib/data";
 import { EventCard } from "./eventCard";
+import axios from "axios";
+import { useLanguage } from "@/contexts/LanguageContext";
+
+export interface Event {
+  id: number;
+  title: string;
+  description: string;
+  date: string;
+  time: string;
+  location: string;
+  category: string;
+  image?: string;
+}
 
 export function EventsList() {
+  const { t, language } = useLanguage();
   const [activeTab, setActiveTab] = useState("all");
+  const [eventsData, setEventsData] = useState<Event[]>([]);
 
-  // Filter events based on active tab
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(
+          `https://culture-capsule-backend.onrender.com/api/events?language=${language}`
+        );
+        if (response.data.success) {
+          console.log("Events fetched successfully:", response.data.events);
+          const transformedData = response.data.events.map((item) => {
+            return {
+              id: item._id,
+              title: item.title,
+              description: item.description,
+              date: item.startDate,
+              time: `${item.startTime} - ${item.endTime}`,
+              location: item.location || t("event_location"),
+              category:
+                item.category.charAt(0).toUpperCase() + item.category.slice(1),
+              image:
+                item.imageUrl.length > 0
+                  ? item.imageUrl[0]
+                  : "https://placehold.co/200?text=No+Image",
+            };
+          });
+          setEventsData(transformedData);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+    fetchEvents();
+  }, [language, t]);
+
   const filteredEvents =
     activeTab === "all"
-      ? eventData
-      : eventData.filter((event) => event.category.toLowerCase() === activeTab);
+      ? eventsData
+      : eventsData.filter(
+          (event) => event.category.toLowerCase() === activeTab
+        );
 
-  // Format date
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -32,43 +77,43 @@ export function EventsList() {
             value="all"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
-            All
+            {t("all")}
           </TabsTrigger>
           <TabsTrigger
             value="music"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
-            Music
+            {t("music")}
           </TabsTrigger>
           <TabsTrigger
             value="art"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
-            Art
+            {t("art")}
           </TabsTrigger>
           <TabsTrigger
             value="food"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
-            Food
+            {t("food")}
           </TabsTrigger>
           <TabsTrigger
             value="heritage"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
-            Heritage
+            {t("heritage")}
           </TabsTrigger>
           <TabsTrigger
             value="community"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
-            Community
+            {t("community")}
           </TabsTrigger>
           <TabsTrigger
             value="theater"
             className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
           >
-            Theater
+            {t("theater")}
           </TabsTrigger>
         </TabsList>
 
@@ -80,9 +125,7 @@ export function EventsList() {
               ))
             ) : (
               <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
-                <p className="text-gray-500">
-                  No events found in this category.
-                </p>
+                <p className="text-gray-500">{t("no_events_found")}</p>
               </div>
             )}
           </div>
