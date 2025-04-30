@@ -8,7 +8,7 @@ export default async function refreshToken() {
     }).catch(error => {
         console.error("Error refreshing token:", error);
         // Handle token refresh failure (e.g., redirect to login)
-        window.location.href = "/login";
+        // window.location.href = "/login";
     })
     
 }
