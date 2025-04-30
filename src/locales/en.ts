@@ -231,6 +231,38 @@ export const en = {
   folklore_sectiontwo_pill: "Featured Story",
   folklore_sectiontwo_button: "Read Full Story",
 
+  // Contribute
+  contribute_pill: "Join Our Mission",
+  contribute_title: "Share Cultural Heritage",
+  contribute_description:
+    "Help preserve the rich cultural heritage of North Cyprus by contributing stories, recipes, arts, or folklore that you've learned or experienced.",
+  contribute_formOne_title: "Title",
+  contribute_formOne_placeholder: "Give your contribution a descriptive title",
+  contribute_formOne_description: "Choose a clear title that describes what you're sharing.",
+  contribute_formTwo_title: "Location (Optional)",
+  contribute_formTwo_placeholder: "e.g. Famagusta, Kyrenia, etc.",
+  contribute_formTwo_description:
+    "Where this cultural element originated or is practiced.",
+  contribute_formThree_title: "Year/Period (Optional)",
+  contribute_formThree_placeholder: "e.g. 1950s, 19th century, etc.",
+  contribute_formThree_description: "The time period relevant to your contribution.",
+  contribute_formFour_title: "Description",
+  contribute_formFour_placeholder:
+    "Describe the cultural item, story, recipe, etc. in detail",
+  contribute_formFour_description: "Provide as detail as possible to preserve this cultural knowledge.",
+  contribute_formFive_title: "Upload Media (Optional)",
+  contribute_formFive_placeholderOne:
+    "Drag and drop files here, or click to browse",
+  contribute_formFive_placeholderTwo:
+    "Supported formats: JPG, PNG, JPEG (Max 20MB)",
+  contribute_formFive_description:
+    "Upload photos related to your contribution.",
+  contribute_formFive_description_btn: "Browse Files",
+  contribute_formSubmitBtn: "Submit Contribution",
+  contribute_formSubmitBtnLoading: "Submitting...",
+
+
+
   //Footer
   explore: "Explore",
   categories_footer: "Categories",

@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/select";
 import axios from "axios";
 import refreshToken from "@/api/refresh";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const contributionSchema = z.object({
   title: z.string().min(5, { message: "Title must be at least 5 characters" }),
@@ -52,6 +53,7 @@ type ContributionValues = z.infer<typeof contributionSchema>;
 
 const Contribute = () => {
   const { toast } = useToast();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -169,15 +171,13 @@ const Contribute = () => {
           <div className="max-w-3xl mx-auto">
             <div className="mb-8">
               <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
-                Contribute
+                {t("contribute_pill")}
               </div>
               <h1 className="text-3xl text-black md:text-4xl font-serif font-semibold mb-4">
-                Share Cultural Heritage
+                {t("contribute_title")}
               </h1>
               <p className="text-capsule-text/80 leading-relaxed">
-                Help preserve the rich cultural heritage of North Cyprus by
-                contributing stories, recipes, arts, or folklore that you've
-                learned or experienced.
+                {t("contribute_description")}
               </p>
             </div>
 
@@ -193,16 +193,15 @@ const Contribute = () => {
                       name="title"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Title</FormLabel>
+                          <FormLabel>{t("contribute_formOne_title")}</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Give your contribution a descriptive title"
+                              placeholder={t("contribute_formOne_placeholder")}
                               {...field}
                             />
                           </FormControl>
                           <FormDescription>
-                            Choose a clear title that describes what you're
-                            sharing.
+                            {t("contribute_formOne_description")}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -215,16 +214,19 @@ const Contribute = () => {
                         name="location"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Location (Optional)</FormLabel>
+                            <FormLabel>
+                              {t("contribute_formTwo_title")}
+                            </FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="e.g., Famagusta, Kyrenia, etc."
+                                placeholder={t(
+                                  "contribute_formTwo_placeholder"
+                                )}
                                 {...field}
                               />
                             </FormControl>
                             <FormDescription>
-                              Where this cultural element originated or is
-                              practiced.
+                              {t("contribute_formTwo_description")}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -236,15 +238,19 @@ const Contribute = () => {
                         name="year"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Year/Period (Optional)</FormLabel>
+                            <FormLabel>
+                              {t("contribute_formThree_title")}
+                            </FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="e.g., 1950s, 19th century, etc."
+                                placeholder={t(
+                                  "contribute_formThree_placeholder"
+                                )}
                                 {...field}
                               />
                             </FormControl>
                             <FormDescription>
-                              The time period relevant to your contribution.
+                              {t("contribute_formThree_description")}
                             </FormDescription>
                             <FormMessage />
                           </FormItem>
@@ -257,17 +263,18 @@ const Contribute = () => {
                       name="content"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Description</FormLabel>
+                          <FormLabel>
+                            {t("contribute_formFour_title")}
+                          </FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Describe the cultural item, story, recipe, etc. in detail..."
+                              placeholder={t("contribute_formFour_placeholder")}
                               className="min-h-[150px]"
                               {...field}
                             />
                           </FormControl>
                           <FormDescription>
-                            Provide as much detail as possible to preserve this
-                            cultural knowledge.
+                            {t("contribute_formFour_description")}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -279,17 +286,19 @@ const Contribute = () => {
                       name="image"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Upload Media (Optional)</FormLabel>
+                          <FormLabel>
+                            {t("contribute_formFive_title")}
+                          </FormLabel>
                           <div className="border-2 border-dashed border-capsule-text/20 rounded-lg p-8 text-center hover:border-capsule-accent/50 transition-colors">
                             <Upload
                               size={32}
                               className="mx-auto mb-3 text-capsule-text/40"
                             />
                             <p className="text-capsule-text/60 mb-2">
-                              Drag and drop files here, or click to browse
+                              {t("contribute_formFive_placeholderOne")}
                             </p>
                             <p className="text-xs text-capsule-text/50">
-                              Supported formats: JPG, PNG, JPEG (Max 20MB)
+                              {t("contribute_formFive_placeholderTwo")}
                             </p>
                             <input
                               type="file"
@@ -306,11 +315,11 @@ const Contribute = () => {
                                 document.getElementById("media-upload")?.click()
                               }
                             >
-                              Browse Files
+                              {t("contribute_formFive_description_btn")}
                             </Button>
                           </div>
                           <FormDescription>
-                            Upload photos related to your contribution.
+                            {t("contribute_formFive_description")}
                           </FormDescription>
                           <FormMessage />
                         </FormItem>
@@ -323,7 +332,9 @@ const Contribute = () => {
                         className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
                         disabled={isUploading}
                       >
-                        {isUploading ? "Submitting..." : "Submit Contribution"}
+                        {isUploading
+                          ? `${t("contribute_formSubmitBtnLoading")}`
+                          : `${t("contribute_formSubmitBtn")}`}
                       </Button>
                     </div>
                   </form>
