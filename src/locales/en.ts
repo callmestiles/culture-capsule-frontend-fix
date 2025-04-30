@@ -161,12 +161,12 @@ export const en = {
   music_icon_one: "Traditional Instruments",
   music_icon_two: "Folk Dances",
   music_icon_three: "Performance Archive",
-  music_sectionone_pill: "Explore Recipes",
-  music_sectionone_title: "Traditional Culinary Treasures",
+  music_sectionone_pill: "Explore Rhythms",
+  music_sectionone_title: "Key Music & Dance Traditions",
   music_sectionone_description:
-    "Explore our collection of authentic North Cyprus recipes, carefully documentated and preserved by local chefs, families, and culinary enthusiasts.",
-  music_sectiontwo_pill: "Featured Recipes",
-  music_sectiontwo_button: "View Full Recipe",
+    "Discover iconic songs, dances, and rhythmic styles that have echoed through generations in North Cyprus — from village ceremonies to festival performances, lovingly preserved by our cultural contributors.",
+  music_sectiontwo_pill: "Featured Article",
+  music_sectiontwo_button: "Read Full Article",
 
   // Arts
   arts_pill: "Artistic Heritage",

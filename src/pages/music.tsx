@@ -19,11 +19,7 @@ const MusicPage = () => {
       const data = response.data.posts;
       console.log("Data fetched:", data);
       const transformedData = data
-        .filter(
-          (item) =>
-            item.category === "Historical Events" ||
-            item.category === "historical-events"
-        )
+        .filter((item) => item.category === "Music and Dance")
         .map((item) => ({
           title: item.title,
           category: "Historical Events",
@@ -112,15 +108,15 @@ const MusicPage = () => {
           <div className="capsule-container">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
-                {t("history_sectionone_pill")}
+                {t("music_sectionone_pill")}
               </div>
 
               <h2 className="text-3xl text-black sm:text-4xl font-serif font-semibold mb-4">
-                {t("history_sectionone_title")}
+                {t("music_sectionone_title")}
               </h2>
 
               <p className="text-capsule-text/80 leading-relaxed">
-                {t("history_sectionone_description")}
+                {t("music_sectionone_description")}
               </p>
             </div>
 

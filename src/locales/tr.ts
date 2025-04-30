@@ -138,7 +138,7 @@ export const tr = {
   history_sectiontwo_pill: "Öne Çıkan Makale",
   history_sectiontwo_button: "Tam Makaleyi Oku",
 
-  // Recipes Events
+  // Recipes
   recipes_pill: "Gastronomik Miras",
   recipes_title: "Kuzey Kıbrıs'ın Lezzetleri",
   recipes_description:
@@ -153,7 +153,23 @@ export const tr = {
   recipes_sectiontwo_pill: "Öne Çıkan Tarifler",
   recipes_sectiontwo_button: "Tam Tarifi Görüntüle",
 
-  // Arts Events
+  // Music 
+  music_pill: "Kültürel İfadeler",
+  music_title: "Ritimlerimizi Kutluyor, Hareketlerimizi Onurlandırıyoruz",
+  music_description:
+    "Kuzey Kıbrıs’ın müzik ve dans dünyasına dalın — geleneksel halk ezgilerinden ve enstrümanlarından, topluluğumuzun hikâyelerini anlatan ikonik dans ritüellerine kadar. Ritim ve hareketin kültürel kimliğimizi nasıl şekillendirmeye devam ettiğini keşfedin.",
+  music_icon_one: "Geleneksel Enstrümanlar",
+  music_icon_two: "Halk Dansları",
+  music_icon_three: "Performans Arşivi",
+  music_sectionone_pill: "Ritimleri Keşfet",
+  music_sectionone_title: "Temel Müzik ve Dans Gelenekleri",
+  music_sectionone_description:
+    "Köy törenlerinden festival gösterilerine kadar nesiller boyunca yankılanan ikonik şarkı, dans ve ritim tarzlarını keşfedin — kültürel katkıda bulunanlarımız tarafından özenle korunmuştur.",
+  music_sectiontwo_pill: "Öne Çıkan Makale",
+  music_sectiontwo_button: "Tam Makaleyi Oku",
+
+
+  // Arts 
   arts_pill: "Sanatsal Miras",
   arts_title: "Geleneksel Sanatlar ve El İşleri",
   arts_description:
