@@ -49,7 +49,7 @@ const CategorySection: React.FC = () => {
       description: t("music_dance_desc"),
       imageSrc: "/images/music.jpg",
       icon: <Music className="text-white" size={24} />,
-      href: "#music",
+      href: "/music",
     },
     {
       title: t("events"),
