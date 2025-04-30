@@ -1,12 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { Menu, X, Search, User, LogIn } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Menu, X, LogIn, ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "./LanguageSwitcher";
 import refreshToken from "@/api/refresh";
 import axios from "axios";
+import { User } from "lucide-react";
 
 interface NavbarProps {
   backgroundColor?: string;
@@ -15,12 +22,16 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [categoriesOpen, setCategoriesOpen] = useState(false);
+  const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [user, setUser] = useState<any>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true); // <-- Add loading state
+  const [authLoading, setAuthLoading] = useState(true);
+  const categoriesRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,8 +66,31 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
 
     getData();
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+
+    // Close categories dropdown when clicking outside
+    const handleClickOutside = (event) => {
+      if (
+        categoriesRef.current &&
+        !categoriesRef.current.contains(event.target)
+      ) {
+        setCategoriesOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
+
+  useEffect(() => {
+    // Close mobile menu when route changes
+    setMobileMenuOpen(false);
+    // Close categories dropdown when route changes
+    setCategoriesOpen(false);
+    setMobileCategoriesOpen(false);
+  }, [location.pathname]);
 
   const getGreeting = () => {
     const hour = new Date().getHours();
@@ -76,75 +110,132 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
 
   const navItems = [
     { name: t("home"), href: "/" },
-    { name: t("history"), href: "/history" },
-    { name: t("recipes"), href: "/recipes" },
-    { name: t("arts"), href: "/arts" },
-    { name: t("folklore"), href: "/folklore" },
+    {
+      name: t("categories"),
+      href: "#",
+      isDropdown: true,
+      children: [
+        { name: t("historical_events_category"), href: "/history" },
+        { name: t("local_recipes_category"), href: "/recipes" },
+        { name: t("folklore_and_stories_category"), href: "/folklore" },
+        { name: t("music_and_dance_category"), href: "/music" },
+        { name: t("poems_category"), href: "/poems" },
+        { name: t("arts_and_crafts_category"), href: "/arts" },
+      ],
+    },
+    { name: t("featured"), href: "/featured" },
     { name: t("contribute"), href: "/contribute" },
     { name: t("events"), href: "/events" },
   ];
+
   if (isAuthenticated) {
-    navItems.push({ name: t("Profile"), href: "/profile" });
+    navItems.push({ name: t("profile"), href: "/profile" });
   }
+
+  const isActive = (path) => {
+    if (path === "/") {
+      return location.pathname === "/";
+    }
+    return location.pathname.startsWith(path);
+  };
+
+  const isCategoryActive = () => {
+    const categoryPaths = [
+      "/history",
+      "/recipes",
+      "/folklore",
+      "/music",
+      "/poems",
+      "/arts",
+    ];
+    return categoryPaths.some((path) => location.pathname.startsWith(path));
+  };
 
   return (
     <header
       className={cn(
         `${backgroundColor} z-50 h-20 px-6 border-b-[1.5px] border-b-secondary flex items-center transition-colors duration-75`,
         isScrolled &&
-          "fixed top-0 left-0 right-0 bg-secondary/80 backdrop-blur-md shadow-sm border-b-white"
+          "fixed top-0 left-0 right-0 bg-capsule-paper backdrop-blur-md shadow-md border-b-white"
       )}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-12 h-12 relative flex items-center justify-center text-white overflow-hidden group">
-            {isScrolled ? (
-              <img
-                src="/images/logo-white.png"
-                alt="Culture Capsule"
-                className="w-full h-full object-contain"
-              />
-            ) : (
-              <img
-                src="/images/logo-black.png"
-                alt="Culture Capsule"
-                className="w-full h-full object-contain"
-              />
-            )}
+            <img
+              src="/images/logo-black.png"
+              alt="Culture Capsule"
+              className="w-full h-full object-contain"
+            />
           </div>
           <span
-            className={`font-serif text-xl font-semibold tracking-tight ${
-              isScrolled ? "text-white" : "text-black"
-            }`}
+            className={`font-serif text-xl font-semibold tracking-tight text-black`}
           >
             Culture Capsule
           </span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-8">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={`subtle-link text-sm font-medium hover:text-capsule-accent ${
-                isScrolled ? "text-white" : "text-black"
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navItems.map((item) =>
+            item.isDropdown ? (
+              <div key={item.name} className="relative" ref={categoriesRef}>
+                <button
+                  onClick={() => setCategoriesOpen(!categoriesOpen)}
+                  className={cn(
+                    "flex items-center gap-1 text-sm font-medium hover:text-capsule-accent",
+                    isCategoryActive() && "text-capsule-accent font-bold"
+                  )}
+                >
+                  {item.name}
+                  {categoriesOpen ? (
+                    <ChevronUp size={16} />
+                  ) : (
+                    <ChevronDown size={16} />
+                  )}
+                </button>
+                {categoriesOpen && (
+                  <div className="absolute top-full left-0 bg-white shadow-lg rounded-md py-2 mt-2 min-w-48 z-50">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.name}
+                        to={child.href}
+                        className={cn(
+                          "block px-4 py-2 text-sm hover:bg-capsule-sand/50 transition-colors",
+                          isActive(child.href)
+                            ? "bg-capsule-sand/30 text-capsule-accent font-medium"
+                            : "text-black"
+                        )}
+                      >
+                        {child.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  "subtle-link text-sm font-medium text-black hover:text-capsule-accent relative",
+                  isActive(item.href) && "text-capsule-accent font-bold"
+                )}
+              >
+                {item.name}
+                {isActive(item.href) && (
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-capsule-accent rounded-full" />
+                )}
+              </Link>
+            )
+          )}
         </nav>
 
         <div className="flex items-center gap-4">
-          <LanguageSwitcher isScrolled={isScrolled} />
+          <LanguageSwitcher />
 
           {isAuthenticated ? (
             <div className="hidden md:flex items-center gap-2">
-              <div
-                className={`flex items-center gap-8 text-sm ${
-                  isScrolled ? "text-white" : "text-black"
-                }`}
-              >
+              <div className={`flex items-center gap-8 text-sm`}>
                 <span>
                   <span>
                     {getGreeting()},{" "}
@@ -201,16 +292,62 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
         )}
       >
         <nav className="flex flex-col gap-6">
-          {navItems.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className="text-lg font-medium border-b border-capsule-sand pb-3 hover:text-capsule-accent transition-colors"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.name}
-            </Link>
-          ))}
+          {navItems.map((item) =>
+            item.isDropdown ? (
+              <div
+                key={item.name}
+                className="border-b border-capsule-sand pb-3"
+              >
+                <button
+                  onClick={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
+                  className={cn(
+                    "flex items-center justify-between w-full text-lg font-medium",
+                    isCategoryActive()
+                      ? "text-capsule-accent font-bold"
+                      : "text-black"
+                  )}
+                >
+                  <span>{item.name}</span>
+                  {mobileCategoriesOpen ? (
+                    <ChevronUp size={20} />
+                  ) : (
+                    <ChevronDown size={20} />
+                  )}
+                </button>
+                {mobileCategoriesOpen && (
+                  <div className="mt-3 pl-4 border-l border-capsule-sand/50 space-y-3">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.name}
+                        to={child.href}
+                        className={cn(
+                          "block text-base transition-colors",
+                          isActive(child.href)
+                            ? "text-capsule-accent font-medium"
+                            : "text-black hover:text-capsule-accent/70"
+                        )}
+                      >
+                        {child.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                key={item.name}
+                to={item.href}
+                className={cn(
+                  "text-lg font-medium border-b border-capsule-sand pb-3 transition-colors",
+                  isActive(item.href)
+                    ? "text-capsule-accent font-bold"
+                    : "text-black hover:text-capsule-accent"
+                )}
+              >
+                {item.name}
+              </Link>
+            )
+          )}
 
           <div className="pt-6 mt-auto">
             {isAuthenticated ? (
@@ -220,9 +357,11 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
                     <User size={18} />
                   </div>
                   <div>
-                    <p className="font-medium">{"User"}</p>
+                    <p className="font-medium">
+                      {user?.user?.firstName || "User"}
+                    </p>
                     <p className="text-xs text-capsule-text/70">
-                      {/* {user?.email} */}User Email
+                      {user?.user?.email || "User Email"}
                     </p>
                   </div>
                 </div>

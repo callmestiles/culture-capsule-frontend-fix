@@ -57,7 +57,8 @@ export const tr = {
   poem: "Şiir",
   poem_desc:
     "Duyguları, kültürü ve hayal gücünü kelimelerle yansıtan etkileyici şiir koleksiyonunu keşfedin.",
-  event_desc: "Kuzey Kıbrıs'ta gerçekleşen kültürel etkinlikleri keşfedin ve katılın",
+  event_desc:
+    "Kuzey Kıbrıs'ta gerçekleşen kültürel etkinlikleri keşfedin ve katılın",
 
   // Featured
   featured_archives: "Öne Çıkan Arşivler",
@@ -80,6 +81,8 @@ export const tr = {
   poems_category: "Maniler",
   music_and_dance_category: "Müzik ve Dans",
   view_more_category: "Devamı",
+  categories: "Kategoriler",
+  profile: "Profil",
 
   // Categories for filtering
   all: "Tümü",

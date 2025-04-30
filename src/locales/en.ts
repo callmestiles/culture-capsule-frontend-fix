@@ -57,8 +57,8 @@ export const en = {
   poem: "Poem",
   poem_desc:
     "Explore a collection of expressive poetry that captures emotions, culture, and imagination through words.",
-  event_desc: "Discover and participate in cultural events happening around Northern Cyprus",
-  
+  event_desc:
+    "Discover and participate in cultural events happening around Northern Cyprus",
 
   // Featured
   featured_archives: "Featured Archives",
@@ -81,6 +81,8 @@ export const en = {
   poems_category: "Poems",
   music_and_dance_category: "Music and Dance",
   view_more_category: "View More",
+  categories: "Categories",
+  profile: "Profile",
 
   // Categories for filtering
   all: "All",

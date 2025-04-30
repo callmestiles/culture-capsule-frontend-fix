@@ -9,11 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-interface LanguageSwitcherProps {
-  isScrolled: boolean;
-}
-
-const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ isScrolled }) => {
+const LanguageSwitcher: React.FC = () => {
   const { language, changeLanguage, t } = useLanguage();
 
   return (
@@ -22,12 +18,9 @@ const LanguageSwitcher: React.FC<LanguageSwitcherProps> = ({ isScrolled }) => {
         <Button
           variant="ghost"
           size="icon"
-          className="text-capsule-text hover:bg-capsule-paper"
+          className="text-capsule-text hover:bg-accent"
         >
-          <Globe
-            size={20}
-            className={`${isScrolled ? "text-white" : "text-black"}`}
-          />
+          <Globe size={20} className="text-black" />
           <span className="sr-only">{t("language")}</span>
         </Button>
       </DropdownMenuTrigger>

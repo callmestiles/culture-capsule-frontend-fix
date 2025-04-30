@@ -11,7 +11,7 @@ const CollectionCardSkeleton: React.FC<CollectionCardSkeletonProps> = ({
   return (
     <div
       className={cn(
-        "bg-capsule-accent/20 flex flex-col rounded-xl overflow-hidden shadow-card h-full animate-pulse",
+        "flex flex-col rounded-xl overflow-hidden shadow-card h-full animate-pulse",
         className
       )}
     >
