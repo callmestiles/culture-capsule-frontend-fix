@@ -1,57 +1,148 @@
-import React, { useEffect } from "react";
-import { Landmark, BookOpen, Clock } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Landmark,
+  BookOpen,
+  Clock,
+  ArrowRight,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import AnimatedImage from "@/components/AnimatedImage";
 import CollectionCard from "@/components/CollectionCard";
 import { useLanguage } from "@/contexts/LanguageContext";
 import axios from "axios";
+import { NoImagePlaceholder1 } from "@/components/ImagePlaceholders";
+import { Link } from "react-router-dom";
+import CollectionCardSkeleton from "@/components/CollectionCardSkeleton";
 
 const History = () => {
-  const { t } = useLanguage();
-  let historicalEvents = [];
-  const [historicalData, setHistoricalData] = React.useState([]);
-  const getResponse = async () => {
-    try {
-      const response = await axios.get(
-        "https://culture-capsule-backend.onrender.com/api/posts?language=en"
-      );
-      const data = response.data.posts;
-      console.log("Data fetched:", data);
-      const transformedData = data
-        .filter(
-          (item) =>
-            item.category === "Historical Events" ||
-            item.category === "historical-events"
-        )
-        .map((item) => ({
-          title: item.title,
-          category: "Historical Events",
-          contributor: `${item.author.firstName} ${item.author.lastName}`,
-          date: new Date(item.createdAt).toLocaleDateString(),
-          imageSrc: item.images[0] || "https://placehold.co/400?text=!",
-          href: `/capsule/${item._id}`,
-          noOfLikes: item.likes.length || 0,
-          noOfDislikes: item.dislikes.length || 0,
-        }));
-
-      setHistoricalData(transformedData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-  historicalEvents = historicalData.concat(historicalEvents);
+  const { t, language } = useLanguage();
+  const [historicalData, setHistoricalData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [featuredArticle, setFeaturedArticle] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(8);
 
   useEffect(() => {
-    getResponse();
-  }, []);
+    const getData = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(
+          `https://culture-capsule-backend.onrender.com/api/posts/category/Historical%20Events?language=${language}&page=${currentPage}&limit=${itemsPerPage}`
+        );
+        console.log("Data fetched:", response.data);
+
+        if (response.data.success) {
+          if (response.data.pagination) {
+            setCurrentPage(response.data.pagination.currentPage);
+            setTotalPages(response.data.pagination.totalPages);
+            setTotalItems(response.data.pagination.totalItems);
+            setItemsPerPage(response.data.pagination.itemsPerPage);
+          }
+
+          let hasImages = true;
+
+          const transformedData = response.data.posts.map((item) => {
+            if (item.images.length === 0) {
+              hasImages = false;
+            }
+            return {
+              title: item.title,
+              content: item.content,
+              category: item.category,
+              contributor: item.author.username,
+              date: new Date(item.createdAt).toLocaleDateString(),
+              imageSrc: item.images[0] || " ",
+              hasImages: hasImages,
+              href: `/capsule/${item._id}`,
+              noOfLikes: item.likes.length || 0,
+              noOfDislikes: item.dislikes.length || 0,
+            };
+          });
+
+          setHistoricalData(transformedData);
+
+          if (transformedData.length > 0) {
+            const randomIndex = Math.floor(
+              Math.random() * transformedData.length
+            );
+            setFeaturedArticle(transformedData[randomIndex]);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    getData();
+  }, [language, currentPage, itemsPerPage]);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    let pages = [];
+    const maxPagesToShow = 5;
+
+    if (totalPages <= maxPagesToShow) {
+      // Show all pages if total pages is less than or equal to maxPagesToShow
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always include first page, last page, current page, and pages around current page
+      let startPage = Math.max(currentPage - Math.floor(maxPagesToShow / 2), 1);
+      const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
+
+      // Adjust startPage if endPage is maxed out
+      if (endPage - startPage + 1 < maxPagesToShow) {
+        startPage = Math.max(endPage - maxPagesToShow + 1, 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      // Add ellipsis if needed
+      if (startPage > 1) {
+        pages = [1, "...", ...pages.slice(2)];
+      }
+
+      if (endPage < totalPages) {
+        pages = [...pages.slice(0, -2), "...", totalPages];
+      }
+    }
+
+    return pages;
+  };
+
   return (
     <div className="min-h-screen bg-capsule-bg">
       <Navbar backgroundColor="bg-capsule-paper" />
 
       <main>
         <section
-          className="relative bg-capsule-paper flex flex-col justify-center "
+          className="relative bg-capsule-paper flex flex-col justify-center"
           style={{ minHeight: "calc(100vh - 5rem)" }}
         >
           <div className="absolute inset-0 opacity-[0.04] bg-noise-pattern mix-blend-multiply" />
@@ -124,81 +215,132 @@ const History = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {historicalEvents.map((event, index) => (
-                <CollectionCard
-                  key={event.title}
-                  title={event.title}
-                  category={event.category}
-                  contributor={event.contributor}
-                  date={event.date}
-                  imageSrc={event.imageSrc}
-                  href={event.href}
-                  className="animate-fade-in opacity-0"
-                  index={index} // Adjust the index for the href
-                  likes={event.noOfLikes}
-                  dislikes={event.noOfDislikes}
-                />
-              ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-3 gap-6">
+              {loading
+                ? Array(itemsPerPage)
+                    .fill(0)
+                    .map((_, index) => <CollectionCardSkeleton key={index} />)
+                : historicalData.map((event, index) => (
+                    <CollectionCard
+                      key={`${event.title}-${index}`}
+                      title={event.title}
+                      category={event.category}
+                      contributor={event.contributor}
+                      date={event.date}
+                      imageSrc={event.imageSrc}
+                      href={event.href}
+                      className="animate-fade-in opacity-0"
+                      index={index}
+                      likes={event.noOfLikes}
+                      dislikes={event.noOfDislikes}
+                      hasImages={event.hasImages}
+                    />
+                  ))}
+            </div>
+
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center mt-12">
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handlePreviousPage}
+                    disabled={currentPage === 1}
+                    className={`p-2 rounded-lg bg-red-300 flex items-center justify-center ${
+                      currentPage === 1
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-capsule-text hover:bg-capsule-sand hover:text-white"
+                    }`}
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+
+                  {getPageNumbers().map((page, index) => (
+                    <button
+                      key={index}
+                      onClick={() =>
+                        typeof page === "number" && handlePageChange(page)
+                      }
+                      disabled={page === "..."}
+                      className={`w-10 h-10 flex items-center justify-center rounded-lg ${
+                        page === currentPage
+                          ? "bg-capsule-sand text-white"
+                          : page === "..."
+                          ? "text-capsule-text cursor-default"
+                          : "text-capsule-text hover:bg-capsule-sand/10"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  <button
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages}
+                    className={`p-2 rounded-lg flex items-center justify-center ${
+                      currentPage === totalPages
+                        ? "text-gray-400 cursor-not-allowed"
+                        : "text-capsule-text hover:bg-capsule-sand hover:text-white"
+                    }`}
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="text-center text-capsule-text/60 text-sm mt-4">
+              {t("showing")}{" "}
+              {Math.min((currentPage - 1) * itemsPerPage + 1, totalItems)} -{" "}
+              {Math.min(currentPage * itemsPerPage, totalItems)} {t("of")}{" "}
+              {totalItems} {t("items")}
             </div>
           </div>
         </section>
 
         {/* Featured Article */}
-        <section className="py-20 bg-capsule-paper relative">
-          <div className="absolute inset-0 opacity-[0.04] bg-noise-pattern mix-blend-multiply" />
+        {featuredArticle && (
+          <section className="py-20 bg-capsule-paper relative">
+            <div className="capsule-container">
+              <div className="bg-white rounded-2xl shadow-capsule overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="p-8 lg:p-12 flex flex-col justify-center">
+                    <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
+                      {t("history_sectiontwo_pill")}
+                    </div>
 
-          <div className="capsule-container">
-            <div className="bg-white rounded-2xl shadow-capsule overflow-hidden">
-              <div className="grid grid-cols-1 lg:grid-cols-2">
-                <div className="p-8 lg:p-12 flex flex-col justify-center">
-                  <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
-                    {t("history_sectiontwo_pill")}
-                  </div>
+                    <h3 className="text-2xl text-black lg:text-3xl font-serif font-semibold mb-4">
+                      {featuredArticle.title}
+                    </h3>
 
-                  <h3 className="text-2xl text-black lg:text-3xl font-serif font-semibold mb-4">
-                    {historicalEvents[0]?.title ||
-                      "The Turkish Intervention of 1974"}
-                  </h3>
-
-                  <p className="text-capsule-text/80 leading-relaxed mb-6">
-                    {historicalEvents[0]?.description ||
-                      "The Turkish intervention of 1974 in Cyprus was a significant event that led to the division of the island into two parts: the Republic of Cyprus and the Turkish Republic of Northern Cyprus. This intervention was a response to a coup d'état that aimed to unite Cyprus with Greece, which was opposed by Turkey."}
-                  </p>
-                  <div className="mt-6">
-                    <a
-                      href="#read-more"
-                      className="inline-flex items-center gap-2 bg-capsule-accent text-white px-6 py-3 rounded-lg hover:bg-capsule-accent/90 transition-colors"
-                    >
-                      <span>{t("history_sectiontwo_button")}</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                    <p className="text-capsule-text/80 leading-relaxed mb-6 line-clamp-6">
+                      {featuredArticle.content}
+                    </p>
+                    <div className="mt-6">
+                      <Link
+                        to={featuredArticle.href}
+                        className="inline-flex items-center gap-2 bg-capsule-accent text-white px-6 py-3 rounded-lg hover:bg-capsule-accent/90 transition-colors"
                       >
-                        <path d="M5 12h14" />
-                        <path d="m12 5 7 7-7 7" />
-                      </svg>
-                    </a>
+                        <span>{t("history_sectiontwo_button")}</span>
+                        <ArrowRight />
+                      </Link>
+                    </div>
                   </div>
-                </div>
-                <div className="relative h-64 lg:h-auto">
-                  <AnimatedImage
-                    src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
-                    alt="Historical photograph of the 1974 intervention"
-                    className="h-full w-full object-cover"
-                  />
+                  <div className="relative h-64 lg:h-auto">
+                    {featuredArticle.hasImages ? (
+                      <AnimatedImage
+                        src={featuredArticle.imageSrc}
+                        alt={featuredArticle.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : (
+                      <NoImagePlaceholder1 title={featuredArticle.title} />
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       <Footer />

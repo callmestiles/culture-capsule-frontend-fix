@@ -71,6 +71,15 @@ export const en = {
   by: "By",
   share: "Share",
 
+  all_category: "All",
+  historical_events_category: "Historical Events",
+  local_recipes_category: "Local Recipes",
+  arts_and_crafts_category: "Arts and Crafts",
+  folklore_and_stories_category: "Folklore and Stories",
+  poems_category: "Poems",
+  music_and_dance_category: "Music and Dance",
+  view_more_category: "View More",
+
   // Categories for filtering
   all: "All",
   photos: "Photos",
@@ -82,6 +91,8 @@ export const en = {
   contributions_matter:
     "Your contributions matter. Share your stories, recipes, photos, and cultural knowledge to help preserve North Cyprus's cultural heritage for future generations.",
   start_contributing: "Start Contributing",
+  showing: "Showing",
+  items: "items",
 
   // Auth related
   login: "Login",
@@ -172,7 +183,7 @@ export const en = {
 
   //Footer
   explore: "Explore",
-  categories: "Categories",
+  categories_footer: "Categories",
   recentAdditions: "Recent Additions",
   featuredStories: "Featured Stories",
   community: "Community",

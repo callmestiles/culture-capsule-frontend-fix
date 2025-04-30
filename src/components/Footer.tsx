@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
     {
       title: t("explore"),
       links: [
-        { name: t("categories"), href: "#categories" },
+        { name: t("categories_footer"), href: "#categories" },
         { name: t("recentAdditions"), href: "#explore" },
         { name: t("featuredStories"), href: "#stories" },
         { name: t("community"), href: "#community" },
