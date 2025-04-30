@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import EventsPage from "./pages/Events";
 import EventDetailsPage from "./pages/eventDetails";
 import ProfilePage from "./pages/profile";
+import Music from "./pages/music";
 
 const queryClient = new QueryClient();
 
@@ -37,6 +38,7 @@ const App = () => (
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/arts" element={<Arts />} />
               <Route path="/folklore" element={<Folklore />} />
+              <Route path="/music" element={<Music />} />
               <Route path="/featured" element={<Featured />} />
               <Route path="/capsule/:id" element={<CapsuleDetail />} />
               <Route path="/login" element={<Login />} />
