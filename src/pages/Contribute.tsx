@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  ArrowLeft,
-  Upload,
-  Book,
-  Utensils,
-  Palette,
-  Music,
-} from "lucide-react";
+import { ArrowLeft, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useAuth } from "@/contexts/AuthContext";
+import axios from "axios";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -27,16 +23,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import axios from "axios";
-import refreshToken from "@/api/refresh";
-import { useLanguage } from "@/contexts/LanguageContext";
 
 const contributionSchema = z.object({
   title: z.string().min(5, { message: "Title must be at least 5 characters" }),
@@ -53,48 +39,10 @@ type ContributionValues = z.infer<typeof contributionSchema>;
 
 const Contribute = () => {
   const { toast } = useToast();
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
-  const user = React.useRef(null);
-
-  // For demonstration purposes - in a real app, this would be a proper auth check
-  React.useEffect(() => {
-    // Simulate checking if user is logged in
-    const checkAuth = () => {
-      // This is just a stub - in a real app, you'd check for a token or session
-      const fakeAuthCheck = true;
-      setIsAuthenticated(fakeAuthCheck);
-    };
-
-    checkAuth();
-
-    const getData = async () => {
-      await axios
-        .get("https://culture-capsule-backend.onrender.com/api/auth/me", {
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-          },
-        })
-        .then((response) => {
-          console.log("User Profile:", response.data);
-          user.current = response.data;
-          setIsAuthenticated(true); // Update authentication status
-        })
-        .catch((error) => {
-          if (error.response?.status === 401) {
-            refreshToken();
-            getData(); // Retry fetching user profile after refreshing token
-          }
-          console.error("Error fetching user profile:", error);
-          // Handle error (e.g., show a toast notification)
-        });
-    };
-    console.log("User Profile:", user.current);
-    getData();
-  }, []);
 
   const form = useForm<ContributionValues>({
     resolver: zodResolver(contributionSchema),
@@ -103,11 +51,31 @@ const Contribute = () => {
       content: "",
       location: "",
       year: "",
-      language: localStorage.getItem("language"),
+      language: localStorage.getItem("language") || "en",
     },
   });
 
+  useEffect(() => {
+    if (!authLoading && !isAuthenticated) {
+      // Optionally show a toast notification
+      toast({
+        title: "Authentication required",
+        description: "Please log in to contribute",
+        variant: "destructive",
+      });
+    }
+  }, [authLoading, isAuthenticated, toast]);
+
   const onSubmit = async (values: ContributionValues) => {
+    if (!isAuthenticated) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to contribute",
+        variant: "destructive",
+      });
+      return;
+    }
+
     setIsUploading(true);
     const formData = new FormData();
     formData.append("title", values.title);
@@ -115,12 +83,13 @@ const Contribute = () => {
     formData.append("location", values.location || "");
     formData.append("year", values.year || "");
     formData.append("language", values.language || "en");
+
     if (values.image && values.image.length > 0) {
       for (let i = 0; i < values.image.length; i++) {
         formData.append("image", values.image[i]);
       }
     }
-    console.log(formData);
+
     try {
       const response = await axios.post(
         "https://culture-capsule-backend.onrender.com/api/posts",
@@ -132,35 +101,42 @@ const Contribute = () => {
           },
         }
       );
+
       if (response.data.success) {
         toast({
           title: "Contribution submitted successfully!",
           description: "Thank you for preserving cultural heritage.",
         });
+        form.reset();
       } else {
-        toast({
-          title: "Submission failed",
-          description: response.data.message,
-        });
+        throw new Error(response.data.message || "Submission failed");
       }
-      form.reset();
-      console.log("Contribution response:", response.data);
     } catch (error) {
-      const message =
-        error.response?.data?.message || "Please try again later.";
       toast({
         title: "Submission failed",
-        description: message,
+        description:
+          error instanceof Error ? error.message : "Please try again later.",
+        variant: "destructive",
       });
-      console.error("Error during submission:", error);
+    } finally {
+      setIsUploading(false);
     }
-    setIsUploading(false);
   };
 
-  // Redirect to login if not authenticated
   const handleAuthPrompt = () => {
-    navigate("/login");
+    navigate("/login", { state: { from: "/contribute" } });
   };
+
+  if (authLoading) {
+    return (
+      <div className="min-h-screen bg-capsule-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-capsule-accent mx-auto mb-4"></div>
+          <p>Loading authentication status...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-capsule-bg">
@@ -347,13 +323,11 @@ const Contribute = () => {
                 </div>
 
                 <h2 className="text-xl text-black font-serif font-semibold mb-2">
-                  Authentication Required
+                  {t("auth_required_title")}
                 </h2>
 
                 <p className="text-capsule-text/70 mb-6 max-w-md mx-auto">
-                  You need to be logged in to contribute to our cultural
-                  preservation efforts. Please log in or create an account to
-                  continue.
+                  {t("auth_required_description")}
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -361,12 +335,12 @@ const Contribute = () => {
                     onClick={handleAuthPrompt}
                     className="bg-capsule-accent hover:bg-capsule-accent/90"
                   >
-                    Log In
+                    {t("login")}
                   </Button>
 
                   <Link to="/signup">
                     <Button variant="outline" className="text-black">
-                      Create Account
+                      {t("signup")}
                     </Button>
                   </Link>
                 </div>

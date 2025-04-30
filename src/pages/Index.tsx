@@ -10,30 +10,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const Index: React.FC = () => {
   const { t } = useLanguage();
 
-  useEffect(() => {
-    // Add fade-in animation to elements with animate-fade-in class
-    const observerOptions = {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.1,
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("opacity-100");
-          entry.target.classList.remove("opacity-0");
-          observer.unobserve(entry.target);
-        }
-      });
-    }, observerOptions);
-
-    const animatedElements = document.querySelectorAll(".animate-fade-in");
-    animatedElements.forEach((el) => observer.observe(el));
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <div className="min-h-screen bg-capsule-bg">
       <Navbar />

@@ -21,6 +21,7 @@ import EventsPage from "./pages/Events";
 import ProfilePage from "./pages/profile";
 import Music from "./pages/music";
 import PoemPage from "./pages/poem";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const queryClient = new QueryClient();
 
@@ -32,23 +33,25 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/history" element={<History />} />
-            <Route path="/recipes" element={<Recipes />} />
-            <Route path="/arts" element={<Arts />} />
-            <Route path="/folklore" element={<Folklore />} />
-            <Route path="/music" element={<Music />} />
-            <Route path="/poems" element={<PoemPage />} />
-            <Route path="/featured" element={<Featured />} />
-            <Route path="/capsule/:id" element={<CapsuleDetail />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/contribute" element={<Contribute />} />
-            <Route path="/events" element={<EventsPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AuthProvider>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/history" element={<History />} />
+              <Route path="/recipes" element={<Recipes />} />
+              <Route path="/arts" element={<Arts />} />
+              <Route path="/folklore" element={<Folklore />} />
+              <Route path="/music" element={<Music />} />
+              <Route path="/poems" element={<PoemPage />} />
+              <Route path="/featured" element={<Featured />} />
+              <Route path="/capsule/:id" element={<CapsuleDetail />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/contribute" element={<Contribute />} />
+              <Route path="/events" element={<EventsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </AuthProvider>
         </BrowserRouter>
       </LanguageProvider>
       {/* </ThemeProvider> */}

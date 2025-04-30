@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 import {
   Form,
@@ -30,8 +30,10 @@ type LoginValues = z.infer<typeof loginSchema>;
 const Login = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { login, isLoading: authLoading } = useAuth();
+  const { t } = useLanguage(); // Get translation function
   const [showPassword, setShowPassword] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
+  const [localLoading, setLocalLoading] = React.useState(false);
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -43,47 +45,22 @@ const Login = () => {
   });
 
   const onSubmit = async (values: LoginValues) => {
-    setLoading(true);
+    setLocalLoading(true);
     try {
-      const response = await axios.post(
-        "https://culture-capsule-backend.onrender.com/api/auth/login",
-        values,
-        { withCredentials: true }
-      );
-      localStorage.setItem("accessToken", response.data.accessToken);
-      //console.log(response.data.success);
-      //console.log("Login response:", response.data);
-      const cookies = document.cookie.split("; ");
-      const refreshTokenCookie = cookies.find((cookie) =>
-        cookie.startsWith("refreshToken=")
-      );
-      console.log("Refresh Token Cookie:", refreshTokenCookie);
-
-      if (response.data.success) {
-        toast({
-          title: "Login successful!",
-          description: "You are now logged into your account.",
-        });
-        setTimeout(() => {
-          navigate("/");
-        }, 1500);
-      } else {
-        toast({
-          title: "Login failed",
-          description: response.data.message,
-        });
-      }
-    } catch (error) {
-      const message =
-        error.response?.data?.message || "Please try again later.";
-
+      await login(values.email, values.password);
       toast({
-        title: "Login failed",
-        description: message,
+        title: t("login_success_title"),
+        description: t("login_success_description"),
       });
-      console.error("Error during login:", error);
+      navigate("/");
+    } catch (error) {
+      toast({
+        title: t("login_error_title"),
+        description:
+          error instanceof Error ? error.message : t("general_error_message"),
+      });
     } finally {
-      setLoading(false);
+      setLocalLoading(false);
     }
   };
 
@@ -95,7 +72,7 @@ const Login = () => {
           className="inline-flex items-center gap-2 text-capsule-text hover:text-capsule-accent transition-colors"
         >
           <ArrowLeft size={18} />
-          <span>Back to Home</span>
+          <span>{t("back_to_home")}</span>
         </Link>
       </div>
 
@@ -106,9 +83,12 @@ const Login = () => {
               to="/"
               className="inline-flex items-center justify-center gap-2 mb-6"
             >
-              <div className="w-10 h-10 relative rounded-full bg-capsule-accent flex items-center justify-center text-white overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-capsule-accent to-capsule-terracotta" />
-                <span className="font-bold text-xl relative z-10">C</span>
+              <div className="w-12 h-12 relative flex items-center justify-center text-white overflow-hidden group">
+                <img
+                  src="/images/logo-black.png"
+                  alt={t("app_name")}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="font-serif text-xl font-semibold text-capsule-text tracking-tight">
                 Culture Capsule
@@ -116,11 +96,9 @@ const Login = () => {
             </Link>
 
             <h1 className="text-2xl text-black font-serif font-semibold mb-2">
-              Welcome Back
+              {t("login_title")}
             </h1>
-            <p className="text-capsule-text/70">
-              Log in to continue your cultural preservation journey
-            </p>
+            <p className="text-capsule-text/70">{t("login_subtitle")}</p>
           </div>
 
           <Form {...form}>
@@ -130,11 +108,11 @@ const Login = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("email_label")}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder={t("email_placeholder")}
                         {...field}
                       />
                     </FormControl>
@@ -148,12 +126,12 @@ const Login = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("password_label")}</FormLabel>
                     <div className="relative">
                       <FormControl>
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="Enter your password"
+                          placeholder={t("password_placeholder")}
                           {...field}
                         />
                       </FormControl>
@@ -161,6 +139,9 @@ const Login = () => {
                         type="button"
                         className="absolute right-3 top-1/2 -translate-y-1/2 text-capsule-text/50 hover:text-capsule-text"
                         onClick={() => setShowPassword(!showPassword)}
+                        aria-label={
+                          showPassword ? t("hide_password") : t("show_password")
+                        }
                       >
                         {showPassword ? (
                           <EyeOff size={18} />
@@ -188,33 +169,37 @@ const Login = () => {
                     htmlFor="remember-me"
                     className="text-sm text-capsule-text"
                   >
-                    Remember me
+                    {t("remember_me")}
                   </label>
                 </div>
 
-                <a
-                  href="#forgot-password"
+                <Link
+                  to="/forgot-password"
                   className="text-sm text-capsule-accent hover:underline"
                 >
-                  Forgot password?
-                </a>
+                  {t("forgot_password")}
+                </Link>
               </div>
 
               <Button
                 type="submit"
                 className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
+                disabled={authLoading || localLoading}
               >
-                Log In {loading && <Loader2 className="animate-spin ml-2" />}
+                {t("login_button")}{" "}
+                {(authLoading || localLoading) && (
+                  <Loader2 className="animate-spin ml-2" />
+                )}
               </Button>
 
               <div className="text-center mt-6">
                 <p className="text-sm text-capsule-text/70">
-                  Don't have an account?{" "}
+                  {t("no_account_text")}{" "}
                   <Link
                     to="/signup"
                     className="text-capsule-accent hover:underline"
                   >
-                    Sign up
+                    {t("signup_link")}
                   </Link>
                 </p>
               </div>

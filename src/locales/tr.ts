@@ -1,4 +1,60 @@
 export const tr = {
+  //Register
+  signup_back_home: "Ana Sayfaya Dön",
+  signup_title: "Hesap Oluştur",
+  signup_subtitle: "Kültürel mirası korumak için topluluğumuza katılın",
+
+  signup_firstName_label: "Ad",
+  signup_firstName_placeholder: "Adınızı girin",
+  signup_validation_firstName_min: "Ad en az 2 karakter olmalıdır",
+
+  signup_lastName_label: "Soyad",
+  signup_lastName_placeholder: "Soyadınızı girin",
+  signup_validation_lastName_min: "Soyad en az 2 karakter olmalıdır",
+
+  signup_email_label: "E-posta",
+  signup_email_placeholder: "E-postanızı girin",
+  signup_validation_email: "Lütfen geçerli bir e-posta adresi girin",
+
+  signup_password_label: "Şifre",
+  signup_password_placeholder: "Şifre oluşturun",
+  signup_validation_password_min: "Şifre en az 8 karakter olmalıdır",
+  signup_validation_password_complexity:
+    "Şifre en az bir büyük harf, bir küçük harf ve bir rakam içermelidir",
+
+  signup_confirmPassword_label: "Şifreyi Onayla",
+  signup_confirmPassword_placeholder: "Şifrenizi onaylayın",
+  signup_validation_password_match: "Şifreler eşleşmiyor",
+
+  signup_button: "Hesap Oluştur",
+  signup_button_loading: "Hesap oluşturuluyor...",
+
+  signup_login_prompt: "Zaten bir hesabınız var mı?",
+  signup_login_link: "Giriş Yap",
+
+  signup_error_title: "Kayıt başarısız",
+  signup_error_generic: "Lütfen daha sonra tekrar deneyin.",
+  //Login
+  back_to_home: "Ana Sayfaya Dön",
+  app_name: "Kültür Kapsülü",
+  login_title: "Tekrar Hoş Geldiniz",
+  login_subtitle: "Kültürel koruma yolculuğunuza devam etmek için giriş yapın",
+  email_label: "E-posta",
+  email_placeholder: "E-postanızı girin",
+  password_label: "Şifre",
+  password_placeholder: "Şifrenizi girin",
+  hide_password: "Şifreyi gizle",
+  show_password: "Şifreyi göster",
+  remember_me: "Beni hatırla",
+  forgot_password: "Şifrenizi mi unuttunuz?",
+  login_button: "Giriş Yap",
+  no_account_text: "Hesabınız yok mu?",
+  signup_link: "Kayıt olun",
+  login_success_title: "Giriş başarılı!",
+  login_success_description: "Hesabınıza giriş yaptınız.",
+  login_error_title: "Giriş başarısız",
+  general_error_message: "Lütfen daha sonra tekrar deneyin.",
+
   // Navigation
   home: "Anasayfa",
   history: "Tarih",
@@ -112,6 +168,9 @@ export const tr = {
   start_contributing: "Katkıda Bulunmaya Başlayın",
   showing: "Gösterim",
   items: "öğe",
+  auth_required_title: "Giriş Yapmadan devam edemezsiniz",
+  auth_required_description:
+    "Devam etmek için lütfen giriş yapın veya kayıt olun.",
 
   // Auth related
   login: "Giriş Yap",
@@ -124,7 +183,6 @@ export const tr = {
   email: "E-posta",
   password: "Şifre",
   name: "İsim",
-  forgot_password: "Şifrenizi Mi Unuttunuz?",
   no_account: "Hesabınız yok mu?",
   already_account: "Zaten hesabınız var mı?",
   create_account: "Hesap Oluştur",
@@ -238,7 +296,8 @@ export const tr = {
     "Kuzey Kıbrıs’ın zengin kültürel mirasını korumamıza yardım edin; öğrendiğiniz veya deneyimlediğiniz hikâyeleri, tarifleri, sanatları veya folkloru katkıda bulunarak paylaşın.",
   contribute_formOne_title: "Başlık",
   contribute_formOne_placeholder: "Katkınıza açıklayıcı bir başlık verin",
-  contribute_formOne_description: "Paylaştığınız şeyi açıklayan net bir başlık seçin.",
+  contribute_formOne_description:
+    "Paylaştığınız şeyi açıklayan net bir başlık seçin.",
   contribute_formTwo_title: "Konum (İsteğe Bağlı)",
   contribute_formTwo_placeholder: "Örn. Gazimağusa, Girne, vb.",
   contribute_formTwo_description:
@@ -249,14 +308,14 @@ export const tr = {
   contribute_formFour_title: "Açıklama",
   contribute_formFour_placeholder:
     "Kültürel öğeyi, hikâyeyi, tarifi vb. ayrıntılı şekilde tanımlayın",
-  contribute_formFour_description: "Bu kültürel bilgiyi korumak için olabildiğince ayrıntı verin.",
+  contribute_formFour_description:
+    "Bu kültürel bilgiyi korumak için olabildiğince ayrıntı verin.",
   contribute_formFive_title: "Medya Yükle (İsteğe Bağlı)",
   contribute_formFive_placeholderOne:
     "Dosyaları buraya sürükleyip bırakın ya da tıklayarak göz atın",
   contribute_formFive_placeholderTwo:
     "Desteklenen formatlar: JPG, PNG, JPEG (Maks. 20MB)",
-  contribute_formFive_description:
-    "Katkınızla ilgili fotoğrafları yükleyin.",
+  contribute_formFive_description: "Katkınızla ilgili fotoğrafları yükleyin.",
   contribute_formFive_description_btn: "Dosya Seç",
   contribute_formSubmitBtn: "Katkıyı Gönder",
   contribute_formSubmitBtnLoading: "Gönderiliyor...",
@@ -264,8 +323,6 @@ export const tr = {
   // Profile
   profile_title: "Katkılarım",
   profile_button: "Yeni Gönderi Oluştur",
-
-
 
   //Footer
   explore: "Keşfet",

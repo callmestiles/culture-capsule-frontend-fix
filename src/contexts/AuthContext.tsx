@@ -1,10 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
-import api from "@/api/axios"; // axios instance with refresh interceptor
+import api from "@/api/axios";
 import refreshToken from "@/api/tokenService";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface User {
   id: string;
-  name: string;
+  username: string;
   email: string;
 }
 
@@ -13,7 +15,13 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  signup: (name: string, email: string, password: string) => Promise<void>;
+  signup: (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    confirmPassword: string
+  ) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -22,13 +30,16 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const { toast } = useToast();
+  const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUser = async () => {
     try {
       const response = await api.get("/user/profile");
-      setUser(response.data.user);
+      console.log("User profile response:", response.data);
+      setUser(response.data.data);
     } catch (error) {
       setUser(null);
       console.error("Failed to fetch user:", error);
@@ -36,6 +47,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setIsLoading(false);
     }
   };
+
+  console.log("User:", user);
 
   // Check and set up token refresh schedule
   useEffect(() => {
@@ -85,28 +98,57 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     try {
-      const res = await api.post("/auth/login", { email, password });
-      const { accessToken } = res.data;
+      const response = await api.post("/auth/login", { email, password });
+      if (response.data.success) {
+        const { accessToken } = response.data;
 
-      if (accessToken) {
-        localStorage.setItem("accessToken", accessToken);
+        if (accessToken) {
+          localStorage.setItem("accessToken", accessToken);
+        }
+
+        await fetchUser();
+        setupTokenRefresh();
+        toast({
+          title: "Login successful!",
+          description: "You are now logged into your account.",
+        });
+        navigate("/");
       }
-
-      await fetchUser(); // Refresh user after login
-      setupTokenRefresh(); // Setup token refresh schedule
     } catch (error) {
       console.error("Login error:", error);
-      throw error;
+      toast({
+        title: "Login failed",
+        description: error.response?.data?.message || "Please try again later.",
+      });
+      throw error; // Re-throw to handle in component
     } finally {
       setIsLoading(false);
     }
   };
 
-  const signup = async (name: string, email: string, password: string) => {
+  const signup = async (
+    firstName: string,
+    lastName: string,
+    email: string,
+    password: string,
+    confirmPassword: string
+  ) => {
     setIsLoading(true);
     try {
-      await api.post("/auth/register", { name, email, password });
-      await login(email, password); // Auto-login after signup
+      const response = await api.post("/auth/register", {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirmPassword,
+      });
+      if (response.data.success) {
+        toast({
+          title: "Registration successful!",
+          description: "Logging in to your account.",
+        });
+        await login(email, password);
+      }
     } catch (error) {
       console.error("Signup error:", error);
       throw error;
@@ -117,7 +159,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     try {
-      await api.post("/auth/logout");
       localStorage.removeItem("accessToken");
 
       // Clear token refresh interval
@@ -128,6 +169,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("Logout error:", error);
     } finally {
       setUser(null);
+      navigate("/login");
     }
   };
 

@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import axios from "axios";
-import { Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useLanguage } from "@/contexts/LanguageContext"; // Import the language context
 
 import {
   Form,
@@ -19,37 +19,38 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-const signUpSchema = z
-  .object({
-    firstName: z
-      .string()
-      .min(2, { message: "Name must be at least 2 characters" }),
-    lastName: z
-      .string()
-      .min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters" })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
-        message:
-          "Password must contain at least one uppercase letter, one lowercase letter, and one number",
-      }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  });
-
-type SignUpValues = z.infer<typeof signUpSchema>;
-
 const SignUp = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const { signup, isLoading: authLoading } = useAuth();
+  const { t } = useLanguage(); // Get the translation function
   const [showPassword, setShowPassword] = React.useState(false);
-  const [loading, setLoading] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+
+  // Define schema with translated messages
+  const signUpSchema = z
+    .object({
+      firstName: z
+        .string()
+        .min(2, { message: t("signup_validation_firstName_min") }),
+      lastName: z
+        .string()
+        .min(2, { message: t("signup_validation_lastName_min") }),
+      email: z.string().email({ message: t("signup_validation_email") }),
+      password: z
+        .string()
+        .min(8, { message: t("signup_validation_password_min") })
+        .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/, {
+          message: t("signup_validation_password_complexity"),
+        }),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t("signup_validation_password_match"),
+      path: ["confirmPassword"],
+    });
+
+  type SignUpValues = z.infer<typeof signUpSchema>;
 
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
@@ -63,39 +64,21 @@ const SignUp = () => {
   });
 
   const onSubmit = async (values: SignUpValues) => {
-    setLoading(true);
     try {
-      const response = await axios.post(
-        "https://culture-capsule-backend.onrender.com/api/auth/register",
-        values
+      await signup(
+        values.firstName,
+        values.lastName,
+        values.email,
+        values.password,
+        values.confirmPassword
       );
-      console.log("Response:", response.data);
-      if (response.data.success) {
-        toast({
-          title: "Account created successfully!",
-          description: "You can now log in to your account.",
-        });
-        // Redirect to login page after successful signup
-        setTimeout(() => {
-          navigate("/login");
-        }, 1500);
-      } else {
-        toast({
-          title: "Registration failed",
-          description: response.data.message,
-        });
-      }
     } catch (error) {
-      const message =
-        error.response?.data?.message || "Please try again later.";
-
       toast({
-        title: "Registration failed",
-        description: message,
+        title: t("signup_error_title"),
+        description:
+          error instanceof Error ? error.message : t("signup_error_generic"),
+        variant: "destructive",
       });
-      console.error("Error during sign up:", error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -107,7 +90,7 @@ const SignUp = () => {
           className="inline-flex items-center gap-2 text-capsule-text hover:text-capsule-accent transition-colors"
         >
           <ArrowLeft size={18} />
-          <span>Back to Home</span>
+          <span>{t("signup_back_home")}</span>
         </Link>
       </div>
 
@@ -118,9 +101,12 @@ const SignUp = () => {
               to="/"
               className="inline-flex items-center justify-center gap-2 mb-6"
             >
-              <div className="w-10 h-10 relative rounded-full bg-capsule-accent flex items-center justify-center text-white overflow-hidden group">
-                <div className="absolute inset-0 bg-gradient-to-br from-capsule-accent to-capsule-terracotta" />
-                <span className="font-bold text-xl relative z-10">C</span>
+              <div className="w-12 h-12 relative flex items-center justify-center text-white overflow-hidden group">
+                <img
+                  src="/images/logo-black.png"
+                  alt="Culture Capsule"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="font-serif text-xl font-semibold text-capsule-text tracking-tight">
                 Culture Capsule
@@ -128,11 +114,9 @@ const SignUp = () => {
             </Link>
 
             <h1 className="text-2xl font-serif font-semibold mb-2 text-black">
-              Create an Account
+              {t("signup_title")}
             </h1>
-            <p className="text-capsule-text/70">
-              Join our community to preserve cultural heritage
-            </p>
+            <p className="text-capsule-text/70">{t("signup_subtitle")}</p>
           </div>
 
           <Form {...form}>
@@ -142,9 +126,12 @@ const SignUp = () => {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name</FormLabel>
+                    <FormLabel>{t("signup_firstName_label")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your first name" {...field} />
+                      <Input
+                        placeholder={t("signup_firstName_placeholder")}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -156,9 +143,12 @@ const SignUp = () => {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name</FormLabel>
+                    <FormLabel>{t("signup_lastName_label")}</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your last name" {...field} />
+                      <Input
+                        placeholder={t("signup_lastName_placeholder")}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -170,11 +160,11 @@ const SignUp = () => {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel>{t("signup_email_label")}</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder="Enter your email"
+                        placeholder={t("signup_email_placeholder")}
                         {...field}
                       />
                     </FormControl>
@@ -188,12 +178,12 @@ const SignUp = () => {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel>{t("signup_password_label")}</FormLabel>
                     <div className="relative">
                       <FormControl>
                         <Input
                           type={showPassword ? "text" : "password"}
-                          placeholder="Create a password"
+                          placeholder={t("signup_password_placeholder")}
                           {...field}
                         />
                       </FormControl>
@@ -219,12 +209,12 @@ const SignUp = () => {
                 name="confirmPassword"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
+                    <FormLabel>{t("signup_confirmPassword_label")}</FormLabel>
                     <div className="relative">
                       <FormControl>
                         <Input
                           type={showConfirmPassword ? "text" : "password"}
-                          placeholder="Confirm your password"
+                          placeholder={t("signup_confirmPassword_placeholder")}
                           {...field}
                         />
                       </FormControl>
@@ -250,26 +240,26 @@ const SignUp = () => {
               <Button
                 type="submit"
                 className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
-                disabled={loading}
+                disabled={authLoading}
               >
-                {loading ? (
+                {authLoading ? (
                   <>
-                    Creating Account...
+                    {t("signup_button_loading")}
                     <Loader2 className="animate-spin ml-2" />
                   </>
                 ) : (
-                  "Create Account"
+                  t("signup_button")
                 )}
               </Button>
 
               <div className="text-center mt-6">
                 <p className="text-sm text-capsule-text/70">
-                  Already have an account?{" "}
+                  {t("signup_login_prompt")}{" "}
                   <Link
                     to="/login"
                     className="text-capsule-accent hover:underline"
                   >
-                    Log in
+                    {t("signup_login_link")}
                   </Link>
                 </p>
               </div>

@@ -1,4 +1,60 @@
 export const en = {
+  //Register
+  signup_back_home: "Back to Home",
+  signup_title: "Create an Account",
+  signup_subtitle: "Join our community to preserve cultural heritage",
+
+  signup_firstName_label: "First Name",
+  signup_firstName_placeholder: "Enter your first name",
+  signup_validation_firstName_min: "Name must be at least 2 characters",
+
+  signup_lastName_label: "Last Name",
+  signup_lastName_placeholder: "Enter your last name",
+  signup_validation_lastName_min: "Name must be at least 2 characters",
+
+  signup_email_label: "Email",
+  signup_email_placeholder: "Enter your email",
+  signup_validation_email: "Please enter a valid email address",
+
+  signup_password_label: "Password",
+  signup_password_placeholder: "Create a password",
+  signup_validation_password_min: "Password must be at least 8 characters",
+  signup_validation_password_complexity:
+    "Password must contain at least one uppercase letter, one lowercase letter, and one number",
+
+  signup_confirmPassword_label: "Confirm Password",
+  signup_confirmPassword_placeholder: "Confirm your password",
+  signup_validation_password_match: "Passwords do not match",
+
+  signup_button: "Create Account",
+  signup_button_loading: "Creating Account...",
+
+  signup_login_prompt: "Already have an account?",
+  signup_login_link: "Log in",
+
+  signup_error_title: "Registration failed",
+  signup_error_generic: "Please try again later.",
+  //Login
+  back_to_home: "Back to Home",
+  app_name: "Culture Capsule",
+  login_title: "Welcome Back",
+  login_subtitle: "Log in to continue your cultural preservation journey",
+  email_label: "Email",
+  email_placeholder: "Enter your email",
+  password_label: "Password",
+  password_placeholder: "Enter your password",
+  hide_password: "Hide password",
+  show_password: "Show password",
+  remember_me: "Remember me",
+  forgot_password: "Forgot password?",
+  login_button: "Log In",
+  no_account_text: "Don't have an account?",
+  signup_link: "Sign up",
+  login_success_title: "Login successful!",
+  login_success_description: "You are now logged into your account.",
+  login_error_title: "Login failed",
+  general_error_message: "Please try again later.",
+
   // Navigation
   home: "Home",
   history: "History",
@@ -125,7 +181,6 @@ export const en = {
   email: "Email",
   password: "Password",
   name: "Name",
-  forgot_password: "Forgot Password?",
   no_account: "Don't have an account?",
   already_account: "Already have an account?",
   create_account: "Create Account",
@@ -238,18 +293,21 @@ export const en = {
     "Help preserve the rich cultural heritage of North Cyprus by contributing stories, recipes, arts, or folklore that you've learned or experienced.",
   contribute_formOne_title: "Title",
   contribute_formOne_placeholder: "Give your contribution a descriptive title",
-  contribute_formOne_description: "Choose a clear title that describes what you're sharing.",
+  contribute_formOne_description:
+    "Choose a clear title that describes what you're sharing.",
   contribute_formTwo_title: "Location (Optional)",
   contribute_formTwo_placeholder: "e.g. Famagusta, Kyrenia, etc.",
   contribute_formTwo_description:
     "Where this cultural element originated or is practiced.",
   contribute_formThree_title: "Year/Period (Optional)",
   contribute_formThree_placeholder: "e.g. 1950s, 19th century, etc.",
-  contribute_formThree_description: "The time period relevant to your contribution.",
+  contribute_formThree_description:
+    "The time period relevant to your contribution.",
   contribute_formFour_title: "Description",
   contribute_formFour_placeholder:
     "Describe the cultural item, story, recipe, etc. in detail",
-  contribute_formFour_description: "Provide as detail as possible to preserve this cultural knowledge.",
+  contribute_formFour_description:
+    "Provide as detail as possible to preserve this cultural knowledge.",
   contribute_formFive_title: "Upload Media (Optional)",
   contribute_formFive_placeholderOne:
     "Drag and drop files here, or click to browse",
@@ -260,12 +318,11 @@ export const en = {
   contribute_formFive_description_btn: "Browse Files",
   contribute_formSubmitBtn: "Submit Contribution",
   contribute_formSubmitBtnLoading: "Submitting...",
-
+  auth_required_title: "Authentication Required",
+  auth_required_description: "Please log in to submit your contribution.",
   // Profile
   profile_title: "My Contributions",
   profile_button: "Create New Post",
-
-
 
   //Footer
   explore: "Explore",

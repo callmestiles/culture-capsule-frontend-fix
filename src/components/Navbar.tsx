@@ -1,19 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Menu, X, LogIn, ChevronDown, ChevronUp } from "lucide-react";
+import { Menu, X, LogIn, ChevronDown, ChevronUp, User } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "./LanguageSwitcher";
-import refreshToken from "@/api/refresh";
-import axios from "axios";
-import { User } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NavbarProps {
   backgroundColor?: string;
@@ -25,57 +17,28 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   const [categoriesOpen, setCategoriesOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
   const { t } = useLanguage();
-  const navigate = useNavigate();
   const location = useLocation();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [user, setUser] = useState<any>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authLoading, setAuthLoading] = useState(true);
-  const categoriesRef = useRef(null);
+  const categoriesRef = useRef<HTMLDivElement>(null);
+
+  // Auth context hooks
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
-    const getData = async () => {
-      try {
-        const response = await axios.get(
-          "https://culture-capsule-backend.onrender.com/api/auth/me",
-          {
-            withCredentials: true,
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        console.log("User Profile:", response.data);
-        setUser(response.data);
-        setIsAuthenticated(true);
-      } catch (error) {
-        if (error.response?.status === 401) {
-          await refreshToken();
-          await getData(); // Retry after token refresh
-        } else {
-          console.error("Error fetching user profile:", error);
-        }
-      } finally {
-        setAuthLoading(false);
-      }
-    };
-
-    getData();
     window.addEventListener("scroll", handleScroll);
 
-    // Close categories dropdown when clicking outside
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         categoriesRef.current &&
-        !categoriesRef.current.contains(event.target)
+        !categoriesRef.current.contains(event.target as Node)
       ) {
         setCategoriesOpen(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
@@ -85,9 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   }, []);
 
   useEffect(() => {
-    // Close mobile menu when route changes
     setMobileMenuOpen(false);
-    // Close categories dropdown when route changes
     setCategoriesOpen(false);
     setMobileCategoriesOpen(false);
   }, [location.pathname]);
@@ -104,8 +65,12 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
     document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
   };
 
-  const handleLogout = () => {
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
   };
 
   const navItems = [
@@ -126,16 +91,11 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
     { name: t("featured"), href: "/featured" },
     { name: t("contribute"), href: "/contribute" },
     { name: t("events"), href: "/events" },
+    ...(isAuthenticated ? [{ name: t("profile"), href: "/profile" }] : []),
   ];
 
-  if (isAuthenticated) {
-    navItems.push({ name: t("profile"), href: "/profile" });
-  }
-
-  const isActive = (path) => {
-    if (path === "/") {
-      return location.pathname === "/";
-    }
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
   };
 
@@ -150,7 +110,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
     ];
     return categoryPaths.some((path) => location.pathname.startsWith(path));
   };
-
+  console.log(isAuthenticated, "isAuthenticated");
   return (
     <header
       className={cn(
@@ -160,6 +120,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
       )}
     >
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
+        {/* Logo and brand */}
         <Link to="/" className="flex items-center gap-2">
           <div className="w-12 h-12 relative flex items-center justify-center text-white overflow-hidden group">
             <img
@@ -168,13 +129,12 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
               className="w-full h-full object-contain"
             />
           </div>
-          <span
-            className={`font-serif text-xl font-semibold tracking-tight text-black`}
-          >
+          <span className="font-serif text-xl font-semibold tracking-tight text-black">
             Culture Capsule
           </span>
         </Link>
 
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
           {navItems.map((item) =>
             item.isDropdown ? (
@@ -230,23 +190,29 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
           )}
         </nav>
 
+        {/* Auth and Language Controls */}
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
 
-          {isAuthenticated ? (
+          {isLoading ? (
+            <div className="h-8 w-20 bg-gray-200 animate-pulse rounded"></div>
+          ) : isAuthenticated ? (
             <div className="hidden md:flex items-center gap-2">
-              <div className={`flex items-center gap-8 text-sm`}>
+              <div className="flex items-center gap-8 text-sm">
                 <span>
-                  <span>
-                    {getGreeting()},{" "}
-                    <a href="/profile">{user?.user?.firstName || t("user")}</a>
-                  </span>
+                  {getGreeting()},{" "}
+                  <Link
+                    to="/profile"
+                    className="hover:text-capsule-accent transition-colors"
+                  >
+                    {user?.username || t("user")}
+                  </Link>
                 </span>
                 <Button
-                  className="text-black"
                   variant="outline"
                   size="sm"
                   onClick={handleLogout}
+                  className="text-black hover:bg-capsule-sand"
                 >
                   {t("logout")}
                 </Button>
@@ -258,7 +224,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex items-center gap-1 text-black"
+                  className="flex items-center gap-1 text-black hover:bg-capsule-sand"
                 >
                   <LogIn size={16} />
                   <span>{t("login")}</span>
@@ -275,6 +241,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
             </div>
           )}
 
+          {/* Mobile Menu Button */}
           <button
             className="md:hidden p-2 rounded-full text-capsule-text hover:bg-capsule-paper transition-colors duration-200"
             onClick={toggleMobileMenu}
@@ -284,7 +251,8 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
           </button>
         </div>
       </div>
-      {/* Mobile menu */}
+
+      {/* Mobile Menu */}
       <div
         className={cn(
           "fixed inset-0 bg-white z-40 pt-20 pb-6 px-6 transition-transform duration-300 ease-in-out md:hidden overflow-y-auto",
@@ -349,25 +317,26 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
             )
           )}
 
+          {/* Mobile Auth Section */}
           <div className="pt-6 mt-auto">
-            {isAuthenticated ? (
+            {isLoading ? (
+              <div className="h-20 bg-gray-200 animate-pulse rounded"></div>
+            ) : isAuthenticated ? (
               <div className="space-y-4">
                 <div className="flex items-center gap-2 p-2 bg-capsule-sand/50 rounded-md">
                   <div className="w-10 h-10 bg-capsule-accent rounded-full flex items-center justify-center text-white">
                     <User size={18} />
                   </div>
                   <div>
-                    <p className="font-medium">
-                      {user?.user?.firstName || "User"}
-                    </p>
+                    <p className="font-medium">{user?.username || t("user")}</p>
                     <p className="text-xs text-capsule-text/70">
-                      {user?.user?.email || "User Email"}
+                      {user?.email || t("user_email")}
                     </p>
                   </div>
                 </div>
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="w-full hover:bg-capsule-accent"
                   onClick={() => {
                     handleLogout();
                     setMobileMenuOpen(false);
