@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ThumbsUp, ThumbsDown, Image } from "lucide-react";
+import { NoImagePlaceholder2 } from "./ImagePlaceholders";
 
 interface CollectionCardProps {
   title: string;
@@ -52,7 +53,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
           />
         ) : (
           <div className="bg-capsule-olive w-full h-full aspect-[3/2] flex justify-center items-center transition-transform duration-700 group-hover:scale-105">
-            <Image size={100} />
+            <NoImagePlaceholder2 />
           </div>
         )}
         <div className="absolute top-3 left-3 px-3 py-1 bg-capsule-sand text-white backdrop-blur-sm rounded-full text-xs font-medium">
@@ -75,7 +76,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
               <ThumbsUp size={24} />
               <span className="ml-1">{likes || 0}</span>
             </button>
-            <button className="flex items-center text-capsule-text/70 dark:text-gray-400 hover:text-capsule-accent dark:hover:text-capsule-accent/80 transition-colors">
+            <button className="flex items-center text-gray-300 transition-colors">
               <ThumbsDown />
               <span className="ml-1">{likes || 0}</span>
             </button>

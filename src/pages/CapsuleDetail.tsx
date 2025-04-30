@@ -86,7 +86,7 @@ const CapsuleDetail: React.FC = () => {
     return (
       <div className="min-h-screen bg-capsule-bg">
         <Navbar />
-        <div className="max-w-lg mx-auto px-4 sm:px-6 pt-24 pb-20">
+        <div className="max-w-lg mx-auto px-4 sm:px-6 pt-24 pb-20 animate-pulse">
           <div className="h-8 w-24 bg-gray-200 rounded mb-6"></div>
           <div className="h-[400px] w-full bg-gray-200 rounded-xl mb-6"></div>
           <div className="h-8 w-1/3 bg-gray-200 rounded mb-4"></div>
@@ -154,7 +154,7 @@ const CapsuleDetail: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="bg-white text-black max-w-lg rounded-xl shadow-md overflow-hidden"
+            className="bg-white text-black max-w-3xl 2xl:max-w-4xl rounded-xl shadow-md overflow-hidden"
           >
             {/* Header Information */}
             <div className="p-6 sm:p-10 border-b border-gray-100">

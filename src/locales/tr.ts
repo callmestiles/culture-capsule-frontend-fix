@@ -72,6 +72,14 @@ export const tr = {
     "Farklı bir kategori deneyin veya tüm kapsülleri görüntüleyin",
   by: "Tarafından",
   share: "Paylaşım",
+  all_category: "Tümü",
+  historical_events_category: "Tarihî Olaylar",
+  local_recipes_category: "Yöresel Tarifler",
+  arts_and_crafts_category: "Sanat ve el sanatları",
+  folklore_and_stories_category: "Halk Hikayeleri",
+  poems_category: "Maniler",
+  music_and_dance_category: "Müzik ve Dans",
+  view_more_category: "Devamı",
 
   // Categories for filtering
   all: "Tümü",
@@ -84,6 +92,8 @@ export const tr = {
   contributions_matter:
     "Katkılarınız önemlidir. Kuzey Kıbrıs’ın kültürel mirasını gelecek nesiller için korumaya yardımcı olmak için hikayelerinizi, tariflerinizi, fotoğraflarınızı ve kültürel bilginizi paylaşın.",
   start_contributing: "Katkıda Bulunmaya Başlayın",
+  showing: "Gösterim",
+  items: "öğe",
 
   // Auth related
   login: "Giriş Yap",
@@ -175,7 +185,7 @@ export const tr = {
 
   //Footer
   explore: "Keşfet",
-  categories: "Kategoriler",
+  categories_footer: "Kategoriler",
   recentAdditions: "Son Eklenenler",
   featuredStories: "Öne Çıkan Hikayeler",
   community: "Topluluk",

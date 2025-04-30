@@ -113,7 +113,7 @@ const FeaturedCollections: React.FC = () => {
         <div className="mt-10 text-center">
           <a
             href="/featured"
-            className="flex justify-center items-center gap-2 text-capsule-accent hover:text-capsule-accent/80 font-medium transition-colors"
+            className="relative flex justify-center items-center gap-2 text-capsule-accent hover:text-capsule-accent/80 font-medium transition-colors z-10"
           >
             <span>{t("view_all")}</span>
             <ArrowRight />
