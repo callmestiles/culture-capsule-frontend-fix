@@ -167,7 +167,7 @@ const MusicPage = () => {
               </div>
               <div className="md:w-1/2">
                 <AnimatedImage
-                  src="/images/music.jpg"
+                  src="/images/music.webp"
                   alt="Traditional music scene"
                   className="rounded-xl shadow-capsule"
                 />
