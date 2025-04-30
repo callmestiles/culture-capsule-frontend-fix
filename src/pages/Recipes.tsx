@@ -191,7 +191,7 @@ const Recipes = () => {
               </div>
               <div className="md:w-1/2">
                 <AnimatedImage
-                  src="/images/food.jpg"
+                  src="/images/foodCultureTwo.jpg"
                   alt="Traditional North Cyprus cuisine"
                   className="rounded-xl shadow-capsule"
                 />

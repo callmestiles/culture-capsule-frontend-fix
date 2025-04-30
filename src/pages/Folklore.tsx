@@ -190,7 +190,7 @@ const Folklore = () => {
               </div>
               <div className="md:w-1/2">
                 <AnimatedImage
-                  src="https://images.unsplash.com/photo-1577083288073-40892c0860a4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+                  src="/images/folklore.jpg"
                   alt="Traditional storytelling in North Cyprus"
                   className="rounded-xl shadow-capsule"
                 />

@@ -18,7 +18,7 @@ export const tr = {
   pageNotFound: "Sayfa Bulunamadı",
   returnHome: "Anasayfaya Dön",
   contributeText: "Katkıda bulunmak ister misiniz?",
-  events: "Olaylar",
+  events: "Etkinlikler",
   good_morning: "Günaydın",
   good_afternoon: "Tünaydın",
   good_evening: "İyi akşamlar",
@@ -57,6 +57,7 @@ export const tr = {
   poem: "Şiir",
   poem_desc:
     "Duyguları, kültürü ve hayal gücünü kelimelerle yansıtan etkileyici şiir koleksiyonunu keşfedin.",
+  event_desc: "Kuzey Kıbrıs'ta gerçekleşen kültürel etkinlikleri keşfedin ve katılın",
 
   // Featured
   featured_archives: "Öne Çıkan Arşivler",
