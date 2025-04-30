@@ -1,5 +1,5 @@
-// src/api/axios.ts
 import axios from "axios";
+import refreshToken from "./tokenService";
 
 // Axios instance for all API calls
 const api = axios.create({
@@ -37,14 +37,20 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const res = await refreshInstance.post("/auth/refresh-token");
-        const newAccessToken = res.data.accessToken;
+        // Use the refreshToken function
+        const newAccessToken = await refreshToken();
 
-        localStorage.setItem("accessToken", newAccessToken);
-
-        originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-        return api(originalRequest); // retry original request
+        if (newAccessToken) {
+          // Set new token in the original request
+          originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
+          return api(originalRequest); // retry original request
+        } else {
+          // Token refresh failed
+          window.location.href = "/login";
+          return Promise.reject(error);
+        }
       } catch (refreshError) {
+        // Either refresh token expired (7 days) or network error
         window.location.href = "/login";
         return Promise.reject(refreshError);
       }

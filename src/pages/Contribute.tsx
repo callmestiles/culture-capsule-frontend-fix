@@ -166,11 +166,11 @@ const Contribute = () => {
     <div className="min-h-screen bg-capsule-bg">
       <Navbar />
 
-      <main className="pt-32 pb-20">
+      <main className="pt-20 pb-20">
         <div className="capsule-container">
           <div className="max-w-3xl mx-auto">
             <div className="mb-8">
-              <div className="inline-block px-3 py-1 bg-capsule-sand rounded-full text-sm font-medium mb-4">
+              <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
                 {t("contribute_pill")}
               </div>
               <h1 className="text-3xl text-black md:text-4xl font-serif font-semibold mb-4">
