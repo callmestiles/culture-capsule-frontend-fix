@@ -4,7 +4,7 @@ import { EventCard } from "./eventCard";
 import axios from "axios";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-interface Event {
+export interface Event {
   id: number;
   title: string;
   description: string;

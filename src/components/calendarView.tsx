@@ -1,10 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { eventData } from "@/lib/data";
 import {
   Dialog,
   DialogContent,
@@ -12,11 +11,48 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { EventCard } from "./eventCard";
+import { Event } from "./eventsList";
+import axios from "axios";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function CalendarView() {
+  const { t, language } = useLanguage();
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [eventData, setEventData] = useState<Event[]>([]);
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get(
+          `https://culture-capsule-backend.onrender.com/api/events?language=${language}`
+        );
+        if (response.data.success) {
+          console.log("Events fetched successfully:", response.data.events);
+          const transformedData = response.data.events.map((item) => {
+            return {
+              id: item._id,
+              title: item.title,
+              description: item.description,
+              date: item.startDate,
+              time: `${item.startTime} - ${item.endTime}`,
+              location: item.location || t("event_location"),
+              category:
+                item.category.charAt(0).toUpperCase() + item.category.slice(1),
+              image:
+                item.imageUrl.length > 0
+                  ? item.imageUrl[0]
+                  : "https://placehold.co/200?text=No+Image",
+            };
+          });
+          setEventData(transformedData);
+        }
+      } catch (error) {
+        console.error("Error fetching events:", error);
+      }
+    };
+    fetchEvents();
+  }, [language, t]);
 
   const goToPreviousMonth = () => {
     setCurrentMonth(

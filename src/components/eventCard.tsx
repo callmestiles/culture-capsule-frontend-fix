@@ -1,7 +1,7 @@
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import type { Event } from "@/lib/data";
 import { Image } from "lucide-react";
+import { Event } from "./eventsList";
 
 interface EventCardProps {
   event: Event;
