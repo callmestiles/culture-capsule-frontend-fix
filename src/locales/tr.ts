@@ -141,7 +141,7 @@ export const tr = {
   history_sectiontwo_pill: "Öne Çıkan Makale",
   history_sectiontwo_button: "Tam Makaleyi Oku",
 
-  // Recipes Events
+  // Recipes
   recipes_pill: "Gastronomik Miras",
   recipes_title: "Kuzey Kıbrıs'ın Lezzetleri",
   recipes_description:
@@ -156,7 +156,37 @@ export const tr = {
   recipes_sectiontwo_pill: "Öne Çıkan Tarifler",
   recipes_sectiontwo_button: "Tam Tarifi Görüntüle",
 
-  // Arts Events
+  // Music 
+  music_pill: "Kültürel İfadeler",
+  music_title: "Ritimlerimizi Kutluyor, Hareketlerimizi Onurlandırıyoruz",
+  music_description:
+    "Kuzey Kıbrıs’ın müzik ve dans dünyasına dalın — geleneksel halk ezgilerinden ve enstrümanlarından, topluluğumuzun hikâyelerini anlatan ikonik dans ritüellerine kadar. Ritim ve hareketin kültürel kimliğimizi nasıl şekillendirmeye devam ettiğini keşfedin.",
+  music_icon_one: "Geleneksel Enstrümanlar",
+  music_icon_two: "Halk Dansları",
+  music_icon_three: "Performans Arşivi",
+  music_sectionone_pill: "Ritimleri Keşfet",
+  music_sectionone_title: "Temel Müzik ve Dans Gelenekleri",
+  music_sectionone_description:
+    "Köy törenlerinden festival gösterilerine kadar nesiller boyunca yankılanan ikonik şarkı, dans ve ritim tarzlarını keşfedin — kültürel katkıda bulunanlarımız tarafından özenle korunmuştur.",
+  music_sectiontwo_pill: "Öne Çıkan Makale",
+  music_sectiontwo_button: "Tam Makaleyi Oku",
+
+    // Poem
+  poem_pill: "Kültürel İfadeler",
+  poem_title: "Seslerimize Saygı, Dizelerimizi Koruma",
+  poem_description:
+    "Kuzey Kıbrıs'ın şiirsel geleneğine adım atın — zamansız halk şiirlerinden, topluluğun ruhunu yansıtan çağdaş dizelere kadar. Sözcüklerin, ritmin ve duyguların nasıl birleşerek kültürel hafızayı ve kimliği yaşattığını keşfedin.",
+  poem_icon_one: "Halk Şiirleri",
+  poem_icon_two: "Anlatı Geleneği",
+  poem_icon_three: "Şiir Arşivi",
+  poem_sectionone_pill: "Şiirleri Keşfet",
+  poem_sectionone_title: "Öne Çıkan Şiir Gelenekleri",
+  poem_sectionone_description:
+    "Kuzey Kıbrıs’ın zengin şiir mirasını keşfedin — topluluklarda okunan içten halk dizelerinden nesiller boyu aktarılan etkileyici şiirlere kadar, kültürel katkı sunanlar tarafından sevgiyle korunmuş eserlerle tanışın.",
+  poem_sectiontwo_pill: "Öne Çıkan Makale",
+  poem_sectiontwo_button: "Makaleyi Oku",
+
+  // Arts 
   arts_pill: "Sanatsal Miras",
   arts_title: "Geleneksel Sanatlar ve El İşleri",
   arts_description:

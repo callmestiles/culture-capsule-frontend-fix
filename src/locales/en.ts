@@ -163,12 +163,27 @@ export const en = {
   music_icon_one: "Traditional Instruments",
   music_icon_two: "Folk Dances",
   music_icon_three: "Performance Archive",
-  music_sectionone_pill: "Explore Recipes",
-  music_sectionone_title: "Traditional Culinary Treasures",
+  music_sectionone_pill: "Explore Rhythms",
+  music_sectionone_title: "Key Music & Dance Traditions",
   music_sectionone_description:
-    "Explore our collection of authentic North Cyprus recipes, carefully documentated and preserved by local chefs, families, and culinary enthusiasts.",
-  music_sectiontwo_pill: "Featured Recipes",
-  music_sectiontwo_button: "View Full Recipe",
+    "Discover iconic songs, dances, and rhythmic styles that have echoed through generations in North Cyprus — from village ceremonies to festival performances, lovingly preserved by our cultural contributors.",
+  music_sectiontwo_pill: "Featured Article",
+  music_sectiontwo_button: "Read Full Article",
+
+  // Poem
+  poem_pill: "Cultural Expressions",
+  poem_title: "Honoring Our Voices, Preserving Our Verses",
+  poem_description:
+    "Step into the lyrical world of North Cyprus' poetic tradition — from timeless folk poems to contemporary verses that echo the soul of the community. Discover how words, rhythm, and emotion intertwine to preserve cultural memory and identity.",
+  poem_icon_one: "Folk Poetry",
+  poem_icon_two: "Storytelling Traditions",
+  poem_icon_three: "Poetry Archive",
+  poem_sectionone_pill: "Explore Poems",
+  poem_sectionone_title: "Key Poetic Traditions",
+  poem_sectionone_description:
+    "Explore the rich poetic heritage of North Cyprus — from heartfelt folk verses recited at gatherings to evocative lines passed down through generations, lovingly preserved by our cultural contributors.",
+  poem_sectiontwo_pill: "Featured Article",
+  poem_sectiontwo_button: "Read Full Article",
 
   // Arts
   arts_pill: "Artistic Heritage",

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import {
-  Guitar,
-  Music,
   CassetteTape,
   ArrowRight,
   ChevronLeft,
   ChevronRight,
+  Pencil,
+  ScrollText,
+  FolderArchive,
 } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -17,7 +18,7 @@ import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import axios from "axios";
 
-const MusicPage = () => {
+const PoemPage = () => {
   const { t, language } = useLanguage();
   const [musicData, setMusicData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,7 +33,7 @@ const MusicPage = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `https://culture-capsule-backend.onrender.com/api/posts/category/Music and Dance?language=${language}&page=${currentPage}&limit=${itemsPerPage}`
+          `https://culture-capsule-backend.onrender.com/api/posts/category/Poems?language=${language}&page=${currentPage}&limit=${itemsPerPage}`
         );
 
         if (response.data.success) {
@@ -130,37 +131,37 @@ const MusicPage = () => {
             <div className="flex flex-col md:flex-row md:items-center gap-8">
               <div className="md:w-1/2">
                 <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
-                  {t("music_pill")}
+                  {t("poem_pill")}
                 </div>
                 <h1 className="sm:text-5xl lg:text-6xl md:text-5xl font-serif font-semibold mb-4 text-capsule-text">
-                  {t("music_title")}
+                  {t("poem_title")}
                 </h1>
                 <p className="text-capsule-text/80 leading-relaxed mb-6">
-                  {t("music_description")}
+                  {t("poem_description")}
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-full bg-capsule-sand">
-                      <Guitar size={18} className="text-white" />
+                      <Pencil size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      {t("music_icon_one")}
+                      {t("poem_icon_one")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-full bg-capsule-sand">
-                      <Music />
+                      <ScrollText size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      {t("music_icon_two")}
+                      {t("poem_icon_two")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="p-2 rounded-full bg-capsule-sand">
-                      <CassetteTape size={18} className="text-white" />
+                      <FolderArchive size={18} className="text-white" />
                     </div>
                     <span className="text-sm text-black font-medium">
-                      {t("music_icon_three")}
+                      {t("poem_icon_three")}
                     </span>
                   </div>
                 </div>
@@ -182,13 +183,13 @@ const MusicPage = () => {
           <div className="capsule-container">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
-                {t("music_sectionone_pill")}
+                {t("poem_sectionone_pill")}
               </div>
               <h2 className="text-3xl text-black sm:text-4xl font-serif font-semibold mb-4">
-                {t("music_sectionone_title")}
+                {t("poem_sectionone_title")}
               </h2>
               <p className="text-capsule-text/80 leading-relaxed">
-                {t("music_sectionone_description")}
+                {t("poem_sectionone_description")}
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 2xl:grid-cols-3 gap-6">
@@ -320,4 +321,4 @@ const MusicPage = () => {
   );
 };
 
-export default MusicPage;
+export default PoemPage;
