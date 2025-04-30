@@ -6,9 +6,11 @@ import { ProfileHeader } from "@/components/profileHeader";
 import { UserPosts } from "@/components/userPosts";
 import { CategoryFilter } from "@/components/categoryFilter";
 import { getRealUserData, getRealUserPosts } from "@/lib/mockData";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
+  const { t, language } = useLanguage();
   const [userPosts, setUserPosts] = useState([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
@@ -42,11 +44,11 @@ export default function ProfilePage() {
         <div className="mt-12">
           <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-2xl font-bold text-gray-900">
-              My Contributions
+              {t("profile_title")}
             </h2>
             <div className="mt-4 sm:mt-0">
               <button className="rounded-md bg-[rgb(82,104,45)] px-4 py-2 text-sm font-medium text-white hover:bg-[rgb(65,85,35)]">
-                Create New Post
+                {t("profile_button")}
               </button>
             </div>
           </div>

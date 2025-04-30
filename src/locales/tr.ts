@@ -261,6 +261,11 @@ export const tr = {
   contribute_formSubmitBtn: "Katkıyı Gönder",
   contribute_formSubmitBtnLoading: "Gönderiliyor...",
 
+  // Profile
+  profile_title: "Katkılarım",
+  profile_button: "Yeni Gönderi Oluştur",
+
+
 
   //Footer
   explore: "Keşfet",

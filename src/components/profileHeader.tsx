@@ -7,6 +7,7 @@ import { Camera, Edit, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
+import { BadgeCheck } from "lucide-react";
 import type { User } from "@/lib/types";
 
 interface ProfileHeaderProps {
@@ -107,7 +108,13 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             </div>
           ) : (
             <>
-              <h1 className="mb-2 text-3xl font-bold text-gray-900">{name}</h1>
+              <h1 className="mb-2 text-3xl font-bold text-gray-900 flex items-center gap-1">
+                {name}
+                {user.name == "Daniel Adegoke" && (
+                  <BadgeCheck className="h-6 w-6 text-blue-500" />
+                )}
+                <span></span>
+              </h1>
               <p className="mb-4 text-gray-600">{bio}</p>
             </>
           )}

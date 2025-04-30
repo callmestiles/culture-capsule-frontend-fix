@@ -261,6 +261,10 @@ export const en = {
   contribute_formSubmitBtn: "Submit Contribution",
   contribute_formSubmitBtnLoading: "Submitting...",
 
+  // Profile
+  profile_title: "My Contributions",
+  profile_button: "Create New Post",
+
 
 
   //Footer
