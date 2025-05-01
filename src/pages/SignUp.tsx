@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
-import { useLanguage } from "@/contexts/LanguageContext"; // Import the language context
+import { useLanguage } from "@/contexts/LanguageContext";
 
 import {
   Form,
@@ -23,7 +23,7 @@ const SignUp = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
   const { signup, isLoading: authLoading } = useAuth();
-  const { t } = useLanguage(); // Get the translation function
+  const { t } = useLanguage();
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
 
@@ -72,11 +72,13 @@ const SignUp = () => {
         values.password,
         values.confirmPassword
       );
+      // Note: No need to navigate or show success toast here
+      // The AuthContext.signup method already handles this
     } catch (error) {
+      // Improved error handling
       toast({
         title: t("signup_error_title"),
-        description:
-          error instanceof Error ? error.message : t("signup_error_generic"),
+        description: error.response?.data?.message || t("signup_error_generic"),
         variant: "destructive",
       });
     }

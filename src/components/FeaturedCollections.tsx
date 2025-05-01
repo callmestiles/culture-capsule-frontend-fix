@@ -15,7 +15,7 @@ import { toast } from "sonner";
 
 const FeaturedCollections: React.FC = () => {
   const { t, language } = useLanguage();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [featuredData, setFeaturedData] = useState([]);
   console.log("Language:", language);
 

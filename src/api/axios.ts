@@ -1,16 +1,26 @@
+// api/axios.ts
 import axios from "axios";
 import refreshToken from "./tokenService";
+
+// Flag to prevent multiple simultaneous refresh attempts
+let isRefreshing = false;
+let refreshSubscribers: Array<(token: string) => void> = [];
+
+// Subscribe failed requests to be retried after token refresh
+function subscribeTokenRefresh(cb: (token: string) => void) {
+  refreshSubscribers.push(cb);
+}
+
+// Execute all subscribers with new token
+function onTokenRefreshed(newToken: string) {
+  refreshSubscribers.forEach((cb) => cb(newToken));
+  refreshSubscribers = [];
+}
 
 // Axios instance for all API calls
 const api = axios.create({
   baseURL: "https://culture-capsule-backend.onrender.com/api",
   withCredentials: true, // Required for sending cookies like refresh token
-});
-
-// Separate instance for refreshing tokens (avoids recursion)
-const refreshInstance = axios.create({
-  baseURL: "https://culture-capsule-backend.onrender.com/api",
-  withCredentials: true,
 });
 
 // Attach access token to all outgoing requests
@@ -30,33 +40,60 @@ api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      !originalRequest.url.includes("/auth/login") // Don't refresh on login failures
-    ) {
-      originalRequest._retry = true;
-      try {
-        // Use the refreshToken function
-        const newAccessToken = await refreshToken();
 
-        if (newAccessToken) {
-          // Set new token in the original request
-          originalRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-          return api(originalRequest); // retry original request
-        } else {
-          // Token refresh failed
-          window.location.href = "/login";
-          return Promise.reject(error);
-        }
-      } catch (refreshError) {
-        // Either refresh token expired (7 days) or network error
-        window.location.href = "/login";
-        return Promise.reject(refreshError);
+    // Skip for these conditions:
+    // 1. Not a 401 error
+    // 2. Already retried
+    // 3. Login endpoint (avoid refresh loops)
+    // 4. Refresh token endpoint itself (avoid recursion)
+    if (
+      error.response?.status !== 401 ||
+      originalRequest._retry === true ||
+      originalRequest.url.includes("/auth/login") ||
+      originalRequest.url.includes("/auth/refresh-token")
+    ) {
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+
+    // If we're already refreshing, wait for the new token
+    if (isRefreshing) {
+      try {
+        // Wait for the refresh to complete
+        return new Promise((resolve, reject) => {
+          subscribeTokenRefresh((token) => {
+            originalRequest.headers["Authorization"] = `Bearer ${token}`;
+            resolve(api(originalRequest));
+          });
+        });
+      } catch (err) {
+        return Promise.reject(err);
       }
     }
 
-    return Promise.reject(error);
+    // Start a new refresh
+    isRefreshing = true;
+
+    try {
+      const newToken = await refreshToken();
+
+      if (newToken) {
+        originalRequest.headers["Authorization"] = `Bearer ${newToken}`;
+        onTokenRefreshed(newToken);
+        return api(originalRequest);
+      } else {
+        // Force logout without redirection (let auth context handle it)
+        localStorage.removeItem("accessToken");
+        return Promise.reject(new Error("Token refresh failed"));
+      }
+    } catch (refreshError) {
+      // Let auth context handle redirection (avoid direct window.location changes)
+      localStorage.removeItem("accessToken");
+      return Promise.reject(refreshError);
+    } finally {
+      isRefreshing = false;
+    }
   }
 );
 

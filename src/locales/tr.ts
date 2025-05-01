@@ -54,6 +54,7 @@ export const tr = {
   login_success_description: "Hesabınıza giriş yaptınız.",
   login_error_title: "Giriş başarısız",
   general_error_message: "Lütfen daha sonra tekrar deneyin.",
+  logging_in: "Giriş yapılıyor...",
 
   // Navigation
   home: "Anasayfa",

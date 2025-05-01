@@ -1,11 +1,28 @@
+// api/tokenService.ts
 import axios from "axios";
+
+// Keep track of refresh failures to prevent repeated attempts
+let refreshFailedTimestamp: number | null = null;
+const REFRESH_RETRY_DELAY = 60 * 1000; // 1 minute
 
 /**
  * Refreshes the access token using the refresh token (stored in cookies)
- * @returns Promise that resolves when token is successfully refreshed
+ * @returns Promise that resolves to the new access token or null if refresh failed
  */
 export default async function refreshToken(): Promise<string | null> {
+  // Prevent repeated refresh attempts if we recently failed
+  if (
+    refreshFailedTimestamp &&
+    Date.now() - refreshFailedTimestamp < REFRESH_RETRY_DELAY
+  ) {
+    console.log("Skipping token refresh - recent failure");
+    return null;
+  }
+
   try {
+    // Clear the failed timestamp as we're trying again
+    refreshFailedTimestamp = null;
+
     const response = await axios.post(
       "https://culture-capsule-backend.onrender.com/api/auth/refresh-token",
       {},
@@ -21,18 +38,11 @@ export default async function refreshToken(): Promise<string | null> {
   } catch (error) {
     console.error("Error refreshing token:", error);
 
-    // Check if error is due to expired refresh token (after 7 days)
-    const refreshTokenExpiredError =
-      axios.isAxiosError(error) &&
-      error.response?.status === 401 &&
-      error.response?.data?.message?.includes("refresh token");
+    // Mark that we failed a refresh attempt
+    refreshFailedTimestamp = Date.now();
 
-    if (refreshTokenExpiredError) {
-      // Clear stored tokens and redirect to login
-      localStorage.removeItem("accessToken");
-      window.location.href = "/login";
-    }
-
+    // Don't perform page redirects here - let the auth context handle that
+    localStorage.removeItem("accessToken");
     throw error;
   }
 }

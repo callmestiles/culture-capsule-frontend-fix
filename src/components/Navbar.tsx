@@ -6,6 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
+import { AnimatePresence, motion } from "framer-motion"; // Add framer-motion for animations
 
 interface NavbarProps {
   backgroundColor?: string;
@@ -22,6 +23,24 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
 
   // Auth context hooks
   const { user, isAuthenticated, isLoading, logout } = useAuth();
+
+  // Track previous auth state for smoother transitions
+  const [prevAuthState, setPrevAuthState] = useState(isAuthenticated);
+  const [isAuthTransitioning, setIsAuthTransitioning] = useState(false);
+
+  // Handle authentication state changes
+  useEffect(() => {
+    if (prevAuthState !== isAuthenticated && !isLoading) {
+      // Auth state has changed
+      setIsAuthTransitioning(true);
+      const timer = setTimeout(() => {
+        setIsAuthTransitioning(false);
+        setPrevAuthState(isAuthenticated);
+      }, 500); // Duration of transition effect
+
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, isLoading, prevAuthState]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -110,7 +129,14 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
     ];
     return categoryPaths.some((path) => location.pathname.startsWith(path));
   };
-  console.log(isAuthenticated, "isAuthenticated");
+
+  // Animation variants for smooth transitions
+  const authAnimationVariants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+    exit: { opacity: 0, y: 10, transition: { duration: 0.2 } },
+  };
+
   return (
     <header
       className={cn(
@@ -194,52 +220,73 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
 
-          {isLoading ? (
-            <div className="h-8 w-20 bg-gray-200 animate-pulse rounded"></div>
-          ) : isAuthenticated ? (
-            <div className="hidden md:flex items-center gap-2">
-              <div className="flex items-center gap-8 text-sm">
-                <span>
-                  {getGreeting()},{" "}
-                  <Link
-                    to="/profile"
-                    className="hover:text-capsule-accent transition-colors"
+          {/* Desktop Auth Controls with Animation */}
+          <div className="hidden md:block min-w-[150px] h-10">
+            {isLoading ? (
+              <div className="h-8 w-20 bg-gray-200 animate-pulse rounded"></div>
+            ) : (
+              <AnimatePresence mode="wait">
+                {isAuthenticated ? (
+                  <motion.div
+                    key="authenticated"
+                    className="flex items-center gap-2"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={authAnimationVariants}
                   >
-                    {user?.username || t("user")}
-                  </Link>
-                </span>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={handleLogout}
-                  className="text-black hover:bg-capsule-sand"
-                >
-                  {t("logout")}
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="hidden md:flex items-center gap-4">
-              <Link to="/login">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex items-center gap-1 text-black hover:bg-capsule-sand"
-                >
-                  <LogIn size={16} />
-                  <span>{t("login")}</span>
-                </Button>
-              </Link>
-              <Link to="/signup">
-                <Button
-                  size="sm"
-                  className="bg-capsule-accent hover:bg-capsule-accent/90"
-                >
-                  {t("signup")}
-                </Button>
-              </Link>
-            </div>
-          )}
+                    <div className="flex items-center gap-8 text-sm">
+                      <span>
+                        {getGreeting()},{" "}
+                        <Link
+                          to="/profile"
+                          className="hover:text-capsule-accent transition-colors"
+                        >
+                          {user?.username || t("user")}
+                        </Link>
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleLogout}
+                        className="text-black hover:bg-capsule-sand"
+                      >
+                        {t("logout")}
+                      </Button>
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="unauthenticated"
+                    className="flex items-center gap-4"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={authAnimationVariants}
+                  >
+                    <Link to="/login">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-1 text-black hover:bg-capsule-sand"
+                      >
+                        <LogIn size={16} />
+                        <span>{t("login")}</span>
+                      </Button>
+                    </Link>
+                    <Link to="/signup">
+                      <Button
+                        size="sm"
+                        className="bg-capsule-accent hover:bg-capsule-accent/90"
+                      >
+                        {t("signup")}
+                      </Button>
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            )}
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -317,55 +364,75 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
             )
           )}
 
-          {/* Mobile Auth Section */}
+          {/* Mobile Auth Section with Animation */}
           <div className="pt-6 mt-auto">
             {isLoading ? (
               <div className="h-20 bg-gray-200 animate-pulse rounded"></div>
-            ) : isAuthenticated ? (
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 p-2 bg-capsule-sand/50 rounded-md">
-                  <div className="w-10 h-10 bg-capsule-accent rounded-full flex items-center justify-center text-white">
-                    <User size={18} />
-                  </div>
-                  <div>
-                    <p className="font-medium">{user?.username || t("user")}</p>
-                    <p className="text-xs text-capsule-text/70">
-                      {user?.email || t("user_email")}
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  variant="outline"
-                  className="w-full hover:bg-capsule-accent"
-                  onClick={() => {
-                    handleLogout();
-                    setMobileMenuOpen(false);
-                  }}
-                >
-                  {t("logout")}
-                </Button>
-              </div>
             ) : (
-              <div className="flex flex-col gap-2">
-                <Link
-                  to="/login"
-                  className="w-full"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Button variant="outline" className="w-full">
-                    {t("login")}
-                  </Button>
-                </Link>
-                <Link
-                  to="/signup"
-                  className="w-full"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <Button className="w-full bg-capsule-accent hover:bg-capsule-accent/90">
-                    {t("signup")}
-                  </Button>
-                </Link>
-              </div>
+              <AnimatePresence mode="wait">
+                {isAuthenticated ? (
+                  <motion.div
+                    key="mobile-authenticated"
+                    className="space-y-4"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={authAnimationVariants}
+                  >
+                    <div className="flex items-center gap-2 p-2 bg-capsule-sand/50 rounded-md">
+                      <div className="w-10 h-10 bg-capsule-accent rounded-full flex items-center justify-center text-white">
+                        <User size={18} />
+                      </div>
+                      <div>
+                        <p className="font-medium">
+                          {user?.username || t("user")}
+                        </p>
+                        <p className="text-xs text-capsule-text/70">
+                          {user?.email || t("user_email")}
+                        </p>
+                      </div>
+                    </div>
+                    <Button
+                      variant="outline"
+                      className="w-full hover:bg-capsule-accent hover:text-white"
+                      onClick={() => {
+                        handleLogout();
+                        setMobileMenuOpen(false);
+                      }}
+                    >
+                      {t("logout")}
+                    </Button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="mobile-unauthenticated"
+                    className="flex flex-col gap-2"
+                    initial="hidden"
+                    animate="visible"
+                    exit="exit"
+                    variants={authAnimationVariants}
+                  >
+                    <Link
+                      to="/login"
+                      className="w-full"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Button variant="outline" className="w-full">
+                        {t("login")}
+                      </Button>
+                    </Link>
+                    <Link
+                      to="/signup"
+                      className="w-full"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Button className="w-full bg-capsule-accent hover:bg-capsule-accent/90">
+                        {t("signup")}
+                      </Button>
+                    </Link>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             )}
           </div>
         </nav>

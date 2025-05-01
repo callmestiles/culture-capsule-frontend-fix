@@ -51,13 +51,12 @@ const Contribute = () => {
       content: "",
       location: "",
       year: "",
-      language: localStorage.getItem("language") || "en",
+      language: language,
     },
   });
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
-      // Optionally show a toast notification
       toast({
         title: "Authentication required",
         description: "Please log in to contribute",
@@ -101,45 +100,46 @@ const Contribute = () => {
           },
         }
       );
+      console.log("Response:", response.data);
 
-      if (response.data.success) {
-        const postId = response.data.post._id;
-        setTimeout(async () => {
-          try {
-            const postRes = await axios.get(
-              `https://culture-capsule-backend.onrender.com/api/posts/${postId}`,
-              {
-                withCredentials: true,
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem(
-                    "accessToken"
-                  )}`,
-                },
-              }
-            );
-            if (postRes.data.status === "approved") {
-              toast({
-                title: "Post submitted successfully",
-                description: "Thank you for preserving cultural heritage.",
-              });
-              setIsUploading(false);
-            }
-          } catch (error) {
-            console.error("Error adding author to post:", error.status);
-            if (error.status === 404) {
-              toast({
-                title: "Post rejected",
-                description: "Your contribution has been regarded as spam.",
-              });
-            }
-            setIsUploading(false);
-            return;
-          }
-          form.reset();
-        }, 5000);
-      } else {
-        throw new Error(response.data.message || "Submission failed");
-      }
+      // if (response.data.success) {
+      //   const postId = response.data.post._id;
+      //   setTimeout(async () => {
+      //     try {
+      //       const postRes = await axios.get(
+      //         `https://culture-capsule-backend.onrender.com/api/posts/${postId}`,
+      //         {
+      //           withCredentials: true,
+      //           headers: {
+      //             Authorization: `Bearer ${localStorage.getItem(
+      //               "accessToken"
+      //             )}`,
+      //           },
+      //         }
+      //       );
+      //       if (postRes.data.status === "approved") {
+      //         toast({
+      //           title: "Post submitted successfully",
+      //           description: "Thank you for preserving cultural heritage.",
+      //         });
+      //         setIsUploading(false);
+      //       }
+      //     } catch (error) {
+      //       console.error("Error adding author to post:", error.status);
+      //       if (error.status === 404) {
+      //         toast({
+      //           title: "Post rejected",
+      //           description: "Your contribution has been regarded as spam.",
+      //         });
+      //       }
+      //       setIsUploading(false);
+      //       return;
+      //     }
+      //     form.reset();
+      //   }, 5000);
+      // } else {
+      //   throw new Error(response.data.message || "Submission failed");
+      // }
     } catch (error) {
       toast({
         title: "Submission failed",
@@ -147,9 +147,8 @@ const Contribute = () => {
           error instanceof Error ? error.message : "Please try again later.",
         variant: "destructive",
       });
-      setIsUploading(false);
     } finally {
-      // setIsUploading(false);
+      setIsUploading(false);
     }
   };
 
@@ -162,7 +161,7 @@ const Contribute = () => {
       <div className="min-h-screen bg-capsule-bg flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-capsule-accent mx-auto mb-4"></div>
-          <p>Loading authentication status...</p>
+          <p>Getting authentication status...</p>
         </div>
       </div>
     );

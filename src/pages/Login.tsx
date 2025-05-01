@@ -29,11 +29,12 @@ type LoginValues = z.infer<typeof loginSchema>;
 
 const Login = () => {
   const { toast } = useToast();
-  const navigate = useNavigate();
   const { login, isLoading: authLoading } = useAuth();
   const { t } = useLanguage(); // Get translation function
   const [showPassword, setShowPassword] = React.useState(false);
-  const [localLoading, setLocalLoading] = React.useState(false);
+
+  // We'll use only the auth context's loading state to avoid race conditions
+  // No need for local loading state that might get out of sync
 
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
@@ -45,22 +46,14 @@ const Login = () => {
   });
 
   const onSubmit = async (values: LoginValues) => {
-    setLocalLoading(true);
     try {
+      // Let the AuthContext handle navigation - removed navigate("/") here
       await login(values.email, values.password);
-      toast({
-        title: t("login_success_title"),
-        description: t("login_success_description"),
-      });
-      navigate("/");
+      // Toast is now handled by the AuthContext - no need to duplicate it here
     } catch (error) {
-      toast({
-        title: t("login_error_title"),
-        description:
-          error instanceof Error ? error.message : t("general_error_message"),
-      });
-    } finally {
-      setLocalLoading(false);
+      // The toast for errors is already handled in AuthContext
+      console.error("Login error:", error);
+      // We don't need to handle the error here since AuthContext already shows a toast
     }
   };
 
@@ -114,6 +107,7 @@ const Login = () => {
                         type="email"
                         placeholder={t("email_placeholder")}
                         {...field}
+                        disabled={authLoading}
                       />
                     </FormControl>
                     <FormMessage />
@@ -133,6 +127,7 @@ const Login = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder={t("password_placeholder")}
                           {...field}
+                          disabled={authLoading}
                         />
                       </FormControl>
                       <button
@@ -142,6 +137,7 @@ const Login = () => {
                         aria-label={
                           showPassword ? t("hide_password") : t("show_password")
                         }
+                        disabled={authLoading}
                       >
                         {showPassword ? (
                           <EyeOff size={18} />
@@ -164,6 +160,7 @@ const Login = () => {
                     onChange={(e) =>
                       form.setValue("rememberMe", e.target.checked)
                     }
+                    disabled={authLoading}
                   />
                   <label
                     htmlFor="remember-me"
@@ -184,11 +181,15 @@ const Login = () => {
               <Button
                 type="submit"
                 className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
-                disabled={authLoading || localLoading}
+                disabled={authLoading}
               >
-                {t("login_button")}{" "}
-                {(authLoading || localLoading) && (
-                  <Loader2 className="animate-spin ml-2" />
+                {authLoading ? (
+                  <>
+                    <Loader2 className="animate-spin mr-2" size={16} />
+                    {t("logging_in")}
+                  </>
+                ) : (
+                  t("login_button")
                 )}
               </Button>
 
