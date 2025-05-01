@@ -21,6 +21,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   const location = useLocation();
   const categoriesRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   // Auth context hooks
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -44,6 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
 
   useEffect(() => {
     const handleScroll = () => {
+      setScrollPosition(window.scrollY);
       setIsScrolled(window.scrollY > 10);
     };
 
@@ -84,6 +86,14 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   }, [location.pathname]);
 
   const toggleMobileMenu = () => {
+    if (!mobileMenuOpen) {
+      setScrollPosition(window.scrollY);
+      // Scroll to top before opening
+      window.scrollTo(0, 0);
+    } else {
+      // Restore scroll position when closing
+      window.scrollTo(0, scrollPosition);
+    }
     setMobileMenuOpen(!mobileMenuOpen);
     document.body.style.overflow = !mobileMenuOpen ? "hidden" : "auto";
   };
@@ -329,6 +339,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
             variants={mobileMenuVariants}
             transition={{ type: "tween", ease: "easeInOut", duration: 0.3 }}
             className="fixed inset-0 z-40 bg-white pt-6 pb-8 px-6 md:hidden flex flex-col"
+            style={{ top: "0", transform: "none" }}
           >
             {/* Close Button - Fixed at top right */}
             <div className="flex justify-end mb-6">
@@ -342,7 +353,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
             </div>
 
             {/* Scrollable Content */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto" style={{ marginTop: "0" }}>
               <nav className="flex flex-col gap-6">
                 {navItems.map((item) =>
                   item.isDropdown ? (

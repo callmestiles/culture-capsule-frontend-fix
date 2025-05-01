@@ -142,17 +142,17 @@ const History = () => {
 
       <main>
         <section
-          className="relative bg-capsule-paper flex flex-col justify-center"
+          className="relative bg-capsule-paper flex flex-col justify-center py-20"
           style={{ minHeight: "calc(100vh - 5rem)" }}
         >
           <div className="absolute inset-0 opacity-[0.04] bg-noise-pattern mix-blend-multiply" />
           <div className="capsule-container">
             <div className="flex flex-col md:flex-row md:items-center gap-8">
               <div className="md:w-1/2">
-                <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4">
+                <div className="inline-block px-3 py-1 bg-capsule-sand text-white rounded-full text-sm font-medium mb-4 ">
                   {t("historical_event_pill")}
                 </div>
-                <h1 className="sm:text-5xl lg:text-6xl md:text-5xl font-serif font-semibold mb-4 text-capsule-text">
+                <h1 className="text-5xl lg:text-6xl md:text-5xl font-serif font-semibold mb-4 text-capsule-text">
                   {t("historical_event_title")}
                 </h1>
                 <p className="text-capsule-text/80 leading-relaxed mb-6">

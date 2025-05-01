@@ -25,7 +25,7 @@ const Hero: React.FC = () => {
 
   return (
     <section
-      className="relative flex items-center justify-center overflow-hidden"
+      className="relative flex items-center justify-center overflow-hidden py-20"
       style={{ minHeight: "calc(100vh - 5rem)" }}
     >
       <div className="absolute inset-0 bg-gradient-to-b from-capsule-bg to-white/50 -z-10" />
@@ -89,14 +89,6 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
-
-      <button
-        onClick={scrollToCategories}
-        className="absolute bottom-2 left-1/2 transform -translate-x-1/2 animate-float text-capsule-accent hover:text-capsule-text transition-colors"
-        aria-label="Scroll down"
-      >
-        <ArrowDownCircle size={36} />
-      </button>
     </section>
   );
 };

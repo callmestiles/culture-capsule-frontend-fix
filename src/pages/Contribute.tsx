@@ -230,7 +230,7 @@ const Contribute = () => {
     <div className="min-h-screen bg-capsule-bg">
       <Navbar />
 
-      <main className="pt-20 pb-20">
+      <main className="py-20">
         <div className="capsule-container">
           <div className="max-w-3xl mx-auto">
             <div className="mb-8">
@@ -369,10 +369,10 @@ const Contribute = () => {
                           ))}
                         </div>
                       )}
-                      <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-4 text-center">
                         {/* Drag and drop area */}
                         <div
-                          className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                          className={`relative p-4 border-2 border-dashed rounded-lg transition-colors ${
                             dragActive
                               ? "border-capsule-accent bg-capsule-accent/10"
                               : "border-gray-300 bg-gray-50 hover:bg-gray-100"

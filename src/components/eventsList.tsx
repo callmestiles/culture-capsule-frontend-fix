@@ -3,6 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EventCard } from "./eventCard";
 import axios from "axios";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 export interface Event {
   id: number;
@@ -72,52 +73,56 @@ export function EventsList() {
   return (
     <div className="space-y-6">
       <Tabs defaultValue="all" onValueChange={setActiveTab}>
-        <TabsList className="mb-6 grid w-full grid-cols-7 bg-gray-100">
-          <TabsTrigger
-            value="all"
-            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
-          >
-            {t("all")}
-          </TabsTrigger>
-          <TabsTrigger
-            value="music"
-            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
-          >
-            {t("music")}
-          </TabsTrigger>
-          <TabsTrigger
-            value="art"
-            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
-          >
-            {t("art")}
-          </TabsTrigger>
-          <TabsTrigger
-            value="food"
-            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
-          >
-            {t("food")}
-          </TabsTrigger>
-          <TabsTrigger
-            value="heritage"
-            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
-          >
-            {t("heritage")}
-          </TabsTrigger>
-          <TabsTrigger
-            value="community"
-            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
-          >
-            {t("community")}
-          </TabsTrigger>
-          <TabsTrigger
-            value="theater"
-            className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white"
-          >
-            {t("theater")}
-          </TabsTrigger>
-        </TabsList>
+        {/* Wrap TabsList in ScrollArea for horizontal scrolling on mobile */}
+        <ScrollArea className="w-full whitespace-nowrap pb-2">
+          <TabsList className="mb-2 md:mb-6 inline-flex w-max bg-gray-100 px-1 gap-1">
+            <TabsTrigger
+              value="all"
+              className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white px-4 py-2 text-sm"
+            >
+              {t("all")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="music"
+              className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white px-4 py-2 text-sm"
+            >
+              {t("music")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="art"
+              className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white px-4 py-2 text-sm"
+            >
+              {t("art")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="food"
+              className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white px-4 py-2 text-sm"
+            >
+              {t("food")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="heritage"
+              className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white px-4 py-2 text-sm"
+            >
+              {t("heritage")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="community"
+              className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white px-4 py-2 text-sm"
+            >
+              {t("community")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="theater"
+              className="data-[state=active]:bg-[rgb(82,104,45)] data-[state=active]:text-white px-4 py-2 text-sm"
+            >
+              {t("theater")}
+            </TabsTrigger>
+          </TabsList>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
 
-        <TabsContent value={activeTab} className="mt-0">
+        <TabsContent value={activeTab} className="mt-2 md:mt-0">
           <div className="space-y-4">
             {filteredEvents.length > 0 ? (
               filteredEvents.map((event) => (

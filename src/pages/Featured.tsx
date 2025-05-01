@@ -9,6 +9,7 @@ import axios from "axios";
 import { ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import CollectionCardSkeleton from "@/components/CollectionCardSkeleton";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface Collection {
   id: string;
@@ -201,18 +202,27 @@ const Featured: React.FC = () => {
           </Tabs> */}
           <Tabs defaultValue="all_category" className="w-full mb-10">
             <div className="flex justify-center mb-8 px-3">
-              <TabsList className="bg-capsule-paper flex flex-wrap justify-center gap-x-1 gap-y-2  my-10">
-                {categoryData.map(({ key }) => (
-                  <TabsTrigger
-                    key={key}
-                    value={key}
-                    onClick={() => setActiveCategory(key)}
-                    className="capitalize px-3 py-1 text-sm sm:text-base"
-                  >
-                    {t(key)}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+              <ScrollArea className="w-full whitespace-nowrap pb-2">
+                <TabsList className="bg-capsule-paper inline-flex w-max gap-1 my-3 md:my-10 px-1">
+                  {categoryData.map(({ key }) => (
+                    <TabsTrigger
+                      key={key}
+                      value={key}
+                      onClick={() => setActiveCategory(key)}
+                      className="
+          capitalize px-3 py-1 text-sm sm:text-base
+          data-[state=active]:bg-capsule-accent
+          data-[state=active]:text-white
+          min-w-[100px] sm:min-w-[120px]
+          truncate
+        "
+                    >
+                      {t(key)}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             </div>
 
             {categoryData.map(({ key, route }) => (
