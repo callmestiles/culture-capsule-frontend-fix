@@ -7,7 +7,7 @@ import { UserPosts } from "@/components/userPosts";
 import { CategoryFilter } from "@/components/categoryFilter";
 import { getRealUserData, getRealUserPosts } from "@/lib/mockData";
 import { useLanguage } from "@/contexts/LanguageContext";
-
+import Footer from "@/components/Footer";
 export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const { t, language } = useLanguage();
@@ -34,7 +34,15 @@ export default function ProfilePage() {
     ? userPosts.filter((post) => post.category === activeCategory)
     : userPosts;
 
-  if (!user) return <div>Loading...</div>;
+  if (!user)
+    return (
+      <div className="min-h-screen bg-capsule-bg flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-capsule-accent mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-white">
@@ -62,6 +70,7 @@ export default function ProfilePage() {
           <UserPosts posts={filteredPosts} />
         </div>
       </main>
+      <Footer />
     </div>
   );
 }
