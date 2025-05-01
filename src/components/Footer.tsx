@@ -65,13 +65,13 @@ const Footer: React.FC = () => {
               {column.title === t("categories") ? (
                 <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                   {column.links.map((link) => (
-                    <a
+                    <Link
                       key={link.name}
-                      href={link.href}
+                      to={link.href}
                       className="relative z-10 text-base text-gray-700 hover:text-capsule-accent transition-colors"
                     >
                       {link.name}
-                    </a>
+                    </Link>
                   ))}
                 </div>
               ) : (

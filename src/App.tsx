@@ -23,6 +23,7 @@ import Music from "./pages/music";
 import PoemPage from "./pages/poem";
 import { AuthProvider } from "./contexts/AuthContext";
 import AllPage from "./pages/all";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <ScrollToTop />
           <AuthProvider>
             <Routes>
               <Route path="/" element={<Index />} />
