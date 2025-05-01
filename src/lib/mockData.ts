@@ -25,7 +25,7 @@ export const getRealUserData = async (): Promise<User | null> => {
       posts: user.posts.length,
       likes: 0, // You can fetch likes if your API supports it
       contributions: user.posts.length,
-      userName: user.userName,
+      username: user.userName,
     };
   } catch (error) {
     console.error("Error fetching user data:", error);
