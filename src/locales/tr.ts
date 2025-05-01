@@ -80,6 +80,7 @@ export const tr = {
   good_afternoon: "Tünaydın",
   good_evening: "İyi akşamlar",
   user: "Kullanıcı",
+  all_categories: "Tüm kategoriler",
 
   // Hero section
   hero_title: "Kuzey Kıbrıs Kültürel Mirasını Koruma",
@@ -316,7 +317,9 @@ export const tr = {
     "Dosyaları buraya sürükleyip bırakın ya da tıklayarak göz atın",
   contribute_formFive_placeholderTwo:
     "Desteklenen formatlar: JPG, PNG, JPEG (Maks. 20MB)",
+  contribute_formFive_placeholderThree: "Resimlerinizi buraya bırakın",
   contribute_formFive_description: "Katkınızla ilgili fotoğrafları yükleyin.",
+  contribute_formFive_description_btn_loading: "Yükleniyor...",
   contribute_formFive_description_btn: "Dosya Seç",
   contribute_formSubmitBtn: "Katkıyı Gönder",
   contribute_formSubmitBtnLoading: "Gönderiliyor...",
@@ -330,7 +333,6 @@ export const tr = {
   all_title: "Tüm Gönderiler",
   all_description:
     "Topluluğumuz tarafından paylaşılan çeşitli kültürel kapsülleri keşfedin. Her kapsül, Kuzey Kıbrıs'ın mirasını temsil eden eşsiz bir unsuru içeriyor ve keşfedilmeyi, korunmayı bekliyor.",
-
 
   //Footer
   explore: "Keşfet",

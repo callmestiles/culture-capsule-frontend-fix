@@ -79,7 +79,7 @@ export const en = {
   good_afternoon: "Afternoon",
   good_evening: "Evening",
   user: "User",
-
+  all_categories: "All Categories",
   // Hero section
   hero_title: "Preserving North Cyprus Cultural Heritage",
   hero_subtitle: "Capturing Culture, Preserving Memories",
@@ -308,13 +308,15 @@ export const en = {
     "Describe the cultural item, story, recipe, etc. in detail",
   contribute_formFour_description:
     "Provide as detail as possible to preserve this cultural knowledge.",
-  contribute_formFive_title: "Upload Media (Optional)",
+  contribute_formFive_title: "Upload Images (Optional)",
   contribute_formFive_placeholderOne:
     "Drag and drop files here, or click to browse",
   contribute_formFive_placeholderTwo:
     "Supported formats: JPG, PNG, JPEG (Max 20MB)",
+  contribute_formFive_placeholderThree: "Drop your image(s) here",
   contribute_formFive_description:
     "Upload photos related to your contribution.",
+  contribute_formFive_description_btn_loading: "Uploading...",
   contribute_formFive_description_btn: "Browse Files",
   contribute_formSubmitBtn: "Submit Contribution",
   contribute_formSubmitBtnLoading: "Submitting...",

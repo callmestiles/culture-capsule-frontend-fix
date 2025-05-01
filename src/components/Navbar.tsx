@@ -99,6 +99,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
       href: "#",
       isDropdown: true,
       children: [
+        { name: t("all_categories"), href: "/posts" },
         { name: t("historical_events_category"), href: "/history" },
         { name: t("local_recipes_category"), href: "/recipes" },
         { name: t("folklore_and_stories_category"), href: "/folklore" },

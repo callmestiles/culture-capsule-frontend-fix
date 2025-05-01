@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import axios from "axios";
+import { X } from "lucide-react";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -41,8 +42,88 @@ const Contribute = () => {
   const { toast } = useToast();
   const { t, language } = useLanguage();
   const navigate = useNavigate();
-  const { user, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { isAuthenticated, isLoading: authLoading } = useAuth();
   const [isUploading, setIsUploading] = useState(false);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [dragActive, setDragActive] = useState(false);
+
+  const handleDrag = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFiles(e.dataTransfer.files);
+    }
+  }, []);
+
+  const handleFiles = (files: FileList) => {
+    const fileArray = Array.from(files);
+
+    // Filter out files that are too large
+    const validFiles = fileArray.filter((file) => {
+      if (file.size > 20 * 1024 * 1024) {
+        // 20MB in bytes
+        toast({
+          title: "File too large",
+          description: `${file.name} exceeds the 20MB limit and was not added.`,
+          variant: "destructive",
+        });
+        return false;
+      }
+      return true;
+    });
+
+    if (validFiles.length === 0) return;
+
+    const newImageFiles = [...imageFiles, ...validFiles];
+    setImageFiles(newImageFiles);
+
+    // Create preview URLs
+    const newPreviewUrls = validFiles.map((file) => URL.createObjectURL(file));
+    setPreviewImages((prev) => [...prev, ...newPreviewUrls]);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFiles(e.target.files);
+      // Reset the input value to allow selecting the same file again
+      e.target.value = "";
+    }
+  };
+
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     const files = Array.from(e.target.files);
+  //     const newImageFiles = [...imageFiles, ...files];
+  //     setImageFiles(newImageFiles);
+
+  //     // Create preview URLs
+  //     const newPreviewUrls = files.map((file) => URL.createObjectURL(file));
+  //     setPreviewImages((prev) => [...prev, ...newPreviewUrls]);
+  //   }
+  // };
+
+  const removeImage = (index: number) => {
+    const newPreviewImages = [...previewImages];
+    const newImageFiles = [...imageFiles];
+    URL.revokeObjectURL(newPreviewImages[index]);
+    newPreviewImages.splice(index, 1);
+    newImageFiles.splice(index, 1);
+    setPreviewImages(newPreviewImages);
+    setImageFiles(newImageFiles);
+  };
 
   const form = useForm<ContributionValues>({
     resolver: zodResolver(contributionSchema),
@@ -53,6 +134,7 @@ const Contribute = () => {
       year: "",
       language: language,
     },
+    mode: "onChange",
   });
 
   useEffect(() => {
@@ -83,11 +165,10 @@ const Contribute = () => {
     formData.append("year", values.year || "");
     formData.append("language", values.language || "en");
 
-    if (values.image && values.image.length > 0) {
-      for (let i = 0; i < values.image.length; i++) {
-        formData.append("image", values.image[i]);
-      }
-    }
+    //add multiple images under the key of image(the previewed uploaded images)
+    imageFiles.forEach((file) => {
+      formData.append("image", file);
+    });
 
     try {
       const response = await axios.post(
@@ -102,44 +183,16 @@ const Contribute = () => {
       );
       console.log("Response:", response.data);
 
-      // if (response.data.success) {
-      //   const postId = response.data.post._id;
-      //   setTimeout(async () => {
-      //     try {
-      //       const postRes = await axios.get(
-      //         `https://culture-capsule-backend.onrender.com/api/posts/${postId}`,
-      //         {
-      //           withCredentials: true,
-      //           headers: {
-      //             Authorization: `Bearer ${localStorage.getItem(
-      //               "accessToken"
-      //             )}`,
-      //           },
-      //         }
-      //       );
-      //       if (postRes.data.status === "approved") {
-      //         toast({
-      //           title: "Post submitted successfully",
-      //           description: "Thank you for preserving cultural heritage.",
-      //         });
-      //         setIsUploading(false);
-      //       }
-      //     } catch (error) {
-      //       console.error("Error adding author to post:", error.status);
-      //       if (error.status === 404) {
-      //         toast({
-      //           title: "Post rejected",
-      //           description: "Your contribution has been regarded as spam.",
-      //         });
-      //       }
-      //       setIsUploading(false);
-      //       return;
-      //     }
-      //     form.reset();
-      //   }, 5000);
-      // } else {
-      //   throw new Error(response.data.message || "Submission failed");
-      // }
+      toast({
+        title: "Submission successful",
+        description: "Your contribution has been received.",
+      });
+
+      form.reset();
+      setPreviewImages([]);
+      setImageFiles([]);
+
+      // Note: The commented polling code has been removed for clarity
     } catch (error) {
       toast({
         title: "Submission failed",
@@ -152,6 +205,12 @@ const Contribute = () => {
     }
   };
 
+  useEffect(() => {
+    return () => {
+      previewImages.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [previewImages]);
+
   const handleAuthPrompt = () => {
     navigate("/login", { state: { from: "/contribute" } });
   };
@@ -161,7 +220,7 @@ const Contribute = () => {
       <div className="min-h-screen bg-capsule-bg flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-capsule-accent mx-auto mb-4"></div>
-          <p>Getting authentication status...</p>
+          <p>Please wait...</p>
         </div>
       </div>
     );
@@ -286,56 +345,86 @@ const Contribute = () => {
                       )}
                     />
 
-                    <FormField
-                      control={form.control}
-                      name="image"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>
-                            {t("contribute_formFive_title")}
-                          </FormLabel>
-                          <div className="border-2 border-dashed border-capsule-text/20 rounded-lg p-8 text-center hover:border-capsule-accent/50 transition-colors">
-                            <Upload
-                              size={32}
-                              className="mx-auto mb-3 text-capsule-text/40"
-                            />
-                            <p className="text-capsule-text/60 mb-2">
-                              {t("contribute_formFive_placeholderOne")}
-                            </p>
-                            <p className="text-xs text-capsule-text/50">
-                              {t("contribute_formFive_placeholderTwo")}
-                            </p>
+                    <FormItem>
+                      <FormLabel>{t("contribute_formFive_title")}</FormLabel>
+
+                      {/* Image previews */}
+                      {previewImages.length > 0 && (
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+                          {previewImages.map((url, index) => (
+                            <div key={index} className="relative group">
+                              <img
+                                src={url}
+                                alt={`Preview ${index}`}
+                                className="w-full h-28 object-cover rounded-lg"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => removeImage(index)}
+                                className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <div className="flex flex-col gap-4">
+                        {/* Drag and drop area */}
+                        <div
+                          className={`relative border-2 border-dashed rounded-lg transition-colors ${
+                            dragActive
+                              ? "border-capsule-accent bg-capsule-accent/10"
+                              : "border-gray-300 bg-gray-50 hover:bg-gray-100"
+                          }`}
+                          onDragEnter={handleDrag}
+                          onDragOver={handleDrag}
+                          onDragLeave={handleDrag}
+                          onDrop={handleDrop}
+                        >
+                          <label className="flex flex-col items-center justify-center w-full h-32 cursor-pointer">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                              <Upload
+                                className={`w-8 h-8 mb-3 ${
+                                  dragActive
+                                    ? "text-capsule-accent"
+                                    : "text-gray-500"
+                                }`}
+                              />
+                              <p className="mb-2 text-sm text-gray-500">
+                                {t("contribute_formFive_placeholderOne")}
+                              </p>
+                              <p className="text-xs text-gray-500">
+                                {t("contribute_formFive_placeholderTwo")}
+                              </p>
+                            </div>
                             <input
                               type="file"
                               multiple
+                              accept="image/*"
+                              onChange={handleFileChange}
                               className="hidden"
-                              id="media-upload"
-                              onChange={(e) => field.onChange(e.target.files)}
                             />
-                            <Button
-                              type="button"
-                              variant="outline"
-                              className="mt-4"
-                              onClick={() =>
-                                document.getElementById("media-upload")?.click()
-                              }
-                            >
-                              {t("contribute_formFive_description_btn")}
-                            </Button>
-                          </div>
-                          <FormDescription>
-                            {t("contribute_formFive_description")}
-                          </FormDescription>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                          </label>
+                          {dragActive && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50 rounded-lg pointer-events-none">
+                              <div className="bg-capsule-accent text-white px-4 py-2 rounded-md">
+                                {t("contribute_formFive_placeholderThree")}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <FormDescription>
+                        {t("contribute_formFive_description")}
+                      </FormDescription>
+                    </FormItem>
 
                     <div className="pt-4">
                       <Button
                         type="submit"
                         className="w-full bg-capsule-accent hover:bg-capsule-accent/90"
-                        disabled={isUploading}
+                        disabled={isUploading || !form.formState.isValid}
                       >
                         {isUploading
                           ? `${t("contribute_formSubmitBtnLoading")}`
