@@ -6,6 +6,7 @@ export interface User {
   posts: number
   likes: number
   contributions: number
+  userName: string
 }
 
 export interface Post {

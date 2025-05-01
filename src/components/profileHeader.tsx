@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import { cn } from "@/lib/utils";
 import { useState, useRef } from "react";
 import { Camera, Edit, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { BadgeCheck } from "lucide-react";
 import type { User } from "@/lib/types";
+import axios from "axios";
 
 interface ProfileHeaderProps {
   user: User;
@@ -18,6 +19,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState(user.name);
   const [bio, setBio] = useState(user.bio);
+  const [username, setUsername] = useState(user.userName);
   const [profileImage, setProfileImage] = useState(user.profileImage);
   const [isHoveringImage, setIsHoveringImage] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -36,8 +38,27 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
     }
   };
 
-  const handleSave = () => {
-    // In a real app, you would save the changes to a server
+  const handleSave = async () => {
+    // try {
+    //   const userResponse = await axios.put(
+    //     "https://culture-capsule-backend.onrender.com/api/user/profile",
+    //     {
+    //       name,
+    //       bio,
+    //       userName: username,
+    //     },
+    //     {
+    //       withCredentials: true,
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+    //       },
+    //     }
+    //   );
+    // } catch (error) {
+    //   console.error("Error fetching user data:", error);
+    //   return null;
+    // }
+
     setIsEditing(false);
   };
 
@@ -78,6 +99,20 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             <div className="space-y-4">
               <div>
                 <label
+                  htmlFor="username"
+                  className="mb-2 block text-sm font-medium text-gray-700"
+                >
+                  Username
+                </label>
+                <Input
+                  id="username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  className="max-w-md"
+                />
+              </div>
+              <div>
+                <label
                   htmlFor="name"
                   className="mb-2 block text-sm font-medium text-gray-700"
                 >
@@ -108,10 +143,17 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             </div>
           ) : (
             <>
+              <span
+                className={cn(
+                  "rounded-full px-4 py-2 text-sm font-medium transition-colors bg-[rgb(82,104,45)] text-white my-2"
+                )}
+              >
+                {user.userName || "No username set"}
+              </span>
               <h1 className="mb-2 text-3xl font-bold text-gray-900 flex items-center gap-1">
                 {name}
                 {user.name == "Daniel Adegoke" && (
-                  <BadgeCheck className="h-6 w-6 text-blue-500" />
+                  <BadgeCheck className="h-6 w-6 text-[rgb(82,104,45)] -500" />
                 )}
                 <span></span>
               </h1>
