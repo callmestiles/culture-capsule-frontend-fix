@@ -54,7 +54,7 @@ export const en = {
   login_success_description: "You are now logged into your account.",
   login_error_title: "Login failed",
   general_error_message: "Please try again later.",
-
+  logging_in: "Logging in...",
   // Navigation
   home: "Home",
   history: "History",

@@ -1,7 +1,15 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+// contexts/AuthContext.tsx
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+} from "react";
 import api from "@/api/axios";
 import refreshToken from "@/api/tokenService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 interface User {
@@ -32,68 +40,117 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const tokenRefreshIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const isAuthenticatedPage = !["login", "register", "forgot-password"].some(
+    (path) => location.pathname.includes(path)
+  );
 
-  const fetchUser = async () => {
-    try {
-      const response = await api.get("/user/profile");
-      console.log("User profile response:", response.data);
-      setUser(response.data.data);
-    } catch (error) {
-      setUser(null);
-      console.error("Failed to fetch user:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  console.log("User:", user);
-
-  // Check and set up token refresh schedule
+  // Use for cleanup on unmount
   useEffect(() => {
-    // Function to check token and user session on mount
-    const initializeAuth = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        // Attempt to fetch user profile to validate session
-        await fetchUser();
-
-        // Set up token refresh schedule
-        setupTokenRefresh();
-      } else {
-        setIsLoading(false);
-      }
-    };
-
-    initializeAuth();
-
-    // Cleanup function
     return () => {
-      // Clear any token refresh intervals when component unmounts
-      if (window.tokenRefreshInterval) {
-        clearInterval(window.tokenRefreshInterval);
+      if (tokenRefreshIntervalRef.current) {
+        clearInterval(tokenRefreshIntervalRef.current);
       }
     };
   }, []);
 
-  // Set up token refresh on a schedule (every 25 minutes to be safe)
-  const setupTokenRefresh = () => {
-    // Clear any existing interval
-    if (window.tokenRefreshInterval) {
-      clearInterval(window.tokenRefreshInterval);
+  const fetchUser = useCallback(async (skipLoadingState = false) => {
+    if (!skipLoadingState) {
+      setIsLoading(true);
     }
 
-    // Set up a new interval to refresh token every 25 minutes (before the 30 min expiry)
-    window.tokenRefreshInterval = setInterval(async () => {
+    try {
+      // Only attempt to fetch user if we have a token
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        setUser(null);
+        return null;
+      }
+
+      const response = await api.get("/user/profile");
+      const userData = response.data.user || response.data.data;
+      setUser(userData);
+      return userData;
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+      // Only clear user if we get a 401 - other errors might be temporary
+      if (error.response?.status === 401) {
+        setUser(null);
+        localStorage.removeItem("accessToken");
+      }
+      return null;
+    } finally {
+      if (!skipLoadingState) {
+        setIsLoading(false);
+      }
+    }
+  }, []);
+
+  // Set up token refresh on a schedule
+  const setupTokenRefresh = useCallback(() => {
+    // Clear any existing interval
+    if (tokenRefreshIntervalRef.current) {
+      clearInterval(tokenRefreshIntervalRef.current);
+      tokenRefreshIntervalRef.current = null;
+    }
+
+    // Don't set up refresh if no token exists
+    const token = localStorage.getItem("accessToken");
+    if (!token) return;
+
+    // Set up new interval - refresh every 25 minutes (before 30 min expiry)
+    tokenRefreshIntervalRef.current = setInterval(async () => {
       try {
         await refreshToken();
         console.log("Token refreshed proactively");
       } catch (error) {
         console.error("Failed to refresh token proactively:", error);
+
+        // If refresh fails due to invalid token, clear user state
+        if (error.response?.status === 401) {
+          setUser(null);
+
+          // Only redirect if on an authenticated page
+          if (isAuthenticatedPage) {
+            navigate("/login");
+            toast({
+              title: "Session expired",
+              description: "Please log in again to continue.",
+            });
+          }
+        }
       }
-    }, 25 * 60 * 1000); // 25 minutes in milliseconds
-  };
+    }, 25 * 60 * 1000); // 25 minutes
+  }, [navigate, toast, isAuthenticatedPage]);
+
+  // Check auth status on mount and route changes
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const token = localStorage.getItem("accessToken");
+
+      // Skip auth check for login/register pages
+      if (!isAuthenticatedPage) {
+        setIsLoading(false);
+        return;
+      }
+
+      if (token) {
+        try {
+          await fetchUser();
+          setupTokenRefresh();
+        } catch (error) {
+          console.error("Auth initialization error:", error);
+        }
+      }
+
+      setIsLoading(false);
+    };
+
+    initializeAuth();
+  }, [fetchUser, setupTokenRefresh, isAuthenticatedPage]);
 
   const login = async (email: string, password: string) => {
     setIsLoading(true);
@@ -104,23 +161,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         if (accessToken) {
           localStorage.setItem("accessToken", accessToken);
-        }
+          await fetchUser(true); // Skip setting loading state again
+          setupTokenRefresh();
 
-        await fetchUser();
-        setupTokenRefresh();
-        toast({
-          title: "Login successful!",
-          description: "You are now logged into your account.",
-        });
-        navigate("/");
+          toast({
+            title: "Login successful!",
+            description: "You are now logged into your account.",
+          });
+
+          // Navigate to home or intended page
+          navigate("/");
+        }
       }
     } catch (error) {
       console.error("Login error:", error);
       toast({
         title: "Login failed",
         description: error.response?.data?.message || "Please try again later.",
+        variant: "destructive",
       });
-      throw error; // Re-throw to handle in component
+      throw error;
     } finally {
       setIsLoading(false);
     }
@@ -142,15 +202,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         password,
         confirmPassword,
       });
+
       if (response.data.success) {
         toast({
           title: "Registration successful!",
           description: "Logging in to your account.",
         });
+
+        // Login with the new credentials
         await login(email, password);
       }
     } catch (error) {
       console.error("Signup error:", error);
+      toast({
+        title: "Registration failed",
+        description: error.response?.data?.message || "Please try again later.",
+        variant: "destructive",
+      });
       throw error;
     } finally {
       setIsLoading(false);
@@ -159,15 +227,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = async () => {
     try {
+      // Try to logout on the server
+      await api.post("/auth/logout").catch((err) => {
+        // Ignore logout errors - we'll clear local state anyway
+        console.log("Logout API error (continuing with local logout):", err);
+      });
+    } finally {
+      // Clear local state regardless of server response
       localStorage.removeItem("accessToken");
 
-      // Clear token refresh interval
-      if (window.tokenRefreshInterval) {
-        clearInterval(window.tokenRefreshInterval);
+      if (tokenRefreshIntervalRef.current) {
+        clearInterval(tokenRefreshIntervalRef.current);
+        tokenRefreshIntervalRef.current = null;
       }
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
+
       setUser(null);
       navigate("/login");
     }
@@ -197,9 +270,4 @@ export const useAuth = () => {
   return context;
 };
 
-// Add token refresh interval to window type
-declare global {
-  interface Window {
-    tokenRefreshInterval?: NodeJS.Timeout;
-  }
-}
+// No need to modify window global - using local ref instead
