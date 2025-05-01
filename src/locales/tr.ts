@@ -325,6 +325,13 @@ export const tr = {
   profile_title: "Katkılarım",
   profile_button: "Yeni Gönderi Oluştur",
 
+  // All
+  all_pill: "Tüm Gönderileri Keşfet",
+  all_title: "Tüm Gönderiler",
+  all_description:
+    "Topluluğumuz tarafından paylaşılan çeşitli kültürel kapsülleri keşfedin. Her kapsül, Kuzey Kıbrıs'ın mirasını temsil eden eşsiz bir unsuru içeriyor ve keşfedilmeyi, korunmayı bekliyor.",
+
+
   //Footer
   explore: "Keşfet",
   categories_footer: "Kategoriler",

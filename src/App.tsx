@@ -22,6 +22,7 @@ import ProfilePage from "./pages/profile";
 import Music from "./pages/music";
 import PoemPage from "./pages/poem";
 import { AuthProvider } from "./contexts/AuthContext";
+import AllPage from "./pages/all";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
               <Route path="/folklore" element={<Folklore />} />
               <Route path="/music" element={<Music />} />
               <Route path="/poems" element={<PoemPage />} />
+              <Route path="/posts" element={<AllPage />} />
               <Route path="/featured" element={<Featured />} />
               <Route path="/capsule/:id" element={<CapsuleDetail />} />
               <Route path="/login" element={<Login />} />

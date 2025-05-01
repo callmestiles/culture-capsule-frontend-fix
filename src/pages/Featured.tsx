@@ -119,7 +119,7 @@ const Featured: React.FC = () => {
             </p>
           </div>
 
-          <Tabs defaultValue="all_category" className="w-full mb-10">
+          {/* <Tabs defaultValue="all_category" className="w-full mb-10">
             <div className="flex justify-center mb-8">
               <TabsList className="bg-capsule-paper">
                 {categoryData.map(({ key }) => (
@@ -148,6 +148,86 @@ const Featured: React.FC = () => {
                 ) : (
                   <>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                      {collections.length > 0 &&
+                        collections
+                          .filter(
+                            (collection) =>
+                              key === "all_category" ||
+                              collection.category === t(key)
+                          )
+                          .map((collection, index) => (
+                            <CollectionCard
+                              key={index}
+                              {...collection}
+                              index={index}
+                            />
+                          ))}
+                    </div>
+
+                    {collections.length > 0 && (
+                      <div className="flex justify-center mt-12">
+                        <Link
+                          to={route}
+                          className="inline-flex items-center justify-center px-6 py-2 bg-capsule-sand text-white rounded-lg hover:bg-capsule-sand/90 transition-colors"
+                        >
+                          {t("view_more_category")}
+                        </Link>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {!loading &&
+                  collections.length === 0 &&
+                  key === activeCategory && (
+                    <div className="text-center py-20">
+                      <h3 className="text-2xl font-serif mb-4">
+                        {t("no_results")}
+                      </h3>
+                      <p className="text-capsule-text/70 mb-6">
+                        {t("try_different_category")}
+                      </p>
+                      <Button
+                        className="flex items-center gap-2"
+                        onClick={() => setActiveCategory("all")}
+                      >
+                        <span>{t("view_all")}</span>
+                        <ArrowRight />
+                      </Button>
+                    </div>
+                  )}
+              </TabsContent>
+            ))}
+          </Tabs> */}
+          <Tabs defaultValue="all_category" className="w-full mb-10">
+            <div className="flex justify-center mb-8 px-3">
+              <TabsList className="bg-capsule-paper flex flex-wrap justify-center gap-x-1 gap-y-2  my-10">
+                {categoryData.map(({ key }) => (
+                  <TabsTrigger
+                    key={key}
+                    value={key}
+                    onClick={() => setActiveCategory(key)}
+                    className="capitalize px-3 py-1 text-sm sm:text-base"
+                  >
+                    {t(key)}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </div>
+
+            {categoryData.map(({ key, route }) => (
+              <TabsContent key={key} value={key} className="space-y-4 px-4">
+                {loading && key === activeCategory ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
+                    {Array(4)
+                      .fill(0)
+                      .map((_, index) => (
+                        <CollectionCardSkeleton key={index} />
+                      ))}
+                  </div>
+                ) : (
+                  <>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-6">
                       {collections.length > 0 &&
                         collections
                           .filter(
