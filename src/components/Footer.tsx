@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
 
           {footerLinks.map((column) => (
             <div key={column.title}>
-              <h3 className="font-semibold text-lg text-gray-700 mb-4">
+              <h3 className="font-semibold text-xl text-gray-700 mb-4">
                 {column.title}
               </h3>
               {column.title === t("categories") ? (
