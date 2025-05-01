@@ -6,7 +6,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
-import { AnimatePresence, motion } from "framer-motion"; // Add framer-motion for animations
+import { AnimatePresence, motion } from "framer-motion";
 
 interface NavbarProps {
   backgroundColor?: string;
@@ -20,6 +20,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   const { t } = useLanguage();
   const location = useLocation();
   const categoriesRef = useRef<HTMLDivElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   // Auth context hooks
   const { user, isAuthenticated, isLoading, logout } = useAuth();
@@ -31,12 +32,11 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
   // Handle authentication state changes
   useEffect(() => {
     if (prevAuthState !== isAuthenticated && !isLoading) {
-      // Auth state has changed
       setIsAuthTransitioning(true);
       const timer = setTimeout(() => {
         setIsAuthTransitioning(false);
         setPrevAuthState(isAuthenticated);
-      }, 500); // Duration of transition effect
+      }, 500);
 
       return () => clearTimeout(timer);
     }
@@ -56,13 +56,23 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
       ) {
         setCategoriesOpen(false);
       }
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target as Node) &&
+        !(event.target as HTMLElement).closest('[aria-label="Menu"]')
+      ) {
+        setMobileMenuOpen(false);
+        document.body.style.overflow = "auto";
+      }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
     };
   }, []);
 
@@ -70,18 +80,19 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
     setMobileMenuOpen(false);
     setCategoriesOpen(false);
     setMobileCategoriesOpen(false);
+    document.body.style.overflow = "auto";
   }, [location.pathname]);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    document.body.style.overflow = !mobileMenuOpen ? "hidden" : "auto";
+  };
 
   const getGreeting = () => {
     const hour = new Date().getHours();
     if (hour < 12) return t("good_morning");
     if (hour < 18) return t("good_afternoon");
     return t("good_evening");
-  };
-
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-    document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
   };
 
   const handleLogout = async () => {
@@ -131,17 +142,23 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
     return categoryPaths.some((path) => location.pathname.startsWith(path));
   };
 
-  // Animation variants for smooth transitions
+  // Animation variants
   const authAnimationVariants = {
     hidden: { opacity: 0, y: -10 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
     exit: { opacity: 0, y: 10, transition: { duration: 0.2 } },
   };
 
+  const mobileMenuVariants = {
+    hidden: { opacity: 0, y: "100%" },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: "100%" },
+  };
+
   return (
     <header
       className={cn(
-        `${backgroundColor} z-50 h-20 px-6 border-b-[1.5px] border-b-secondary flex items-center transition-colors duration-75`,
+        `${backgroundColor} z-50 h-20 px-4 sm:px-6 border-b-[1.5px] border-b-secondary flex items-center transition-colors duration-75`,
         isScrolled &&
           "fixed top-0 left-0 right-0 bg-capsule-paper backdrop-blur-md shadow-md border-b-white"
       )}
@@ -149,14 +166,14 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
       <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
         {/* Logo and brand */}
         <Link to="/" className="flex items-center gap-2">
-          <div className="w-12 h-12 relative flex items-center justify-center text-white overflow-hidden group">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 relative flex items-center justify-center text-white overflow-hidden group">
             <img
               src="/images/logo-black.png"
               alt="Culture Capsule"
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-serif text-xl font-semibold tracking-tight text-black">
+          <span className="font-serif text-lg sm:text-xl font-semibold tracking-tight text-black">
             Culture Capsule
           </span>
         </Link>
@@ -218,10 +235,10 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
         </nav>
 
         {/* Auth and Language Controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
           <LanguageSwitcher />
 
-          {/* Desktop Auth Controls with Animation */}
+          {/* Desktop Auth Controls */}
           <div className="hidden md:block min-w-[150px] h-10">
             {isLoading ? (
               <div className="h-8 w-20 bg-gray-200 animate-pulse rounded"></div>
@@ -294,6 +311,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
             className="md:hidden p-2 rounded-full text-capsule-text hover:bg-capsule-paper transition-colors duration-200"
             onClick={toggleMobileMenu}
             aria-label="Menu"
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
@@ -301,143 +319,171 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
       </div>
 
       {/* Mobile Menu */}
-      <div
-        className={cn(
-          "fixed inset-0 bg-white z-40 pt-20 pb-6 px-6 transition-transform duration-300 ease-in-out md:hidden overflow-y-auto",
-          mobileMenuOpen ? "translate-x-0" : "translate-x-full"
-        )}
-      >
-        <nav className="flex flex-col gap-6">
-          {navItems.map((item) =>
-            item.isDropdown ? (
-              <div
-                key={item.name}
-                className="border-b border-capsule-sand pb-3"
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            ref={mobileMenuRef}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            variants={mobileMenuVariants}
+            transition={{ type: "tween", ease: "easeInOut", duration: 0.3 }}
+            className="fixed inset-0 z-40 bg-white pt-6 pb-8 px-6 md:hidden flex flex-col"
+          >
+            {/* Close Button - Fixed at top right */}
+            <div className="flex justify-end mb-6">
+              <button
+                onClick={toggleMobileMenu}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+                aria-label="Close menu"
               >
-                <button
-                  onClick={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
-                  className={cn(
-                    "flex items-center justify-between w-full text-lg font-medium",
-                    isCategoryActive()
-                      ? "text-capsule-accent font-bold"
-                      : "text-black"
-                  )}
-                >
-                  <span>{item.name}</span>
-                  {mobileCategoriesOpen ? (
-                    <ChevronUp size={20} />
-                  ) : (
-                    <ChevronDown size={20} />
-                  )}
-                </button>
-                {mobileCategoriesOpen && (
-                  <div className="mt-3 pl-4 border-l border-capsule-sand/50 space-y-3">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.name}
-                        to={child.href}
+                <X size={24} className="text-gray-700" />
+              </button>
+            </div>
+
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto">
+              <nav className="flex flex-col gap-6">
+                {navItems.map((item) =>
+                  item.isDropdown ? (
+                    <div
+                      key={item.name}
+                      className="border-b border-gray-200 pb-4"
+                    >
+                      <button
+                        onClick={() =>
+                          setMobileCategoriesOpen(!mobileCategoriesOpen)
+                        }
                         className={cn(
-                          "block text-base transition-colors",
-                          isActive(child.href)
-                            ? "text-capsule-accent font-medium"
-                            : "text-black hover:text-capsule-accent/70"
+                          "flex items-center justify-between w-full text-lg font-medium py-2",
+                          isCategoryActive()
+                            ? "text-capsule-accent font-bold"
+                            : "text-gray-900"
                         )}
                       >
-                        {child.name}
-                      </Link>
-                    ))}
-                  </div>
+                        <span>{item.name}</span>
+                        {mobileCategoriesOpen ? (
+                          <ChevronUp size={20} />
+                        ) : (
+                          <ChevronDown size={20} />
+                        )}
+                      </button>
+                      {mobileCategoriesOpen && (
+                        <div className="mt-2 pl-4 border-l border-gray-200 space-y-3">
+                          {item.children.map((child) => (
+                            <Link
+                              key={child.name}
+                              to={child.href}
+                              className={cn(
+                                "block py-2 text-base transition-colors",
+                                isActive(child.href)
+                                  ? "text-capsule-accent font-medium"
+                                  : "text-gray-700 hover:text-capsule-accent"
+                              )}
+                              onClick={toggleMobileMenu}
+                            >
+                              {child.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className={cn(
+                        "text-lg font-medium py-3 border-b border-gray-200 transition-colors",
+                        isActive(item.href)
+                          ? "text-capsule-accent font-bold"
+                          : "text-gray-900 hover:text-capsule-accent"
+                      )}
+                      onClick={toggleMobileMenu}
+                    >
+                      {item.name}
+                    </Link>
+                  )
+                )}
+              </nav>
+
+              {/* Auth Section */}
+              <div className="pt-8 mt-4 border-t border-gray-200">
+                {isLoading ? (
+                  <div className="h-20 bg-gray-200 animate-pulse rounded"></div>
+                ) : (
+                  <AnimatePresence mode="wait">
+                    {isAuthenticated ? (
+                      <motion.div
+                        key="mobile-authenticated"
+                        className="space-y-6"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={authAnimationVariants}
+                      >
+                        <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                          <div className="w-12 h-12 bg-capsule-accent rounded-full flex items-center justify-center text-white">
+                            <User size={20} />
+                          </div>
+                          <div>
+                            <p className="font-medium text-gray-900">
+                              {user?.username || t("user")}
+                            </p>
+                            <p className="text-sm text-gray-600">
+                              {user?.email || t("user_email")}
+                            </p>
+                          </div>
+                        </div>
+                        <Button
+                          variant="outline"
+                          className="w-full h-12 text-base hover:bg-capsule-accent hover:text-white"
+                          onClick={() => {
+                            handleLogout();
+                            toggleMobileMenu();
+                          }}
+                        >
+                          {t("logout")}
+                        </Button>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="mobile-unauthenticated"
+                        className="flex flex-col gap-4"
+                        initial="hidden"
+                        animate="visible"
+                        exit="exit"
+                        variants={authAnimationVariants}
+                      >
+                        <Link
+                          to="/login"
+                          className="w-full"
+                          onClick={toggleMobileMenu}
+                        >
+                          <Button
+                            variant="outline"
+                            className="w-full h-12 text-base hover:bg-gray-100"
+                          >
+                            {t("login")}
+                          </Button>
+                        </Link>
+                        <Link
+                          to="/signup"
+                          className="w-full"
+                          onClick={toggleMobileMenu}
+                        >
+                          <Button className="w-full h-12 text-base bg-capsule-accent hover:bg-capsule-accent/90">
+                            {t("signup")}
+                          </Button>
+                        </Link>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 )}
               </div>
-            ) : (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={cn(
-                  "text-lg font-medium border-b border-capsule-sand pb-3 transition-colors",
-                  isActive(item.href)
-                    ? "text-capsule-accent font-bold"
-                    : "text-black hover:text-capsule-accent"
-                )}
-              >
-                {item.name}
-              </Link>
-            )
-          )}
-
-          {/* Mobile Auth Section with Animation */}
-          <div className="pt-6 mt-auto">
-            {isLoading ? (
-              <div className="h-20 bg-gray-200 animate-pulse rounded"></div>
-            ) : (
-              <AnimatePresence mode="wait">
-                {isAuthenticated ? (
-                  <motion.div
-                    key="mobile-authenticated"
-                    className="space-y-4"
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    variants={authAnimationVariants}
-                  >
-                    <div className="flex items-center gap-2 p-2 bg-capsule-sand/50 rounded-md">
-                      <div className="w-10 h-10 bg-capsule-accent rounded-full flex items-center justify-center text-white">
-                        <User size={18} />
-                      </div>
-                      <div>
-                        <p className="font-medium">
-                          {user?.username || t("user")}
-                        </p>
-                        <p className="text-xs text-capsule-text/70">
-                          {user?.email || t("user_email")}
-                        </p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full hover:bg-capsule-accent hover:text-white"
-                      onClick={() => {
-                        handleLogout();
-                        setMobileMenuOpen(false);
-                      }}
-                    >
-                      {t("logout")}
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="mobile-unauthenticated"
-                    className="flex flex-col gap-2"
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    variants={authAnimationVariants}
-                  >
-                    <Link
-                      to="/login"
-                      className="w-full"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <Button variant="outline" className="w-full">
-                        {t("login")}
-                      </Button>
-                    </Link>
-                    <Link
-                      to="/signup"
-                      className="w-full"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      <Button className="w-full bg-capsule-accent hover:bg-capsule-accent/90">
-                        {t("signup")}
-                      </Button>
-                    </Link>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            )}
-          </div>
-        </nav>
-      </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
