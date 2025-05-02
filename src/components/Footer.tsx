@@ -13,6 +13,7 @@ const Footer: React.FC = () => {
       links: [
         { name: t("recentAdditions"), href: "/featured" },
         { name: t("events"), href: "/events" },
+        { name: t("about"), href: "/about" },
       ],
     },
     {

@@ -149,13 +149,13 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
             </div>
           ) : (
             <>
-              <span
+              <button
                 className={cn(
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors bg-[rgb(82,104,45)] text-white my-2"
                 )}
               >
                 {user.username || "No username set"}
-              </span>
+              </button>
               <h1 className="mb-2 text-3xl font-bold text-gray-900 flex items-center gap-1">
                 {name}
                 {user.name == "Daniel Adegoke" && (
