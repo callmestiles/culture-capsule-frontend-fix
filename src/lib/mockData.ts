@@ -73,7 +73,7 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
       date: post.createdAt,
       time: post.time || "6:00 PM - 8:00 PM",
       category: post.category,
-      image: post.imageUrl?.length > 0 ? post.imageUrl[0] : "https://picsum.photos/200",
+      image: post.images.length > 0 ? post.images[0] : "https://picsum.photos/200",
     }));
   } catch (error) {
     console.error("Error fetching user posts:", error);

@@ -20,7 +20,8 @@ export default function ProfilePage() {
       const realPosts = await getRealUserPosts();
       setUser(realUser);
       setUserPosts(realPosts);
-      console.log(realUser, realPosts);
+      console.log(realUser);
+      console.log("Posts: ", realPosts);
     };
 
     fetchData();
