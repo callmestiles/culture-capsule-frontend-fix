@@ -1,13 +1,19 @@
-import { ThumbsUp, ThumbsDown, MessageSquare, Calendar } from "lucide-react";
+import {
+  ThumbsUp,
+  ThumbsDown,
+  MessageSquare,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { Post } from "@/lib/types";
-import { a } from "node_modules/framer-motion/dist/types.d-DDSxwf0n";
 import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { clear } from "console";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { getUserPostsCount } from "@/lib/mockData";
 
 interface UserPostsProps {
   posts: Post[];
@@ -16,11 +22,10 @@ interface UserPostsProps {
 export function UserPosts({ posts }: UserPostsProps) {
   const { toast } = useToast();
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
-  const [totalItems, setTotalItems] = useState(0);
-  const [itemsPerPage, setItemsPerPage] = useState(9);
-  const Navigate = useNavigate();
-  // Format date
+  const itemsPerPage = 6; // Adjust as needed
+  const totalPages = Math.ceil(getUserPostsCount() / itemsPerPage);
+  const navigate = useNavigate();
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -47,19 +52,19 @@ export function UserPosts({ posts }: UserPostsProps) {
           title: "Failed to delete post",
           description: "Please try again later.",
         });
-        throw new Error("Failed to delete post");
-      } else {
-        toast({
-          title: "Post deleted",
-          description: "Your post has been successfully deleted.",
-        });
-        setTimeout(() => {
-          Navigate(0);
-        }, 2000);
+        return;
       }
 
-      // Optionally, you can refresh the posts list or update the UI after deletion
-    } catch (error) {
+      toast({
+        title: "Post deleted",
+        description: "Your post has been successfully deleted.",
+      });
+
+      setTimeout(() => {
+        navigate(0);
+      }, 2000);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.error("Error deleting post:", error);
       toast({
         title: "Failed to delete post",
@@ -67,6 +72,43 @@ export function UserPosts({ posts }: UserPostsProps) {
       });
     }
   };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
+  };
+
+  const getPageNumbers = () => {
+    const maxPagesToShow = 5;
+    let pages = [];
+
+    if (totalPages <= maxPagesToShow) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      let startPage = Math.max(currentPage - Math.floor(maxPagesToShow / 2), 1);
+      const endPage = Math.min(startPage + maxPagesToShow - 1, totalPages);
+
+      if (endPage - startPage + 1 < maxPagesToShow) {
+        startPage = Math.max(endPage - maxPagesToShow + 1, 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) pages.push(i);
+
+      if (startPage > 1) pages = [1, "...", ...pages.slice(2)];
+      if (endPage < totalPages)
+        pages = [...pages.slice(0, -2), "...", totalPages];
+    }
+
+    return pages;
+  };
+
+  const paginatedPosts = useMemo(() => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return posts.slice(start, start + itemsPerPage);
+  }, [currentPage, posts]);
 
   if (posts.length === 0) {
     return (
@@ -82,65 +124,103 @@ export function UserPosts({ posts }: UserPostsProps) {
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {posts.map((post) => (
-        <Card key={post.id} className="overflow-hidden hover:shadow-md">
-          <div className="relative h-48 w-full">
-            <img
-              src={
-                post.image || "/placeholder.svg?height=200&width=300&text=Post"
-              }
-              alt={post.title}
-              className="h-full w-full object-cover"
-            />
-            <Badge className="absolute left-3 top-3 bg-[rgb(82,104,45)]">
-              {post.category}
-            </Badge>
+    <>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {paginatedPosts.map((post) => (
+          <Card key={post.id} className="overflow-hidden hover:shadow-md">
+            <div className="relative h-48 w-full">
+              <img
+                src={
+                  post.image ||
+                  "/placeholder.svg?height=200&width=300&text=Post"
+                }
+                alt={post.title}
+                className="h-full w-full object-cover"
+              />
+              <Badge className="absolute left-3 top-3 bg-[rgb(82,104,45)]">
+                {post.category}
+              </Badge>
+            </div>
+            <CardContent className="p-4">
+              <h3 className="mb-2 text-xl font-bold text-gray-900 line-clamp-1">
+                {post.title}
+              </h3>
+              <p className="mb-4 text-gray-600 line-clamp-2">{post.excerpt}</p>
+              <div className="flex justify-between items-center text-sm text-gray-500">
+                <span>{formatDate(post.date)}</span>
+                <div className="flex items-center gap-4">
+                  <a
+                    href={"capsule/" + post.id}
+                    className="text-sm font-medium text-[rgb(82,104,45)] hover:underline"
+                  >
+                    View Post
+                  </a>
+                  <button
+                    className="text-sm font-medium text-[rgb(255,0,0)] hover:underline"
+                    onClick={() => deletePost(post.id)}
+                  >
+                    Delete Post
+                  </button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center mt-8">
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handlePreviousPage}
+              disabled={currentPage === 1}
+              className={`p-2 rounded-lg flex items-center justify-center ${
+                currentPage === 1
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-black hover:bg-gray-100"
+              }`}
+            >
+              <ChevronLeft size={20} />
+            </button>
+
+            {getPageNumbers().map((page, index) => (
+              <button
+                key={index}
+                onClick={() => typeof page === "number" && setCurrentPage(page)}
+                disabled={page === "..."}
+                className={`w-10 h-10 flex items-center justify-center rounded-lg ${
+                  page === currentPage
+                    ? "bg-[rgb(82,104,45)] text-white"
+                    : page === "..."
+                    ? "text-gray-500 cursor-default"
+                    : "text-black hover:bg-gray-100"
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              onClick={handleNextPage}
+              disabled={currentPage === totalPages}
+              className={`p-2 rounded-lg flex items-center justify-center ${
+                currentPage === totalPages
+                  ? "text-gray-400 cursor-not-allowed"
+                  : "text-black hover:bg-gray-100"
+              }`}
+            >
+              <ChevronRight size={20} />
+            </button>
           </div>
-          <CardContent className="p-4">
-            <h3 className="mb-2 text-xl font-bold text-gray-900 line-clamp-1">
-              {post.title}
-            </h3>
-            <p className="mb-4 text-gray-600 line-clamp-2">{post.excerpt}</p>
+        </div>
+      )}
 
-            <div className="mb-3 flex items-center text-sm text-gray-500">
-              <Calendar className="mr-1 h-4 w-4" />
-              <span>{formatDate(post.date)}</span>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-1">
-                  <ThumbsUp className="h-4 w-4 text-[rgb(82,104,45)]" />
-                  <span className="text-sm">{post.likes}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <ThumbsDown className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm">{post.dislikes}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <MessageSquare className="h-4 w-4 text-gray-500" />
-                  <span className="text-sm">{post.comments}</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-4">
-                <a
-                  href={"capsule/" + post.id}
-                  className="text-sm font-medium text-[rgb(82,104,45)] hover:underline"
-                >
-                  View Post
-                </a>
-                <button
-                  className="text-sm font-medium text-[rgb(255,0,0)] hover:underline"
-                  onClick={() => deletePost(post.id)}
-                >
-                  Delete Post
-                </button>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+      <div className="text-center text-gray-500 text-sm mt-4">
+        Showing {(currentPage - 1) * itemsPerPage + 1} -{" "}
+        {Math.min(currentPage * itemsPerPage, getUserPostsCount())} of{" "}
+        {getUserPostsCount()} posts
+      </div>
+    </>
   );
 }

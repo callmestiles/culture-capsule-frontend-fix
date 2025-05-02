@@ -33,6 +33,8 @@ export const getRealUserData = async (): Promise<User | null> => {
   }
 };
 
+let userPosts: number = 0; // Initialize userPosts variable
+
 // Function to get real posts data
 export const getRealUserPosts = async (): Promise<Post[]> => {
   try {
@@ -51,7 +53,7 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
 
     // Then fetch posts for that user
     const postsResponse = await axios.get(
-      `https://culture-capsule-backend.onrender.com/api/posts/user/${userId}`,
+      `https://culture-capsule-backend.onrender.com/api/posts/user/${userId}/all`,
       {
         withCredentials: true,
         headers: {
@@ -61,6 +63,9 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
     );
 
     const posts = postsResponse.data.posts;
+    console.log("Posts: ", posts);
+
+    userPosts = postsResponse.data.pagination.totalItems;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return posts.map((post: any) => ({
@@ -80,3 +85,7 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
     return [];
   }
 };
+
+export const getUserPostsCount = () => {
+  return userPosts; // Return the userPosts variable
+}
