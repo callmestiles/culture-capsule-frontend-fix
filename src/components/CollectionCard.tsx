@@ -69,7 +69,15 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
         <div className="flex items-center justify-between text-xs text-gray-300">
           <span>
             <p className="mb-2">{date}</p>
-            {t("by")} {contributor}
+            {localStorage.getItem("language") === "tr" ? (
+              <>
+                {contributor} {t("by")}
+              </>
+            ) : (
+              <>
+                {t("by")} {contributor}
+              </>
+            )}
           </span>
           <div className="flex items-center space-x-2">
             <button className="flex items-center text-gray-300 transition-colors">

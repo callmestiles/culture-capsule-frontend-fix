@@ -7,6 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { clear } from "console";
+import { useState } from "react";
 
 interface UserPostsProps {
   posts: Post[];
@@ -14,6 +15,10 @@ interface UserPostsProps {
 
 export function UserPosts({ posts }: UserPostsProps) {
   const { toast } = useToast();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(9);
   const Navigate = useNavigate();
   // Format date
   const formatDate = (dateString: string) => {
