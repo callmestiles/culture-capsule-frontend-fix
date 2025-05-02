@@ -65,7 +65,7 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
     const posts = postsResponse.data.posts;
     console.log("Posts: ", posts);
 
-    userPosts = postsResponse.data.pagination.totalItems;
+    userPosts = postsResponse.data.totalPosts;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return posts.map((post: any) => ({
