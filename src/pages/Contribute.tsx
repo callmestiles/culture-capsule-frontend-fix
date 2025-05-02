@@ -103,18 +103,6 @@ const Contribute = () => {
     }
   };
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     const files = Array.from(e.target.files);
-  //     const newImageFiles = [...imageFiles, ...files];
-  //     setImageFiles(newImageFiles);
-
-  //     // Create preview URLs
-  //     const newPreviewUrls = files.map((file) => URL.createObjectURL(file));
-  //     setPreviewImages((prev) => [...prev, ...newPreviewUrls]);
-  //   }
-  // };
-
   const removeImage = (index: number) => {
     const newPreviewImages = [...previewImages];
     const newImageFiles = [...imageFiles];
@@ -147,6 +135,9 @@ const Contribute = () => {
     }
   }, [authLoading, isAuthenticated, toast]);
 
+  // In the onSubmit function of your Contribute component, add the polling mechanism
+
+  // Fixed polling mechanism for the onSubmit function
   const onSubmit = async (values: ContributionValues) => {
     if (!isAuthenticated) {
       toast({
@@ -165,12 +156,17 @@ const Contribute = () => {
     formData.append("year", values.year || "");
     formData.append("language", values.language || "en");
 
-    //add multiple images under the key of image(the previewed uploaded images)
     imageFiles.forEach((file) => {
       formData.append("image", file);
     });
 
     try {
+      // Initial submission toast
+      toast({
+        title: "Submitting your contribution",
+        description: "Please wait while we process your submission...",
+      });
+
       const response = await axios.post(
         "https://culture-capsule-backend.onrender.com/api/posts",
         formData,
@@ -181,19 +177,140 @@ const Contribute = () => {
           },
         }
       );
-      console.log("Response:", response.data);
 
-      toast({
-        title: "Submission successful",
-        description: "Your contribution has been received.",
-      });
+      const { post } = response.data;
 
+      // Reset form after successful submission
       form.reset();
       setPreviewImages([]);
       setImageFiles([]);
 
-      // Note: The commented polling code has been removed for clarity
+      // Initial success toast
+      toast({
+        title: "Contribution submitted",
+        description: "Your content has been successfully submitted.",
+      });
+
+      if (post && post._id) {
+        // Start the polling process
+        let attempts = 0;
+        const maxAttempts = 10;
+        const pollInterval = 3000; // 3 seconds
+
+        // Show categorization toast
+        toast({
+          title: "Categorizing your contribution",
+          description:
+            "We're analyzing your content. This might take a moment.",
+        });
+
+        const pollCategorization = async () => {
+          try {
+            console.log(`Polling attempt ${attempts + 1} for post ${post._id}`);
+
+            const checkResponse = await axios.get(
+              `https://culture-capsule-backend.onrender.com/api/posts/${post._id}/status`,
+              {
+                withCredentials: true,
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem(
+                    "accessToken"
+                  )}`,
+                },
+              }
+            );
+
+            // Log the full response for debugging
+            console.log("Status check response:", checkResponse.data);
+
+            const { status, category, message } = checkResponse.data;
+
+            // Show a toast based on the current status
+            if (status !== "pending") {
+              console.log(`Post status changed to: ${status}`);
+            }
+
+            switch (status) {
+              case "approved":
+                toast({
+                  title: "Content approved",
+                  description: `Your contribution has been categorized as "${category}".`,
+                });
+                // Navigate to the newly created post
+                navigate(`/post/${post._id}`);
+                return; // Stop polling
+
+              case "rejected":
+                toast({
+                  title: "Content rejected",
+                  description:
+                    message || "Your content was flagged as inappropriate.",
+                  variant: "destructive",
+                });
+                return; // Stop polling
+
+              case "needs_review":
+                toast({
+                  title: "Manual review required",
+                  description:
+                    "Your contribution needs review by our team. We'll notify you when it's approved.",
+                });
+                return; // Stop polling
+
+              case "pending":
+                // Continue polling, but don't show another toast
+                console.log("Post still pending, continuing to poll");
+                break;
+
+              case "draft":
+                // Continue polling
+                console.log("Post in draft state, continuing to poll");
+                break;
+
+              default:
+                // Unknown status, stop polling
+                toast({
+                  title: "Status check completed",
+                  description:
+                    message || "Your contribution status has been updated.",
+                });
+                return; // Stop polling
+            }
+
+            attempts++;
+            if (attempts < maxAttempts) {
+              setTimeout(pollCategorization, pollInterval);
+            } else {
+              toast({
+                title: "Processing taking longer than expected",
+                description:
+                  "Your contribution is still being processed. You can check its status later in your profile.",
+              });
+              // Navigate to profile or another appropriate page
+              navigate("/profile");
+            }
+          } catch (error) {
+            console.error("Error checking post status:", error);
+            toast({
+              title: "Error checking status",
+              description: "There was an issue checking your post status.",
+              variant: "destructive",
+            });
+          }
+        };
+
+        // Start the polling process after a brief delay
+        setTimeout(pollCategorization, pollInterval);
+      } else {
+        toast({
+          title: "Missing post information",
+          description:
+            "There was an issue with the server response. Please check your profile for status.",
+          variant: "destructive",
+        });
+      }
     } catch (error) {
+      console.error("Submission error:", error);
       toast({
         title: "Submission failed",
         description:
