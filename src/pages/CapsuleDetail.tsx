@@ -23,6 +23,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext";
 
 const CapsuleDetail: React.FC = () => {
   const { toast } = useToast();
@@ -34,7 +35,11 @@ const CapsuleDetail: React.FC = () => {
   const [capsule, setCapsule] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [liked, setLiked] = useState(false);
-  const [disliked, setdisLiked] = useState(false);
+  const [disliked, setDisliked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
+  const [dislikeCount, setDislikeCount] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     const fetchCapsule = async () => {
@@ -44,6 +49,38 @@ const CapsuleDetail: React.FC = () => {
         );
         if (response.data.success) {
           setCapsule(response.data);
+
+          // Check user interaction status if authenticated
+          if (isAuthenticated) {
+            try {
+              const userResponse = await axios.get(
+                `https://culture-capsule-backend.onrender.com/api/users/me`,
+                {
+                  withCredentials: true,
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem(
+                      "accessToken"
+                    )}`,
+                  },
+                }
+              );
+
+              if (userResponse.data.success) {
+                const userId = userResponse.data.user._id;
+                const post = response.data.post;
+
+                // Check if user has liked or disliked the post
+                setLiked(post.likes.includes(userId));
+                setDisliked(post.dislikes.includes(userId));
+              }
+            } catch (error) {
+              console.error("Error fetching user interaction status:", error);
+            }
+          }
+
+          // Set initial counts
+          setLikeCount(response.data.post.likes.length);
+          setDislikeCount(response.data.post.dislikes.length);
         } else {
           toast({
             variant: "destructive",
@@ -61,7 +98,7 @@ const CapsuleDetail: React.FC = () => {
     };
 
     if (id) fetchCapsule();
-  }, [id, language, toast, t]);
+  }, [id, language, toast, t, isAuthenticated]);
 
   const formatDate = (dateString: string) => {
     try {
@@ -77,6 +114,18 @@ const CapsuleDetail: React.FC = () => {
   };
 
   const handleLike = async () => {
+    if (!isAuthenticated) {
+      toast({
+        title: t("Authentication Required"),
+        description: t("Please log in to like posts"),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     try {
       if (liked) {
         // Unlike if already liked
@@ -92,6 +141,14 @@ const CapsuleDetail: React.FC = () => {
         );
         if (response.data.success) {
           setLiked(false);
+          setLikeCount(response.data.likes || likeCount - 1);
+          setDislikeCount(response.data.dislikes || dislikeCount);
+
+          // Visual feedback
+          toast({
+            title: t("Like removed"),
+            description: t("You have removed your like from this post"),
+          });
         }
       } else {
         // Like if not already liked
@@ -107,7 +164,18 @@ const CapsuleDetail: React.FC = () => {
         );
         if (response.data.success) {
           setLiked(true);
-          setdisLiked(false); // remove dislike if it was active
+          setDisliked(false); // remove dislike if it was active
+          setLikeCount(response.data.likes || likeCount + 1);
+          setDislikeCount(
+            response.data.dislikes ||
+              (disliked ? dislikeCount - 1 : dislikeCount)
+          );
+
+          // Visual feedback
+          toast({
+            title: t("Post liked"),
+            description: t("You have liked this post"),
+          });
         }
       }
     } catch (error) {
@@ -117,10 +185,24 @@ const CapsuleDetail: React.FC = () => {
         title: t("Error"),
         description: t("Failed to process your like action. Please try again."),
       });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
   const handleDislike = async () => {
+    if (!isAuthenticated) {
+      toast({
+        title: t("Authentication Required"),
+        description: t("Please log in to dislike posts"),
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isProcessing) return;
+    setIsProcessing(true);
+
     try {
       if (disliked) {
         // Undislike if already disliked
@@ -135,7 +217,15 @@ const CapsuleDetail: React.FC = () => {
           }
         );
         if (response.data.success) {
-          setdisLiked(false);
+          setDisliked(false);
+          setLikeCount(response.data.likes || likeCount);
+          setDislikeCount(response.data.dislikes || dislikeCount - 1);
+
+          // Visual feedback
+          toast({
+            title: t("Dislike removed"),
+            description: t("You have removed your dislike from this post"),
+          });
         }
       } else {
         // Dislike if not already disliked
@@ -150,8 +240,18 @@ const CapsuleDetail: React.FC = () => {
           }
         );
         if (response.data.success) {
-          setdisLiked(true);
+          setDisliked(true);
           setLiked(false); // remove like if it was active
+          setDislikeCount(response.data.dislikes || dislikeCount + 1);
+          setLikeCount(
+            response.data.likes || (liked ? likeCount - 1 : likeCount)
+          );
+
+          // Visual feedback
+          toast({
+            title: t("Post disliked"),
+            description: t("You have disliked this post"),
+          });
         }
       }
     } catch (error) {
@@ -163,6 +263,8 @@ const CapsuleDetail: React.FC = () => {
           "Failed to process your dislike action. Please try again."
         ),
       });
+    } finally {
+      setIsProcessing(false);
     }
   };
 
@@ -347,39 +449,41 @@ const CapsuleDetail: React.FC = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={`flex items-center gap-2 ${
+                      className={`flex items-center gap-2 transition-all duration-200 ${
                         liked
-                          ? "text-capsule-accent"
-                          : "text-gray-500 dark:text-gray-400"
-                      }`}
-                      onClick={() => handleLike()}
+                          ? "text-capsule-accent bg-capsule-accent/10"
+                          : "text-gray-500 hover:text-white"
+                      } ${isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
+                      onClick={handleLike}
+                      disabled={isProcessing || !isAuthenticated}
                     >
                       <ThumbsUp
                         size={18}
-                        className={liked ? "fill-current" : ""}
+                        className={`transition-transform ${
+                          liked ? "fill-current scale-110" : ""
+                        } ${isProcessing ? "animate-pulse" : ""}`}
                       />
-                      <span>
-                        {capsule.post.likes?.length + (liked ? 1 : 0)}
-                      </span>
+                      <span>{likeCount}</span>
                     </Button>
 
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={`flex items-center gap-2 ${
-                        liked
-                          ? "text-capsule-accent"
-                          : "text-gray-500 dark:text-gray-400"
-                      }`}
-                      onClick={() => handleDislike()}
+                      className={`flex items-center gap-2 transition-all duration-200 ${
+                        disliked
+                          ? "text-red-500 bg-red-500/10"
+                          : "text-gray-500 hover:text-white"
+                      } ${isProcessing ? "opacity-50 cursor-not-allowed" : ""}`}
+                      onClick={handleDislike}
+                      disabled={isProcessing || !isAuthenticated}
                     >
                       <ThumbsDown
                         size={18}
-                        className={disliked ? "fill-current" : ""}
+                        className={`transition-transform ${
+                          disliked ? "fill-current scale-110" : ""
+                        } ${isProcessing ? "animate-pulse" : ""}`}
                       />
-                      <span>
-                        {capsule.post.dislikes?.length + (disliked ? 1 : 0)}
-                      </span>
+                      <span>{dislikeCount}</span>
                     </Button>
                   </div>
 
@@ -411,6 +515,12 @@ const CapsuleDetail: React.FC = () => {
                     </Button>
                   </div>
                 </div>
+
+                {!isAuthenticated && (
+                  <p className="text-sm text-gray-500 mt-4">
+                    {t("Please log in to like or dislike posts")}
+                  </p>
+                )}
               </div>
             </div>
           </motion.div>

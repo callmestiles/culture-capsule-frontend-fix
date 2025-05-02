@@ -237,14 +237,12 @@ const Contribute = () => {
                   description: `Your contribution has been categorized as "${category}".`,
                 });
                 // Navigate to the newly created post
-                navigate(`/post/${post._id}`);
+                navigate(`/capsule/${post._id}`);
                 return; // Stop polling
-
               case "rejected":
                 toast({
                   title: "Content rejected",
-                  description:
-                    message || "Your content was flagged as inappropriate.",
+                  description: message || "Your content was flagged as spam.",
                   variant: "destructive",
                 });
                 return; // Stop polling
