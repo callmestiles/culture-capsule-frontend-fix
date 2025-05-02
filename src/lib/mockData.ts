@@ -21,7 +21,9 @@ export const getRealUserData = async (): Promise<User | null> => {
       id: user._id,
       name: `${user.firstName} ${user.lastName}`,
       bio: "Cultural enthusiast and photographer. I love documenting the traditions and heritage of North Cyprus.",
-      profileImage: user.profilePicture || "/placeholder.svg?height=128&width=128&text=User",
+      profileImage:
+        user.profilePicture ||
+        "/placeholder.svg?height=128&width=128&text=User",
       posts: user.posts.length,
       likes: 0, // You can fetch likes if your API supports it
       contributions: user.posts.length,
@@ -53,7 +55,9 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
 
     // Then fetch posts for that user
     const postsResponse = await axios.get(
-      `https://culture-capsule-backend.onrender.com/api/posts/user/${userId}/all`,
+      `https://culture-capsule-backend.onrender.com/api/posts/user/${userId}/all?language=${localStorage.getItem(
+        "language"
+      )}`,
       {
         withCredentials: true,
         headers: {
@@ -78,7 +82,8 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
       date: post.createdAt,
       time: post.time || "6:00 PM - 8:00 PM",
       category: post.category,
-      image: post.images.length > 0 ? post.images[0] : "https://picsum.photos/200",
+      image:
+        post.images.length > 0 ? post.images[0] : "https://picsum.photos/200",
     }));
   } catch (error) {
     console.error("Error fetching user posts:", error);
@@ -88,4 +93,4 @@ export const getRealUserPosts = async (): Promise<Post[]> => {
 
 export const getUserPostsCount = () => {
   return userPosts; // Return the userPosts variable
-}
+};

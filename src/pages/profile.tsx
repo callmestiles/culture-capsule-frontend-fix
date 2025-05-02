@@ -25,7 +25,7 @@ export default function ProfilePage() {
     };
 
     fetchData();
-  }, []);
+  }, [language]);
 
   const categories = Array.from(
     new Set(userPosts.map((post) => post.category))
