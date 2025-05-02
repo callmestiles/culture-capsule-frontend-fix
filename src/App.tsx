@@ -24,6 +24,7 @@ import PoemPage from "./pages/poem";
 import { AuthProvider } from "./contexts/AuthContext";
 import AllPage from "./pages/all";
 import ScrollToTop from "./components/ScrollToTop";
+import AboutPage from "./pages/about";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/history" element={<History />} />
               <Route path="/recipes" element={<Recipes />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/arts" element={<Arts />} />
               <Route path="/folklore" element={<Folklore />} />
               <Route path="/music" element={<Music />} />

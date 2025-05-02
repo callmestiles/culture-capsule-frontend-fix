@@ -21,3 +21,18 @@ export interface Post {
   dislikes: number
   comments: number
 }
+
+
+export interface TeamMember {
+  id: string
+  name: string
+  role: string
+  bio: string
+  image: string | null
+  socialLinks: SocialLink[]
+}
+
+export interface SocialLink {
+  platform: string
+  url: string
+}

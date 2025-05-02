@@ -119,9 +119,12 @@ export function UserPosts({ posts }: UserPostsProps) {
                 </div>
               </div>
               <div className="flex items-center gap-4">
-                <button className="text-sm font-medium text-[rgb(82,104,45)] hover:underline">
+                <a
+                  href={"capsule/" + post.id}
+                  className="text-sm font-medium text-[rgb(82,104,45)] hover:underline"
+                >
                   View Post
-                </button>
+                </a>
                 <button
                   className="text-sm font-medium text-[rgb(255,0,0)] hover:underline"
                   onClick={() => deletePost(post.id)}
