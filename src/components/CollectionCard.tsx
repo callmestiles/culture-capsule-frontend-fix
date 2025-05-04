@@ -86,7 +86,7 @@ const CollectionCard: React.FC<CollectionCardProps> = ({
             </button>
             <button className="flex items-center text-gray-300 transition-colors">
               <ThumbsDown />
-              <span className="ml-1">{likes || 0}</span>
+              <span className="ml-1">{dislikes || 0}</span>
             </button>
           </div>
         </div>
