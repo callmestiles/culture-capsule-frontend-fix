@@ -154,7 +154,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
                   "rounded-full px-4 py-2 text-sm font-medium transition-colors bg-[rgb(82,104,45)] text-white my-2"
                 )}
               >
-                {user.username || "No username set"}
+                {user.name.split(" ")[0] || "No username set"}
               </button>
               <h1 className="mb-2 text-3xl font-bold text-gray-900 flex items-center gap-1">
                 {name}
@@ -197,7 +197,7 @@ export function ProfileHeader({ user }: ProfileHeaderProps) {
               <Button
                 onClick={() => setIsEditing(true)}
                 variant="outline"
-                className="border-[rgb(82,104,45)] text-[rgb(82,104,45)] hover:bg-[rgba(82,104,45,0.1)]"
+                className="border-[rgb(82,104,45)] text-[rgb(82,104,45)] hover:text-white"
               >
                 <Edit className="mr-2 h-4 w-4" />
                 Edit Profile
