@@ -5,6 +5,8 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { ThumbsUp, ThumbsDown, Image } from "lucide-react";
 import { NoImagePlaceholder2 } from "./ImagePlaceholders";
 
+// Component to display a collection card with an image, title, category, contributor, date, and like/dislike buttons
+
 interface CollectionCardProps {
   title: string;
   category: string;
