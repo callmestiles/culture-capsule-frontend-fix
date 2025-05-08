@@ -98,7 +98,7 @@ export const teamMembers: TeamMember[] = [
   },
   {
     id: "6",
-    name: "Ayo Owolabi",
+    name: "Ayooluwa Owolabi",
     role: "Mobile App Developer",
     bio: "Ayo is a mobile app developer with a passion for creating applications that enhance user engagement. With experience in both iOS and Android development, Ayo is responsible for our mobile platform, which allows users to explore cultural heritage on the go. His work ensures that our resources are accessible to everyone.",
     image: ayImg || "/placeholder.svg?height=400&width=400&text=Ayşe",
