@@ -122,11 +122,11 @@ export const teamMembers: TeamMember[] = [
     socialLinks: [
       {
         platform: "instagram",
-        url: "https://instagram.com",
+        url: "https://www.instagram.com/rubygrouptechnology?igsh=NHZsa3VwZ2FjNXV2&utm_source=qr",
       },
       {
         platform: "linkedin",
-        url: "https://linkedin.com",
+        url: "https://cy.linkedin.com/in/nesrin-kara-b99923334",
       },
     ],
   },
