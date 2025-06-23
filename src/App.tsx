@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import EventsPage from "./pages/Events";
 import ProfilePage from "./pages/profile";
 import Music from "./pages/music";
+import Privacy from "./pages/privacy";
 import PoemPage from "./pages/poem";
 import { AuthProvider } from "./contexts/AuthContext";
 import AllPage from "./pages/all";
@@ -40,6 +41,7 @@ const App = () => (
           <AuthProvider>
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/privacy" element={<Privacy />} />
               <Route path="/history" element={<History />} />
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/about" element={<AboutPage />} />

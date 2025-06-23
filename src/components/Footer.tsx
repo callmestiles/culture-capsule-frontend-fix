@@ -14,6 +14,7 @@ const Footer: React.FC = () => {
         { name: t("recentAdditions"), href: "/featured" },
         { name: t("events"), href: "/events" },
         { name: t("about"), href: "/about" },
+        { name: t("privacyPolicy"), href: "/privacy" },
       ],
     },
     {
@@ -95,7 +96,7 @@ const Footer: React.FC = () => {
 
         <div className="mt-12 pt-6 border-t border-capsule-sand flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="text-xs text-capsule-text/60">
-            © {currentYear} CultureCapsule. All rights reserved.
+            © {currentYear} CultureCapsule. All rights reserved. Beta version.
           </p>
 
           <p className="text-xs text-capsule-text/60 flex items-center">
