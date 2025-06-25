@@ -36,6 +36,7 @@ const contributionSchema = z.object({
   image: z.any().optional(),
   language: z.string().optional(),
   agreeToTerms: z.boolean(),
+  agreeToCopyright: z.boolean(),
 });
 
 type ContributionValues = z.infer<typeof contributionSchema>;
@@ -124,6 +125,7 @@ const Contribute = () => {
       year: "",
       language: language,
       agreeToTerms: false, // Add this field for the checkbox
+      agreeToCopyright: false, // Add this field for the checkbox
     },
     mode: "onChange",
   });
@@ -551,6 +553,24 @@ const Contribute = () => {
                           </FormControl>
                           <div className="space-y-1 leading-none">
                             <FormLabel>{t("agree_terms_label")}</FormLabel>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="agreeToTerms" // name of the field in form
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>{t("agree_terms_copy")}</FormLabel>
                           </div>
                           <FormMessage />
                         </FormItem>

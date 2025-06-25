@@ -354,4 +354,5 @@ export const tr = {
   brand_description:
     "Kuzey Kıbrıs'ın zengin kültürel mirasını topluluk odaklı belgeleme ve arşivleme ile korumak.",
     agree_terms_label: "Gönderimin herhangi bir yasa dışı içerik içermediğini beyan ederim.",
+    agree_terms_copy: "İçeriğimin kültürel amaçlarla kullanılmasına izin veriyorum.",
 };
