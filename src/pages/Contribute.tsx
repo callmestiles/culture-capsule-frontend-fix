@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Upload } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -9,6 +9,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useAuth } from "@/contexts/AuthContext";
 import axios from "axios";
 import { X } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -34,6 +35,7 @@ const contributionSchema = z.object({
   year: z.string().optional(),
   image: z.any().optional(),
   language: z.string().optional(),
+  agreeToTerms: z.boolean(),
 });
 
 type ContributionValues = z.infer<typeof contributionSchema>;
@@ -121,6 +123,7 @@ const Contribute = () => {
       location: "",
       year: "",
       language: language,
+      agreeToTerms: false, // Add this field for the checkbox
     },
     mode: "onChange",
   });
@@ -534,6 +537,25 @@ const Contribute = () => {
                         {t("contribute_formFive_description")}
                       </FormDescription>
                     </FormItem>
+
+                    <FormField
+                      control={form.control}
+                      name="agreeToTerms" // name of the field in form
+                      render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            />
+                          </FormControl>
+                          <div className="space-y-1 leading-none">
+                            <FormLabel>{t("agree_terms_label")}</FormLabel>
+                          </div>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
 
                     <div className="pt-4">
                       <Button
