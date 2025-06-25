@@ -15,6 +15,7 @@ const Footer: React.FC = () => {
         { name: t("events"), href: "/events" },
         { name: t("about"), href: "/about" },
         { name: t("privacyPolicy"), href: "/privacy" },
+        { name: t("termsOfService"), href: "/terms" },
       ],
     },
     {

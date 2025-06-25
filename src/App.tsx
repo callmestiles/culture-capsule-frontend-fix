@@ -22,6 +22,7 @@ import ProfilePage from "./pages/profile";
 import Music from "./pages/music";
 import Privacy from "./pages/privacy";
 import PoemPage from "./pages/poem";
+import Terms from "./pages/Terms";
 import { AuthProvider } from "./contexts/AuthContext";
 import AllPage from "./pages/all";
 import ScrollToTop from "./components/ScrollToTop";
@@ -42,6 +43,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/privacy" element={<Privacy />} />
+              <Route path="/terms" element={<Terms />} />
               <Route path="/history" element={<History />} />
               <Route path="/recipes" element={<Recipes />} />
               <Route path="/about" element={<AboutPage />} />
