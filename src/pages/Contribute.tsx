@@ -152,6 +152,15 @@ const Contribute = () => {
       });
       return;
     }
+    if (!values.agreeToTerms || !values.agreeToCopyright) {
+      toast({
+        title: "Agreement required",
+        description:
+          "You must agree to the terms and copyright policy to submit your contribution.",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setIsUploading(true);
     const formData = new FormData();
@@ -544,15 +553,17 @@ const Contribute = () => {
                       control={form.control}
                       name="agreeToTerms" // name of the field in form
                       render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                            />
-                          </FormControl>
-                          <div className="space-y-1 leading-none">
-                            <FormLabel>{t("agree_terms_label")}</FormLabel>
+                        <FormItem className="flex flex-col items-start space-x-0 space-y-3">
+                          <div className="flex flex-row items-start space-x-3 space-y-0">
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                              />
+                            </FormControl>
+                            <div className="space-y-1 leading-none">
+                              <FormLabel>{t("agree_terms_label")}</FormLabel>
+                            </div>
                           </div>
                           <FormMessage />
                         </FormItem>
@@ -560,7 +571,7 @@ const Contribute = () => {
                     />
                     <FormField
                       control={form.control}
-                      name="agreeToTerms" // name of the field in form
+                      name="agreeToCopyright" // name of the field in form
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                           <FormControl>

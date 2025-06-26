@@ -350,6 +350,6 @@ export const en = {
   brand_name: "Culture Capsule",
   brand_description:
     "Preserving North Cyprus's rich cultural heritage through community-driven documentation and archiving.",
-  agree_terms_label: "I declare that my submission does not contain any illegal content.",
+  agree_terms_label: "I declare that my submission does not contain any illegal or hateful content.",
   agree_terms_copy: "I grant Culture Capsule the right to use my content for cultural purposes.",
 };

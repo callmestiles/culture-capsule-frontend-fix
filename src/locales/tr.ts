@@ -353,6 +353,6 @@ export const tr = {
   brand_name: "Culture Capsule",
   brand_description:
     "Kuzey Kıbrıs'ın zengin kültürel mirasını topluluk odaklı belgeleme ve arşivleme ile korumak.",
-    agree_terms_label: "Gönderimin herhangi bir yasa dışı içerik içermediğini beyan ederim.",
+    agree_terms_label: "Gönderimin herhangi bir yasadışı veya nefret içerikli içerik barındırmadığını beyan ederim.",
     agree_terms_copy: "İçeriğimin kültürel amaçlarla kullanılmasına izin veriyorum.",
 };
