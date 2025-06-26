@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import LanguageSwitcher from "./LanguageSwitcher";
 import { useAuth } from "@/contexts/AuthContext";
 import { AnimatePresence, motion } from "framer-motion";
+import { Badge } from "./ui/badge";
 
 interface NavbarProps {
   backgroundColor?: string;
@@ -186,6 +187,7 @@ const Navbar: React.FC<NavbarProps> = ({ backgroundColor }) => {
           <span className="font-serif text-lg sm:text-xl font-semibold tracking-tight text-black">
             Culture Capsule
           </span>
+          <Badge className="bg-capsule-accent">Beta</Badge>
         </Link>
 
         {/* Desktop Navigation */}
